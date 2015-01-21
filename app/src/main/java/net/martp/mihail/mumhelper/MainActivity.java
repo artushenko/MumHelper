@@ -59,7 +59,6 @@ public class MainActivity extends ActionBarActivity
                 .commit();
     }
 
-
     public void onSectionAttached(int number) {
         FragmentTransaction fTrans = getFragmentManager().beginTransaction();
         NewsFragment newsFragment = new NewsFragment();
@@ -67,6 +66,7 @@ public class MainActivity extends ActionBarActivity
         MarksFragment marksFragment = new MarksFragment();
         RatingFragment ratingFragment = new RatingFragment();
         SetupFragment setupFragment = new SetupFragment();
+        OrdersFragment ordersFragment= new OrdersFragment();
 
         switch (number) {
             case 1:
@@ -79,19 +79,16 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 mTitle = getString(R.string.title_order);
+                fTrans.replace(R.id.frgmCont, ordersFragment);
+                fTrans.commit();
                 break;
             case 4:
                 mTitle = getString(R.string.title_rating_group);
                 fTrans.replace(R.id.frgmCont, ratingFragment);
                 fTrans.commit();
-
-
                 break;
             case 5:
                 mTitle = getString(R.string.title_news);
-
-                //           new ParseDataNews();
-
                 fTrans.replace(R.id.frgmCont, newsFragment);
                 fTrans.commit();
                 break;
