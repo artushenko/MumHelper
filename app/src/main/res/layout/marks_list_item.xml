@@ -11,7 +11,8 @@
                 android:layout_height="wrap_content"
                 android:text="predmet"
                 android:id="@+id/nameOfDiscipline" android:layout_span="5"
-                android:textColor="#000101" android:textStyle="bold"/>
+                android:textColor="#000101" android:textStyle="bold"
+            android:textSize="20dp" />
     </TableRow>
     <TableRow
             android:layout_width="fill_parent"
@@ -19,24 +20,31 @@
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/StatusPredmetImageView" android:layout_column="0" android:src="@drawable/tick"/>
+                android:id="@+id/StatusPredmetImageView" android:layout_column="0" android:src="@drawable/tick"
+            android:layout_gravity="center" />
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" (экзамен) "
                 android:id="@+id/formOfControl" android:layout_column="1" android:paddingRight="5dp"
-                android:paddingLeft="5dp"/>
+                android:paddingLeft="5dp"
+            android:textSize="20dp"
+            android:textStyle="italic" />
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" 8 "
                 android:id="@+id/mark" android:layout_column="2" android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+                android:paddingRight="10dp"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="#ff000000" />
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" (2012-03-01)"
-                android:id="@+id/date" android:layout_column="3"/>
+                android:id="@+id/date" android:layout_column="3"
+            android:textSize="20dp" />
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

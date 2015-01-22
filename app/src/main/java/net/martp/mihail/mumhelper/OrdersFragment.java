@@ -36,7 +36,7 @@ public class OrdersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View viev= inflater.inflate(R.layout.fragment_orders, container, false);
+        View viev = inflater.inflate(R.layout.fragment_orders, container, false);
         return viev;
     }
 
@@ -47,7 +47,7 @@ public class OrdersFragment extends Fragment {
         ParseDataOrdersAsyncTask parseDataOrdersAsyncTask = new ParseDataOrdersAsyncTask();
         parseDataOrdersAsyncTask.execute();
         // OutToActivity outToActivity =  new OutToActivity();
-        new OutToActivity();
+        //   new OutToActivity();
     }
 
     private class OutToActivity extends Activity {
@@ -130,7 +130,6 @@ public class OrdersFragment extends Fragment {
             Toast.makeText(getActivity(), "Reading ordets is comlpete", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 
 }
