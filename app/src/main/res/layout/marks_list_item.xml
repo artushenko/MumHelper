@@ -5,7 +5,8 @@
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
     <TableRow
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" android:background="#d1e1ff">
+            android:layout_height="fill_parent" android:background="#d1e1ff"
+        android:measureWithLargestChild="false">
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -13,7 +14,8 @@
                 android:id="@+id/nameOfDiscipline" android:layout_span="5"
                 android:textColor="#000101" android:textStyle="bold"
             android:textSize="20dp"
-            android:singleLine="false" />
+            android:singleLine="false"
+            android:layout_gravity="center_vertical" />
     </TableRow>
     <TableRow
             android:layout_width="fill_parent"
