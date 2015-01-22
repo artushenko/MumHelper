@@ -37,7 +37,6 @@ public class MarksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_marks, container, false);
         return view;
     }
@@ -51,11 +50,13 @@ public class MarksFragment extends Fragment {
         //       new OutToActivity();
     }
 
+    /*
     private class OutToActivity extends Activity {
         private OutToActivity() {
             //        Toast.makeText(getActivity(), "Начало OutToActivity", Toast.LENGTH_SHORT).show();
         }
     }
+    */
 
     private class ParseDataMarksAsyncTask extends AsyncTask<Void, Integer, Void> {
         ProgressDialog dialog;
@@ -83,7 +84,6 @@ public class MarksFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-
             ArrayList<MarkStructure> arrayListMarksLocal = new ArrayList<>();
 
             Document doc = null;
@@ -104,25 +104,11 @@ public class MarksFragment extends Fragment {
                 Element row = rows.get(i);
                 Elements cols = row.select("td");
 
-                /*
-                System.out.print(cols.get(0).text());
-                System.out.print(" ");
-                System.out.print(cols.get(1).text());
-                System.out.print(" ");
-*/
-
                 String body = cols.get(2).getElementsByTag("img").attr("alt");
-                if (body.equals("зачтено") || body.equals("незачтено")) {
+                if (body.equals("зачтено") || body.equals("незачтено"))
                     status = body;
-                    //                   System.out.print(body);
-                } else {
-                    //                  System.out.print(cols.get(2).text());
+                else
                     status = cols.get(2).text();
-                }
-
-                //              System.out.print(" ");
-                //              System.out.println(cols.get(3).text());
-
                 arrayListMarksLocal.add(new MarkStructure(getStatusDiscipline(status), cols.get(0).text(), cols.get(1).text(), status, cols.get(3).text()));
             }
             setArrayMarks(arrayListMarksLocal);
@@ -145,8 +131,6 @@ public class MarksFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
-//            Toast.makeText(getActivity(), "Reading marks is comlpete", Toast.LENGTH_SHORT).show();
-            //ArrayList<MarkStructure> arrayListMarkLocal = new ArrayList<>();
             ArrayList<MarkStructure> arrayListMarkLocal = getArrayMarks();
 
             MarkStructure mark;

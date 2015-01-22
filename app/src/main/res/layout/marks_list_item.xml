@@ -7,12 +7,13 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" android:background="#d1e1ff">
         <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="predmet"
                 android:id="@+id/nameOfDiscipline" android:layout_span="5"
                 android:textColor="#000101" android:textStyle="bold"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:singleLine="false" />
     </TableRow>
     <TableRow
             android:layout_width="fill_parent"
