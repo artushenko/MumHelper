@@ -3,7 +3,18 @@
     android:layout_height="match_parent" tools:context="net.martp.mihail.mumhelper.MarksFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:text="@string/title_marks" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView" >
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/markTable"></TableLayout>
+    </ScrollView>
 
 </FrameLayout>
