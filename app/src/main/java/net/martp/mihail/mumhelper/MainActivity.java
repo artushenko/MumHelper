@@ -65,6 +65,7 @@ public class MainActivity extends ActionBarActivity
         AboutFragment aboutFragment = new AboutFragment();
         MarksFragment marksFragment = new MarksFragment();
         RatingFragment ratingFragment = new RatingFragment();
+        RatingNFragment ratingNFragment=new RatingNFragment();
         SetupFragment setupFragment = new SetupFragment();
         OrdersFragment ordersFragment= new OrdersFragment();
 
@@ -84,7 +85,8 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 4:
                 mTitle = getString(R.string.title_rating_group);
-                fTrans.replace(R.id.frgmCont, ratingFragment);
+               // fTrans.replace(R.id.frgmCont, ratingFragment);
+               fTrans.replace(R.id.frgmCont, ratingNFragment);
                 fTrans.commit();
                 break;
             case 5:
