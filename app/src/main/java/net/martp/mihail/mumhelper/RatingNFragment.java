@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.jsoup.Connection;
@@ -41,7 +42,7 @@ public class RatingNFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_marks, container, false);
+        View view = inflater.inflate(R.layout.fragment_rating_n, container, false);
         return view;
     }
 
@@ -57,10 +58,10 @@ public class RatingNFragment extends Fragment {
 
     private class ParseDataRatingNAsyncTask extends AsyncTask<Void, Integer, Void> {
         ProgressDialog dialog;
-        TableLayout queryTableLayout;
+        TableLayout queryRatingTableLayout;
         Context context;
         private String retName;
-        private String retSurame;
+        private String retSurname;
 
         @Override
         protected void onPreExecute() {
@@ -116,8 +117,8 @@ public class RatingNFragment extends Fragment {
 
                 if (cols.size() == 1) {
                     splitFullNamefromStr(cols.get(0).text());
-                    System.out.println(retSurame + " " + retName + " " + srBall);
-                    ratingGroupArrayListLocal.add(new RatingStructure("0", retName, retSurame, srBall));
+                    System.out.println(retSurname + " " + retName + " " + srBall);
+                    ratingGroupArrayListLocal.add(new RatingStructure("0", retSurname, retName, srBall));
 
                     //System.out.println(splitFullNamefromStr(cols.get(0).text()) + " " + srBall);
                     // ratingGroupArrayListLocal.add(splitFullNamefromStr(cols.get(0).text()) + " " + srBall);
@@ -127,7 +128,7 @@ public class RatingNFragment extends Fragment {
                 System.out.print(" ");
                 splitFullNamefromStr(cols.get(2).text());
                 //  System.out.print(splitFullNamefromStr(cols.get(2).text()));
-                System.out.print(retName + retSurame);
+                System.out.print(retName + retSurname);
                 System.out.print(" ");
                 srBall = cols.get(3).text(); ///не удалять
                 //System.out.print(srBall = cols.get(3).text());
@@ -135,7 +136,7 @@ public class RatingNFragment extends Fragment {
                 System.out.println();
                 //ratingGroupArrayListLocal.add(cols.get(0).text() + "\n" + splitFullNamefromStr(cols.get(2).text()) + " " + cols.get(3).text());
 
-                ratingGroupArrayListLocal.add(new RatingStructure(cols.get(0).text(), retSurame, retName, srBall));
+                ratingGroupArrayListLocal.add(new RatingStructure(cols.get(0).text(), retSurname, retName, srBall));
             }
 
             setArrayRatingN(ratingGroupArrayListLocal);
@@ -144,8 +145,8 @@ public class RatingNFragment extends Fragment {
 
         private void splitFullNamefromStr(String str) {
             String[] strArray = str.split(" ");
-            retName = strArray[0];
-            retSurame = strArray[1] + " " + strArray[2];
+            retSurname = strArray[0];
+            retName = strArray[1] + " " + strArray[2];
         }
 
 
@@ -157,7 +158,7 @@ public class RatingNFragment extends Fragment {
 
             RatingStructure ratingStructure;
 
-            queryTableLayout = (TableLayout) getView().findViewById(R.id.ratingTable);
+            queryRatingTableLayout = (TableLayout) getView().findViewById(R.id.ratingTable);
 
 
             for (int i = 0; i < arrayListRatingLocal.size(); i++) {
@@ -187,7 +188,14 @@ public class RatingNFragment extends Fragment {
             TextView textAvarege = (TextView) newTagView.findViewById(R.id.avarege);
             textAvarege.setText(avarege);
 
-            queryTableLayout.addView(newTagView, index);
+
+            if  (number.equals("0"))
+            {
+                TableRow tableRow=(TableRow) newTagView.findViewById(R.id.tableRowNumber);
+                tableRow.setVisibility(View.GONE);
+            }
+
+            queryRatingTableLayout.addView(newTagView, index);
         }
     }
 }
