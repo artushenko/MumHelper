@@ -1,18 +1,14 @@
 package net.martp.mihail.mumhelper;
 
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Rating;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -189,9 +185,8 @@ public class RatingNFragment extends Fragment {
             textAvarege.setText(avarege);
 
 
-            if  (number.equals("0"))
-            {
-                TableRow tableRow=(TableRow) newTagView.findViewById(R.id.tableRowNumber);
+            if (number.equals("0")) {
+                TableRow tableRow = (TableRow) newTagView.findViewById(R.id.tableRowNumber);
                 tableRow.setVisibility(View.GONE);
             }
 

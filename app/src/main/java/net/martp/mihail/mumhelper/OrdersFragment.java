@@ -1,19 +1,16 @@
 package net.martp.mihail.mumhelper;
 
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -35,11 +32,9 @@ public class OrdersFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View viev = inflater.inflate(R.layout.fragment_orders, container, false);
         return viev;
     }
@@ -50,20 +45,12 @@ public class OrdersFragment extends Fragment {
 
         ParseDataOrdersAsyncTask parseDataOrdersAsyncTask = new ParseDataOrdersAsyncTask();
         parseDataOrdersAsyncTask.execute();
-        // OutToActivity outToActivity =  new OutToActivity();
-        //   new OutToActivity();
-    }
-
-    private class OutToActivity extends Activity {
-        private OutToActivity() {
-            Toast.makeText(getActivity(), "Начало OutToActivity", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private class ParseDataOrdersAsyncTask extends AsyncTask<Void, Integer, Void> {
+        public ProgressDialog dialog;
         TableLayout queryOrderTableLayout;
         Context context;
-        public ProgressDialog dialog;
 
         @Override
         protected void onPreExecute() {
@@ -74,7 +61,6 @@ public class OrdersFragment extends Fragment {
             dialog.setCancelable(false);
             dialog.show();
         }
-
 
         private ArrayList<OrderStructure> getArrayOrders() {
             return arrayListOrders;
@@ -118,16 +104,7 @@ public class OrdersFragment extends Fragment {
             for (int i = 1; i < rows.size(); i++) {
                 Element row = rows.get(i);
                 Elements cols = row.select("td");
-
-                System.out.print(cols.get(0).text());
-                System.out.print(" ");
-                System.out.print(cols.get(1).text());
-                System.out.print(" ");
-                System.out.print(cols.get(2).text());
-                System.out.println();
-
                 arrayListOrdersLocal.add(new OrderStructure(cols.get(0).text(), cols.get(1).text(), cols.get(2).text()));
-
             }
             setArrayOrders(arrayListOrdersLocal);
 
@@ -138,7 +115,6 @@ public class OrdersFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
-            Toast.makeText(getActivity(), "Reading ordets is comlpete", Toast.LENGTH_SHORT).show();
 
             ArrayList<OrderStructure> arrayListOrderLocal = getArrayOrders();
 
@@ -146,15 +122,14 @@ public class OrdersFragment extends Fragment {
 
             queryOrderTableLayout = (TableLayout) getView().findViewById(R.id.orderTable);
 
-
             for (int i = 0; i < arrayListOrderLocal.size(); i++) {
                 orderStructure = arrayListOrderLocal.get(i);
                 makeOrdersLine(orderStructure.getCourese(),
                         orderStructure.getNumberOrder(),
                         orderStructure.getTextOrder(), i);
             }
-
         }
+
         private void makeOrdersLine(String getCourse, String getNumberOrder, String getTextOrder, int index) {
             context = getView().getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -169,9 +144,7 @@ public class OrdersFragment extends Fragment {
             TextView textName = (TextView) newTagView.findViewById(R.id.textOrder);
             textName.setText(getTextOrder);
 
-           queryOrderTableLayout.addView(newTagView, index);
+            queryOrderTableLayout.addView(newTagView, index);
         }
     }
-
-
 }
