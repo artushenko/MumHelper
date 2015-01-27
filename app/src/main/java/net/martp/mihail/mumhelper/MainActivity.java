@@ -68,6 +68,8 @@ public class MainActivity extends ActionBarActivity
         RatingNFragment ratingNFragment = new RatingNFragment();
         SetupFragment setupFragment = new SetupFragment();
         OrdersFragment ordersFragment = new OrdersFragment();
+        SchedultSearchFragment schedultSearchFragment=new SchedultSearchFragment();
+        SchedultFragment schedultFragment=new SchedultFragment();
 
         switch (number) {
             case 1:
@@ -96,11 +98,14 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 6:
                 mTitle = getString(R.string.title_schedule);
+                fTrans.replace(R.id.frgmCont, schedultFragment);
+                fTrans.commit();
                 break;
             case 7:
                 mTitle = getString(R.string.title_schedule_search);
+                fTrans.replace(R.id.frgmCont, schedultSearchFragment);
+                fTrans.commit();
                 break;
-
             case 8:
                 mTitle = getString(R.string.title_setup);
                 fTrans.replace(R.id.frgmCont, setupFragment);

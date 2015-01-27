@@ -1,6 +1,5 @@
 package net.martp.mihail.mumhelper;
 
-
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -20,7 +20,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,7 +85,8 @@ public class OrdersFragment extends Fragment {
             } catch (IOException e) {
                 //  e.printStackTrace();
                 System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
-                //return;
+//                Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+                return null;
             }
 
             String sessionId = res.cookie("PHPSESSID");
@@ -96,6 +96,8 @@ public class OrdersFragment extends Fragment {
                         .cookie("PHPSESSID", sessionId).get();
             } catch (IOException e) {
                 e.printStackTrace();
+                Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+                return null;
             }
 
             Element table = doc.select("table").get(1);

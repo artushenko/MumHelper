@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -91,7 +92,8 @@ public class MarksFragment extends Fragment {
                         .data("act", "regnum").data("id", "id").data("regnum", "20090312012423").post();
             } catch (IOException e) {
                 System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
-                // return;
+            //    Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+                return null;
             }
 
             Element table = doc.select("table").get(1);

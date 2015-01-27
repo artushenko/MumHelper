@@ -6,17 +6,17 @@ package net.martp.mihail.mumhelper;
 public class SchedultStructure {
     String date;
     String time;
-    String nameLesson;
+    String subject;
     String teacher;
     String classroom;
 
     public SchedultStructure() {
     }
 
-    public SchedultStructure(String date, String time, String nameLesson, String teacher, String classroom) {
+    public SchedultStructure(String date, String time, String subject, String teacher, String classroom) {
         this.date = date;
         this.time = time;
-        this.nameLesson = nameLesson;
+        this.subject = subject;
         this.teacher = teacher;
         this.classroom = classroom;
     }
@@ -29,8 +29,8 @@ public class SchedultStructure {
         return time;
     }
 
-    public String getNameLesson() {
-        return nameLesson;
+    public String getSubject() {
+        return subject;
     }
 
     public String getTeacher() {

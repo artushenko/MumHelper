@@ -188,8 +188,9 @@ public class NewsFragment extends Fragment {
                 doc = Jsoup.connect("http://miu.by/").get();
             } catch (IOException e) {
                 // e.printStackTrace();
-                System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
-                // return; /????????
+                System.out.println("Ошибка подключени к сети" + getClass().getSimpleName());
+             //   Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+                 return null; //ERROR!!!!
             }
             Elements cols = doc.select("table").get(5).select("tr").get(20).select("td");
 
