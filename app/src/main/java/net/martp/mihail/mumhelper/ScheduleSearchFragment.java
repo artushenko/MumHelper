@@ -28,30 +28,30 @@ import java.util.Iterator;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SchedultSearchFragment extends Fragment {
+public class ScheduleSearchFragment extends Fragment {
 
 
-    private static ArrayList<SchedultStructure> arrayListSchedult = new ArrayList<>();
+    private static ArrayList<ScheduleStructure> arrayListSchedule = new ArrayList<>();
 
-    public SchedultSearchFragment() {
+    public ScheduleSearchFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View viev = inflater.inflate(R.layout.fragment_schedult_search, container, false);
+        View viev = inflater.inflate(R.layout.fragment_schedule_search, container, false);
         return viev;
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ParseDataSchedultSearchAsyncTask parseDataSchedultSearchAsyncTask = new ParseDataSchedultSearchAsyncTask();
-        parseDataSchedultSearchAsyncTask.execute();
+        ParseDataScheduleSearchAsyncTask parseDataScheduleSearchAsyncTask = new ParseDataScheduleSearchAsyncTask();
+        parseDataScheduleSearchAsyncTask.execute();
     }
 
-    private class ParseDataSchedultSearchAsyncTask extends AsyncTask<Void, Integer, Void> {
+    private class ParseDataScheduleSearchAsyncTask extends AsyncTask<Void, Integer, Void> {
         public ProgressDialog dialog;
         TableLayout querySchedultSearchTableLayout;
         Context context;
@@ -66,12 +66,12 @@ public class SchedultSearchFragment extends Fragment {
             dialog.show();
         }
 
-        private ArrayList<SchedultStructure> getArraySchedult() {
-            return arrayListSchedult;
+        private ArrayList<ScheduleStructure> getArraySchedult() {
+            return arrayListSchedule;
         }
 
-        private void setArraySchedult(ArrayList<SchedultStructure> arraySchedultf) {
-            arrayListSchedult= arraySchedultf;
+        private void setArraySchedult(ArrayList<ScheduleStructure> arraySchedultf) {
+            arrayListSchedule = arraySchedultf;
         }
 
         ArrayList<String> arraySpecialitySpinner =new ArrayList<>();
@@ -80,11 +80,10 @@ public class SchedultSearchFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
 
-            ArrayList<SchedultStructure> arrayListSchedultLocal = new ArrayList<>();
+            ArrayList<ScheduleStructure> arrayListSchedultLocal = new ArrayList<>();
 
             Document doc = null;
             Connection.Response res = null;
-
 
             try {
                 doc = Jsoup.connect("http://miu.by/rus/schedule/schedule.php").get();
@@ -172,19 +171,19 @@ public class SchedultSearchFragment extends Fragment {
   //          Log.v("TestLog", "spinnerSpeciality =" + spinnerSpeciality);
 
 
-            ArrayList<SchedultStructure> arrayListSchedultLocal = getArraySchedult();
+            ArrayList<ScheduleStructure> arrayListSchedultLocal = getArraySchedult();
 
-            SchedultStructure schedultStructure;
+            ScheduleStructure scheduleStructure;
 
             querySchedultSearchTableLayout = (TableLayout) getView().findViewById(R.id.schedultSearchTableLayout);
 
             for (int i = 0; i < arrayListSchedultLocal.size(); i++) {
-                schedultStructure = arrayListSchedultLocal.get(i);
-                makeSchedultSearchLine(schedultStructure.getDate(),
-                        schedultStructure.getTime(),
-                        schedultStructure.getSubject(),
-                        schedultStructure.getTeacher(),
-                        schedultStructure.getClassroom(), i);
+                scheduleStructure = arrayListSchedultLocal.get(i);
+                makeSchedultSearchLine(scheduleStructure.getDate(),
+                        scheduleStructure.getTime(),
+                        scheduleStructure.getSubject(),
+                        scheduleStructure.getTeacher(),
+                        scheduleStructure.getClassroom(), i);
             }
         }
 

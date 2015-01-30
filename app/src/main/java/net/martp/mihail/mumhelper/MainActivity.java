@@ -68,8 +68,8 @@ public class MainActivity extends ActionBarActivity
         RatingNFragment ratingNFragment = new RatingNFragment();
         SetupFragment setupFragment = new SetupFragment();
         OrdersFragment ordersFragment = new OrdersFragment();
-        SchedultSearchFragment schedultSearchFragment=new SchedultSearchFragment();
-        SchedultFragment schedultFragment=new SchedultFragment();
+        ScheduleSearchFragment scheduleSearchFragment =new ScheduleSearchFragment();
+        ScheduleFragment scheduleFragment =new ScheduleFragment();
 
         switch (number) {
             case 1:
@@ -87,7 +87,6 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 4:
                 mTitle = getString(R.string.title_rating_group);
-                // fTrans.replace(R.id.frgmCont, ratingFragment);
                 fTrans.replace(R.id.frgmCont, ratingNFragment);
                 fTrans.commit();
                 break;
@@ -98,12 +97,12 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 6:
                 mTitle = getString(R.string.title_schedule);
-                fTrans.replace(R.id.frgmCont, schedultFragment);
+                fTrans.replace(R.id.frgmCont, scheduleFragment);
                 fTrans.commit();
                 break;
             case 7:
                 mTitle = getString(R.string.title_schedule_search);
-                fTrans.replace(R.id.frgmCont, schedultSearchFragment);
+                fTrans.replace(R.id.frgmCont, scheduleSearchFragment);
                 fTrans.commit();
                 break;
             case 8:
@@ -113,12 +112,10 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 9:
                 mTitle = getString(R.string.title_about_ap);
-
                 fTrans = getFragmentManager().beginTransaction();
                 fTrans.replace(R.id.frgmCont, aboutFragment);
                 fTrans.commit();
                 break;
-
             case 10:
                 mTitle = getString(R.string.title_exit);
                 break;

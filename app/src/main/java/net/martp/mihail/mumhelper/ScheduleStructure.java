@@ -3,17 +3,17 @@ package net.martp.mihail.mumhelper;
 /**
  * Created by Mihail on 24.12.2014.
  */
-public class SchedultStructure {
+public class ScheduleStructure {
     String date;
     String time;
     String subject;
     String teacher;
     String classroom;
 
-    public SchedultStructure() {
+    public ScheduleStructure() {
     }
 
-    public SchedultStructure(String date, String time, String subject, String teacher, String classroom) {
+    public ScheduleStructure(String date, String time, String subject, String teacher, String classroom) {
         this.date = date;
         this.time = time;
         this.subject = subject;
