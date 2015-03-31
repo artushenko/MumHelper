@@ -43,7 +43,7 @@ public class ScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View viev = inflater.inflate(R.layout.fragment_schedule, container, false);
+       View viev = inflater.inflate(R.layout.fragment_schedule, container, false);
         return viev;
     }
 
