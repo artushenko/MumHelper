@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -149,9 +148,9 @@ public class MarksFragment extends Fragment {
         private void makeMarksLine(String nameOfDiscipline, String formOfControl, String mark, String date, boolean status, int index) {
             context = getView().getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View newTagView = inflater.inflate(R.layout.marks_list_item, null);
+            View newTagView = inflater.inflate(R.layout.marks_list_item2, null);
 
-            ImageView statusPredmet = (ImageView) newTagView.findViewById(R.id.StatusPredmetImageView);
+            ImageView statusPredmet = (ImageView) newTagView.findViewById(R.id.statusPredmetImageView);
             Bitmap srcBitmapLocal = BitmapFactory.decodeResource(context.getApplicationContext().getResources(), R.drawable.tick);
             if (!status) {
                 srcBitmapLocal = BitmapFactory.decodeResource(context.getApplicationContext().getResources(),
