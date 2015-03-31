@@ -188,6 +188,9 @@ public class RatingNFragment extends Fragment {
             if (number.equals("0")) {
                 TableRow tableRow = (TableRow) newTagView.findViewById(R.id.tableRowNumber);
                 tableRow.setVisibility(View.GONE);
+
+                tableRow = (TableRow) newTagView.findViewById(R.id.tableRowLine);
+                tableRow.setVisibility(View.GONE);
             }
 
             queryRatingTableLayout.addView(newTagView, index);
