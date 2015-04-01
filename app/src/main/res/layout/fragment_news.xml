@@ -16,17 +16,19 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/empty_title"
-            android:id="@+id/textView4"
+            android:id="@+id/textView4_date_1"
             android:linksClickable="true"
-            android:textSize="25sp"
-            android:layout_marginTop="10dp" />
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#ff03a9f4"
+            android:textColorLink="#ff03a9f4" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/empty_title"
             android:id="@+id/textView"
-            android:textSize="15dp"
+            android:textSize="14dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp" />
 
@@ -35,17 +37,19 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/empty_title"
-            android:id="@+id/textView6"
-            android:textSize="25sp"
+            android:id="@+id/textView6_date_2"
+            android:textSize="18dp"
             android:layout_marginTop="10dp"
-            android:linksClickable="true" />
+            android:linksClickable="true"
+            android:textColor="#ff03a9f4"
+            android:textColorLink="#ff03a9f4" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/empty_title"
             android:id="@+id/textView2"
-            android:textSize="15dp"
+            android:textSize="14dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             style="text-align:justify"
@@ -56,17 +60,19 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/empty_title"
-            android:id="@+id/textView7"
-            android:textSize="25sp"
+            android:id="@+id/textView7_date_3"
+            android:textSize="18dp"
             android:layout_marginTop="10dp"
-            android:linksClickable="true" />
+            android:linksClickable="true"
+            android:textColor="#ff03a9f4"
+            android:textColorLink="#ff03a9f4" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/empty_title"
             android:id="@+id/textView3"
-            android:textSize="15dp"
+            android:textSize="14dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp" />
 
@@ -75,17 +81,19 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/empty_title"
-            android:id="@+id/textView8"
-            android:textSize="25sp"
+            android:id="@+id/textView8_date_4"
+            android:textSize="18dp"
             android:layout_marginTop="10dp"
-            android:linksClickable="true" />
+            android:linksClickable="true"
+            android:textColor="#ff03a9f4"
+            android:textColorLink="#ff03a9f4" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/empty_title"
             android:id="@+id/textView5"
-            android:textSize="15dp"
+            android:textSize="14dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp" />
 
@@ -94,10 +102,12 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/empty_title"
-            android:id="@+id/textView9"
-            android:textSize="25sp"
+            android:id="@+id/textView9_date_5"
+            android:textSize="18dp"
             android:layout_marginTop="10dp"
-            android:linksClickable="true" />
+            android:linksClickable="true"
+            android:textColor="#ff03a9f4"
+            android:textColorLink="#ff03a9f4" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -106,7 +116,7 @@
             android:id="@+id/textView10"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:textSize="15dp" />
+            android:textSize="14dp" />
 
     </LinearLayout>
 

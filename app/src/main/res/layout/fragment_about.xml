@@ -13,10 +13,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
+            android:src="@drawable/miulogoblack"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp"
-            android:src="@drawable/miulogoblack" />
+            android:layout_alignLeft="@+id/textView12"
+            android:layout_alignStart="@+id/textView12" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Helper to the student of the \n Minsk University of Management "
             android:id="@+id/textView12"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="22dp"
             android:gravity="center_vertical|center_horizontal"
             android:layout_below="@+id/imageView"
             android:layout_centerHorizontal="true" />
@@ -34,17 +34,18 @@
             android:layout_height="wrap_content"
             android:text="22.01.2015"
             android:id="@+id/textView13"
-            android:layout_below="@+id/textView12"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="28dp" />
+            android:layout_below="@+id/textView18"
+            android:layout_alignLeft="@+id/textView18"
+            android:layout_alignStart="@+id/textView18" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Идея и разработка:"
             android:id="@+id/textView14"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/textView13"
+            android:layout_alignRight="@+id/textView16"
+            android:layout_alignEnd="@+id/textView16" />
 
         <TextView
             android:layout_width="wrap_content"

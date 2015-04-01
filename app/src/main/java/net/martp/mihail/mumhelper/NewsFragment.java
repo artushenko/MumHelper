@@ -234,31 +234,31 @@ public class NewsFragment extends Fragment {
             arrayNewslocal = getArrayNews();
 
             if (arrayNewslocal[0][0] != null) {
-                TextView newsDate1text = (TextView) getView().findViewById(R.id.textView4); //to here
+                TextView newsDate1text = (TextView) getView().findViewById(R.id.textView4_date_1); //to here
                 newsDate1text.setText(Html.fromHtml("<a href=\"http://miu.by" + arrayNewslocal[0][1].toString() + "\">" + arrayNewslocal[0][0].toString() + "</a>"));
                 newsDate1text.setMovementMethod(LinkMovementMethod.getInstance());
                 TextView newsText1text = (TextView) getView().findViewById(R.id.textView); //to here
                 newsText1text.setText(arrayNewslocal[0][2]);
 
-                TextView newsDate2text = (TextView) getView().findViewById(R.id.textView6); //to here
+                TextView newsDate2text = (TextView) getView().findViewById(R.id.textView6_date_2); //to here
                 newsDate2text.setMovementMethod(LinkMovementMethod.getInstance());
                 newsDate2text.setText(Html.fromHtml("<a href=\"http://miu.by" + arrayNewslocal[1][1].toString() + "\">" + arrayNewslocal[1][0].toString() + "</a>"));
                 TextView newsText2text = (TextView) getView().findViewById(R.id.textView2); //to here
                 newsText2text.setText(arrayNewslocal[1][2]);
 
-                TextView newsDate3text = (TextView) getView().findViewById(R.id.textView7); //to here
+                TextView newsDate3text = (TextView) getView().findViewById(R.id.textView7_date_3); //to here
                 newsDate3text.setMovementMethod(LinkMovementMethod.getInstance());
                 newsDate3text.setText(Html.fromHtml("<a href=\"http://miu.by" + arrayNewslocal[2][1].toString() + "\">" + arrayNewslocal[2][0].toString() + "</a>"));
                 TextView newsText3text = (TextView) getView().findViewById(R.id.textView3); //to here
                 newsText3text.setText(arrayNewslocal[2][2]);
 
-                TextView newsDate4text = (TextView) getView().findViewById(R.id.textView8); //to here
+                TextView newsDate4text = (TextView) getView().findViewById(R.id.textView8_date_4); //to here
                 newsDate4text.setMovementMethod(LinkMovementMethod.getInstance());
                 newsDate4text.setText(Html.fromHtml("<a href=\"http://miu.by" + arrayNewslocal[3][1].toString() + "\">" + arrayNewslocal[3][0].toString() + "</a>"));
                 TextView newsText4text = (TextView) getView().findViewById(R.id.textView5); //to here
                 newsText4text.setText(arrayNewslocal[3][2]);
 
-                TextView newsDate5text = (TextView) getView().findViewById(R.id.textView9); //to here
+                TextView newsDate5text = (TextView) getView().findViewById(R.id.textView9_date_5); //to here
                 newsDate5text.setMovementMethod(LinkMovementMethod.getInstance());
                 newsDate5text.setText(Html.fromHtml("<a href=\"http://miu.by" + arrayNewslocal[4][1].toString() + "\">" + arrayNewslocal[4][0].toString() + "</a>"));
                 TextView newsText5text = (TextView) getView().findViewById(R.id.textView10); //to here

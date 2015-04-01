@@ -1,0 +1,31 @@
+
+
+
+<resources>
+
+    <!-- Base application theme. -->
+    <color name="light_blue1">#ff03a9f4</color>
+    <color name="light_blue">#FFE1F5FE</color>
+    <color name="white_opaque">#FFFFFFFF</color>
+    <color name="red_900">#FFB71C1C</color>
+    <color name="light_blue_300">#FF4FC3F7</color>
+
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/white_opaque</item>
+
+        <item name="android:actionMenuTextColor">#24598a</item>
+        <item name="actionMenuTextColor">#24598a</item>
+
+
+        <!--
+         <item name="android:background">@color/light_blue_300</item>
+         <item name="android:colorBackground">@color/light_blue_300</item>
+                   <item name="android:actionBarStyle">@style/Widget.MyApplicationTheme.ActionBar</item>-->
+    </style>
+
+    <!--       <style name="Widget.MyApplicationTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+              <item name="android:background">#2d2d2d</item>
+              <item name="background">@color/light_blue_300</item>
+          </style>-->
+</resources>
