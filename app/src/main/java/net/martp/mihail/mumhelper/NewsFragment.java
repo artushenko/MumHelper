@@ -115,6 +115,7 @@ public class NewsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
@@ -192,7 +193,8 @@ public class NewsFragment extends Fragment {
              //   Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
                  return null; //ERROR!!!!
             }
-            Elements cols = doc.select("table").get(5).select("tr").get(20).select("td");
+            Elements cols = doc.select("table").get(5).select("tr").get(21).select("td");
+
 
             doc = Jsoup.parse(cols.get(0).html());
             Element link = doc.select("a").first();
