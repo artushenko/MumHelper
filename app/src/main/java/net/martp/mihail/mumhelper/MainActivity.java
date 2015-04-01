@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity
         NewsFragment newsFragment = new NewsFragment();
         AboutFragment aboutFragment = new AboutFragment();
         MarksFragment marksFragment = new MarksFragment();
-        RatingFragment ratingFragment = new RatingFragment();
+ //       RatingFragment ratingFragment = new RatingFragment();
         RatingNFragment ratingNFragment = new RatingNFragment();
         SetupFragment setupFragment = new SetupFragment();
         OrdersFragment ordersFragment = new OrdersFragment();
@@ -198,7 +198,8 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+   //         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_info, container, false);
             return rootView;
         }
 
