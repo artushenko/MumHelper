@@ -21,14 +21,14 @@
             android:layout_height="wrap_content"
             android:inputType="number|numberDecimal"
             android:ems="10"
-            android:id="@+id/editText2"
+            android:id="@+id/editStudentID"
             android:layout_gravity="center" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Сохранить"
-            android:id="@+id/button"
+            android:id="@+id/buttonSaveID"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>

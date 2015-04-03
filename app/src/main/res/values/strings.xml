@@ -4,7 +4,9 @@
     <string name="app_name">Помощник студента МУУ</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
-    <string name="title_main">Главная</string>
+<!--
+<string name="title_main">Главная</string>
+ -->
     <string name="title_news">Новости университета</string>
     <string name="title_marks">Оценки студента</string>
     <string name="title_order">Приказы</string>
@@ -20,6 +22,7 @@
     <string name="hello_blank_fragment">Новости университета</string>
     <string name="title_setup">Настройки</string>
     <string name="title_schedule_search">Поиск по расписанию</string>
+    <string name="title_info">Учебная карта</string>
     <string name="empty_title"> </string>
 
 

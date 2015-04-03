@@ -16,8 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+
+    final static public String SAVED_STUDENT_ID = "studentID";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -32,7 +36,19 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+
+        InfoFragment infoFragment=new InfoFragment();
+        mTitle = getString(R.string.title_info);
+        FragmentTransaction fTrans = getFragmentManager().beginTransaction();
+        fTrans.replace(R.id.frgmCont, infoFragment);
+        fTrans.commit();
+
+
+
+
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -71,9 +87,15 @@ public class MainActivity extends ActionBarActivity
         ScheduleSearchFragment scheduleSearchFragment =new ScheduleSearchFragment();
         ScheduleFragment scheduleFragment =new ScheduleFragment();
 
+        InfoFragment infoFragment=new InfoFragment();
+
         switch (number) {
             case 1:
-                mTitle = getString(R.string.app_name);
+         //       mTitle = getString(R.string.app_name);
+                mTitle = getString(R.string.title_info);
+                fTrans.replace(R.id.frgmCont, infoFragment);
+                fTrans.commit();
+
                 break;
             case 2:
                 mTitle = getString(R.string.title_marks);
@@ -198,8 +220,8 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-   //         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            View rootView = inflater.inflate(R.layout.fragment_info, container, false);
+           View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+         //   View rootView = inflater.inflate(R.layout.fragment_info, container, false);
             return rootView;
         }
 
