@@ -2,6 +2,7 @@ package net.martp.mihail.mumhelper;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 
 
 public class MainActivity extends ActionBarActivity
@@ -40,21 +40,12 @@ public class MainActivity extends ActionBarActivity
         setContentView(R.layout.activity_main);
 
 
-        InfoFragment infoFragment=new InfoFragment();
-        mTitle = getString(R.string.title_info);
-        FragmentTransaction fTrans = getFragmentManager().beginTransaction();
-        fTrans.replace(R.id.frgmCont, infoFragment);
-        fTrans.commit();
-
-
-
 
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -80,22 +71,40 @@ public class MainActivity extends ActionBarActivity
         NewsFragment newsFragment = new NewsFragment();
         AboutFragment aboutFragment = new AboutFragment();
         MarksFragment marksFragment = new MarksFragment();
- //       RatingFragment ratingFragment = new RatingFragment();
         RatingNFragment ratingNFragment = new RatingNFragment();
         SetupFragment setupFragment = new SetupFragment();
         OrdersFragment ordersFragment = new OrdersFragment();
-        ScheduleSearchFragment scheduleSearchFragment =new ScheduleSearchFragment();
-        ScheduleFragment scheduleFragment =new ScheduleFragment();
-
-        InfoFragment infoFragment=new InfoFragment();
+        ScheduleSearchFragment scheduleSearchFragment = new ScheduleSearchFragment();
+        ScheduleFragment scheduleFragment = new ScheduleFragment();
+        InfoFragment infoFragment = new InfoFragment();
 
         switch (number) {
             case 1:
-         //       mTitle = getString(R.string.app_name);
+                //       mTitle = getString(R.string.app_name);
+             //   System.out.println("??? - SAVED_STUDENT_ID");
                 mTitle = getString(R.string.title_info);
+
+                //Читаем studentID из preferences
+                SharedPreferences sPref = getPreferences(MODE_PRIVATE);
+//                System.out.println("SAVED_STUDENT_ID = " + sPref.getString(SAVED_STUDENT_ID, ""));
+//                System.out.println("SAVED_STUDENT_ID length = " + sPref.getString(SAVED_STUDENT_ID, "").length());
+
+                if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
+                   // System.out.println("YES - SAVED_STUDENT_ID length = " + sPref.getString(SAVED_STUDENT_ID, "").length());
+                    mTitle = getString(R.string.title_setup);
+                    fTrans.replace(R.id.frgmCont, setupFragment);
+                    fTrans.commit();
+                } else {
+                    //System.out.println("NO - SAVED_STUDENT_ID length = " + sPref.getString(SAVED_STUDENT_ID, "").length());
+                    mTitle = getString(R.string.title_info);
+                    fTrans.replace(R.id.frgmCont, infoFragment);
+                    fTrans.commit();
+                }
+
+             /*
                 fTrans.replace(R.id.frgmCont, infoFragment);
                 fTrans.commit();
-
+ */
                 break;
             case 2:
                 mTitle = getString(R.string.title_marks);
@@ -220,8 +229,7 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-           View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-         //   View rootView = inflater.inflate(R.layout.fragment_info, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
 
@@ -232,5 +240,7 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+
+
 
 }

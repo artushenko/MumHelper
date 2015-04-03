@@ -3,6 +3,7 @@ package net.martp.mihail.mumhelper;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -45,17 +46,7 @@ public class MarksFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ParseDataMarksAsyncTask parseDataMarksAsyncTask = new ParseDataMarksAsyncTask();
         parseDataMarksAsyncTask.execute();
-        // OutToActivity outToActivity =  new OutToActivity();
-        //       new OutToActivity();
     }
-
-    /*
-    private class OutToActivity extends Activity {
-        private OutToActivity() {
-            //        Toast.makeText(getActivity(), "Начало OutToActivity", Toast.LENGTH_SHORT).show();
-        }
-    }
-    */
 
     private class ParseDataMarksAsyncTask extends AsyncTask<Void, Integer, Void> {
         ProgressDialog dialog;
@@ -85,10 +76,15 @@ public class MarksFragment extends Fragment {
         protected Void doInBackground(Void... params) {
             ArrayList<MarkStructure> arrayListMarksLocal = new ArrayList<>();
 
+            //Читаем studentID из preferences
+            SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+            String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
+
             Document doc = null;
             try {
                 doc = Jsoup.connect("http://student.miu.by/learning-card/~/sem.all.html")
-                        .data("act", "regnum").data("id", "id").data("regnum", "20090312012423").post();
+                      //  .data("act", "regnum").data("id", "id").data("regnum", "20090312012423").post();
+                        .data("act", "regnum").data("id", "id").data("regnum", studentID).post();
             } catch (IOException e) {
                 System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
             //    Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();

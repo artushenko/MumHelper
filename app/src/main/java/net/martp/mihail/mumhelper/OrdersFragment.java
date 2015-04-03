@@ -3,6 +3,7 @@ package net.martp.mihail.mumhelper;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -74,12 +75,17 @@ public class OrdersFragment extends Fragment {
 
             ArrayList<OrderStructure> arrayListOrdersLocal = new ArrayList<>();
 
+            //Читаем studentID из preferences
+            SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+            String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
+
+
             Document doc = null;
             Connection.Response res = null;
 
             try {
                 res = Jsoup.connect("http://student.miu.by/learning-card.html")
-                        .data("act", "regnum", "id", "id", "regnum", "20090312012423")
+                        .data("act", "regnum", "id", "id", "regnum", studentID)
                         .method(Connection.Method.POST)
                         .execute();
             } catch (IOException e) {

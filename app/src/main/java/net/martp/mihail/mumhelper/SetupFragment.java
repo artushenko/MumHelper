@@ -30,6 +30,7 @@ public class SetupFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
 //Читаем studentID из preferences
         EditText editStudentID = (EditText) getView().findViewById(R.id.editStudentID);
         sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
@@ -38,7 +39,7 @@ public class SetupFragment extends Fragment {
 //создаем обработчик начажият кнопки saveStudentID
         Button btnSaveID = (Button) getView().findViewById(R.id.buttonSaveID);
         editText2_studentID = (EditText) getView().findViewById(R.id.editStudentID);
-        sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+   //     sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
 
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
             @Override

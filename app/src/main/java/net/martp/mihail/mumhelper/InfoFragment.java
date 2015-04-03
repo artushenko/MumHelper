@@ -35,6 +35,7 @@ public class InfoFragment extends Fragment {
 
         TextView showStudentID= (TextView) getView().findViewById(R.id.studentID);
 
+        //Читаем studentID из preferences
         SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
         String savedText = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
         showStudentID.setText(savedText);
