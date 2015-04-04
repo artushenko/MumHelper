@@ -10,77 +10,102 @@
         android:layout_height="fill_parent">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="193dp"
             android:id="@+id/imageView"
-            android:src="@drawable/miulogoblack"
+            android:src="@drawable/muu_logo_300x293"
             android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/textView12"
-            android:layout_alignStart="@+id/textView12" />
+            android:layout_centerHorizontal="true"
+            android:paddingTop="5dp"
+            android:scaleType="fitXY" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Helper to the student of the \n Minsk University of Management "
-            android:id="@+id/textView12"
+            android:text="Мобильная учебная карточка студента Минского университета управления"
+            android:id="@+id/textView12_app_name"
             android:layout_marginTop="22dp"
             android:gravity="center_vertical|center_horizontal"
             android:layout_below="@+id/imageView"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="#01579B" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22.01.2015"
-            android:id="@+id/textView13"
-            android:layout_below="@+id/textView18"
-            android:layout_alignLeft="@+id/textView18"
-            android:layout_alignStart="@+id/textView18" />
+            android:text="04.04.2015"
+            android:id="@+id/textView13_date_reliz"
+            android:layout_below="@+id/textView18_version_app"
+            android:layout_alignLeft="@+id/textView18_version_app"
+            android:layout_alignStart="@+id/textView18_version_app"
+            android:textSize="14dp"
+            android:textColor="#0277BD" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Идея и разработка:"
-            android:id="@+id/textView14"
-            android:layout_below="@+id/textView13"
-            android:layout_alignRight="@+id/textView16"
-            android:layout_alignEnd="@+id/textView16" />
+            android:id="@+id/textView14_develor_txt"
+            android:layout_below="@+id/textView13_date_reliz"
+            android:layout_alignRight="@+id/textView16_email"
+            android:layout_alignEnd="@+id/textView16_email"
+            android:textSize="14dp"
+            android:paddingTop="15dp"
+            android:textColor="#0277BD" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mikhail Artsiushenka"
-            android:id="@+id/textView15"
-            android:layout_below="@+id/textView14"
+            android:text="Михаил Артюшенко"
+            android:id="@+id/textView15_developer"
+            android:textSize="18dp"
+            android:textColor="#01579B"
+            android:textStyle="bold"
+            android:layout_below="@+id/textView14_develor_txt"
             android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="brom128@gmail.com"
-            android:id="@+id/textView16"
-            android:layout_below="@+id/textView15"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="24dp"
-            android:linksClickable="false"
-            android:textStyle="italic" />
+            android:id="@+id/textView16_email"
+            android:linksClickable="true"
+            android:textStyle="italic"
+            android:clickable="false"
+            android:layout_below="@+id/textView15_developer"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="http://blog.artushenko.by"
-            android:id="@+id/textView17"
-            android:layout_below="@+id/textView16"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="24dp" />
+            android:id="@+id/textView17_link_blog"
+            android:clickable="false"
+            android:linksClickable="true"
+            android:layout_below="@+id/textView16_email"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Версия 2.0"
-            android:id="@+id/textView18"
-            android:layout_below="@+id/textView12"
-            android:layout_centerHorizontal="true" />
+            android:id="@+id/textView18_version_app"
+            android:layout_below="@+id/textView12_app_name"
+            android:layout_centerHorizontal="true"
+            android:textSize="14dp"
+            android:textColor="#0277BD" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="http://martp.net"
+            android:id="@+id/textView12_link_site"
+            android:layout_below="@+id/textView17_link_blog"
+            android:layout_centerHorizontal="true"
+            android:clickable="false"
+            android:linksClickable="true" />
     </RelativeLayout>
 </FrameLayout>
