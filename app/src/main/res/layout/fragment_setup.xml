@@ -26,7 +26,8 @@
             android:width="0dp"
             android:textSize="22dp"
             android:textIsSelectable="false"
-            android:gravity="center" />
+            android:gravity="center"
+            android:maxLength="14" />
 
         <Button
             android:layout_width="wrap_content"

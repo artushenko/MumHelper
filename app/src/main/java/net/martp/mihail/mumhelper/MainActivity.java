@@ -77,6 +77,7 @@ public class MainActivity extends ActionBarActivity
         ScheduleSearchFragment scheduleSearchFragment = new ScheduleSearchFragment();
         ScheduleFragment scheduleFragment = new ScheduleFragment();
         InfoFragment infoFragment = new InfoFragment();
+        FirstStartFragment firstStartFragment=new FirstStartFragment();
 
         switch (number) {
             case 1:
@@ -86,16 +87,11 @@ public class MainActivity extends ActionBarActivity
 
                 //Читаем studentID из preferences
                 SharedPreferences sPref = getPreferences(MODE_PRIVATE);
-//                System.out.println("SAVED_STUDENT_ID = " + sPref.getString(SAVED_STUDENT_ID, ""));
-//                System.out.println("SAVED_STUDENT_ID length = " + sPref.getString(SAVED_STUDENT_ID, "").length());
-
                 if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
-                   // System.out.println("YES - SAVED_STUDENT_ID length = " + sPref.getString(SAVED_STUDENT_ID, "").length());
                     mTitle = getString(R.string.title_setup);
-                    fTrans.replace(R.id.frgmCont, setupFragment);
+                    fTrans.replace(R.id.frgmCont, firstStartFragment);
                     fTrans.commit();
                 } else {
-                    //System.out.println("NO - SAVED_STUDENT_ID length = " + sPref.getString(SAVED_STUDENT_ID, "").length());
                     mTitle = getString(R.string.title_info);
                     fTrans.replace(R.id.frgmCont, infoFragment);
                     fTrans.commit();
