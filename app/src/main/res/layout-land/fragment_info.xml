@@ -8,7 +8,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/studentPhoto"
         android:src="@drawable/no_foto2"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageButton"
-        android:layout_toEndOf="@+id/imageButton"
+        android:layout_toRightOf="@+id/studentPhoto"
+        android:layout_toEndOf="@+id/studentPhoto"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp">

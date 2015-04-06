@@ -31,12 +31,12 @@ public class FirstStartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-//Читаем studentID из preferences
+//get studentID from preferences
         EditText editStudentID = (EditText) getView().findViewById(R.id.editStudentID);
         sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
         editStudentID.setText(sPref.getString(MainActivity.SAVED_STUDENT_ID, ""));
 
-//создаем обработчик начажият кнопки saveStudentID
+// saveStudentID
         Button btnSaveID = (Button) getView().findViewById(R.id.buttonSaveID);
         editText2_studentID = (EditText) getView().findViewById(R.id.editStudentID);
         //     sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
@@ -46,7 +46,7 @@ public class FirstStartFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "press SaveID", Toast.LENGTH_SHORT).show();
 
-//сохраняем параметр studentID в preferences
+//seved studentID to preferences
                 SharedPreferences.Editor ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
                 ed.commit();

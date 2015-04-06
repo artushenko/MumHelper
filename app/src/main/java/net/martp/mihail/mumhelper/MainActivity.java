@@ -22,6 +22,13 @@ public class MainActivity extends ActionBarActivity
 
 
     final static public String SAVED_STUDENT_ID = "studentID";
+    final static public String SAVED_NAME_STUDENT = "nameStudent";
+    final static public String SAVED_SURNAME_STUDENT = "surnameStudent";
+    final static public String SAVED_MIDNAME_STUDENT = "midnameStudent";
+    final static public String SAVED_FACULTY = "faculty";
+    final static public String SAVED_SPECIALTY = "specialty";
+    final static public String SAVED_AVARAGE_SCORE = "avscoreStudent";
+    final static public String SAVED_NUMBER_GROUP = "numberGroup";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -38,9 +45,6 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-
-
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -85,7 +89,7 @@ public class MainActivity extends ActionBarActivity
              //   System.out.println("??? - SAVED_STUDENT_ID");
                 mTitle = getString(R.string.title_info);
 
-                //Читаем studentID из preferences
+                //get studentID from preferences
                 SharedPreferences sPref = getPreferences(MODE_PRIVATE);
                 if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
                     mTitle = getString(R.string.title_setup);
