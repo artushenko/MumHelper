@@ -12,6 +12,7 @@ android:layout_height="match_parent" tools:context="net.martp.mihail.mumhelper.O
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:shrinkColumns="0"
         android:id="@+id/orderTable"></TableLayout>
 </ScrollView>
 </FrameLayout>

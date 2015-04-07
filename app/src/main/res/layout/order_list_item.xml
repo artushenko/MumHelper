@@ -1,5 +1,5 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
     <TableRow
@@ -59,15 +59,16 @@
             android:text="New Text"
             android:id="@+id/numberOrder"
             android:paddingLeft="0dp"
-            android:textSize="12dp"
+            android:textSize="18dp"
             android:textStyle="bold" />
 
     </TableRow>
 
     <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/tableRowOrder3"
+        android:singleLine = "false"
         android:paddingLeft="10dp">
 
         <TextView
@@ -77,6 +78,7 @@
             android:id="@+id/textOrder"
             android:layout_column="0"
             android:paddingLeft="0dp"
-            android:textSize="14dp" />
+            android:singleLine = "false"
+            android:textSize="16dp" />
     </TableRow>
 </TableLayout>
