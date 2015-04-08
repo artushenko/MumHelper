@@ -63,7 +63,10 @@ public class InfoFragment extends Fragment {
         showSpecialtyStudent.setText(savedSpecialty);
         showAvaregeScStudent.setText(savedAvaregeScore);
 
-
+        ImageView bmImage = (ImageView) getView().findViewById(R.id.studentPhoto);
+        if (SetupFragment.bm!=null) {
+            bmImage.setImageBitmap(SetupFragment.bm);
+        }
 
 
 

@@ -8,8 +8,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +31,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -44,6 +50,7 @@ public class SetupFragment extends Fragment {
     SharedPreferences sPref;
     EditText editText2_studentID;
     private String image_URL="";
+    private String imageFileName="";
 
     public SetupFragment() {
         // Required empty public constructor
@@ -67,11 +74,11 @@ public class SetupFragment extends Fragment {
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-
 
               //hidden keyboard
                 hideKeyboard();
+
+
 
                 Toast.makeText(getActivity(), "press SaveID", Toast.LENGTH_SHORT).show();
 
@@ -84,7 +91,31 @@ public class SetupFragment extends Fragment {
             }
         };
         btnSaveID.setOnClickListener(oclBtnSaveID);
+    }
 
+    ImageView iv;
+    String folderToSave = Environment.getExternalStorageDirectory().toString();
+
+    private String getStudentPhoto(String fileName) {
+
+        iv = (ImageView) getView().findViewById(R.id.imageView3);
+        OutputStream fOut = null;
+        try {
+            File file = new File(folderToSave, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
+            fOut = new FileOutputStream(file);
+
+            Bitmap bitmap = ((BitmapDrawable)iv.getDrawable()).getBitmap();
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+         //   MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(),  file.getName());
+        }
+        catch (Exception e)
+        {
+            return e.getMessage();
+        }
+        return "";
 
     }
 
@@ -169,6 +200,7 @@ public class SetupFragment extends Fragment {
 
             System.out.println("http://student.miu.by"+link);
 
+            imageFileName=link;
             image_URL="http://student.miu.by"+link;
 
             System.out.println("-------------------------------------------");
@@ -231,6 +263,17 @@ public class SetupFragment extends Fragment {
             System.out.print(rows.get(6).select("td").get(1).text()); //surName
             System.out.println();
 
+
+            try {
+                getPhotoFromURL();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //save photo to sdcard
+            getStudentPhoto(imageFileName);
+
+
             return null;
         }
 
@@ -240,6 +283,9 @@ public class SetupFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
+
+            ImageView bmImage = (ImageView) getView().findViewById(R.id.imageView3);
+            bmImage.setImageBitmap(bm);
         }
     }
     private void hideKeyboard() {
@@ -250,4 +296,56 @@ public class SetupFragment extends Fragment {
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
+   static   Bitmap bm;
+    public void getPhotoFromURL() throws IOException {
+
+        BitmapFactory.Options bmOptions;
+        bmOptions = new BitmapFactory.Options();
+        bmOptions.inSampleSize = 1;
+        //Bitmap bm = LoadImage(image_URL, bmOptions);
+        bm = LoadImage(image_URL, bmOptions);
+
+    }
+
+    public Bitmap LoadImage(String URL, BitmapFactory.Options options) throws IOException {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        try {
+            in = OpenHttpConnection(URL);
+            bitmap = BitmapFactory.decodeStream(in, null, options);
+        } catch (Exception ex) {
+            //Toast.makeText(getApplicationContext(), "Problems: " + ex.getMessage(), 1).show();
+         //   Toast.makeText(getApplicationContext(), "Problems: access to network is closed", 1).show();
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+        }
+        return bitmap;
+    }
+
+    private InputStream OpenHttpConnection(String strURL) throws IOException {
+        InputStream inputStream = null;
+        URL url = new URL(strURL);
+        url = new URL(strURL);
+        URLConnection conn = url.openConnection();
+
+
+        try {
+            HttpURLConnection httpConn = (HttpURLConnection) conn;
+            httpConn.setRequestMethod("GET");
+            httpConn.connect();
+
+            if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                inputStream = httpConn.getInputStream();
+            }
+        } catch (Exception ex) {
+            //Toast.makeText(getApplicationContext(), "Problems: " + ex.getMessage(), 1).show();
+          //  Toast.makeText(getApplicationContext(), "Problems: access to network is closed", 1).show();
+        }
+        return inputStream;
+    }
+
+
+
 }

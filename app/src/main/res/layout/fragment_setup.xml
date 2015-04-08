@@ -38,4 +38,11 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:layout_gravity="right|bottom"
+        android:src="@drawable/no_foto2" />
+
 </FrameLayout>
