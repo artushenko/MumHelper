@@ -83,12 +83,9 @@ public class SetupFragment extends Fragment {
 
 
 
-                Toast.makeText(getActivity(), "press SaveID", Toast.LENGTH_SHORT).show();
+ //               Toast.makeText(getActivity(), "press SaveID", Toast.LENGTH_SHORT).show();
 
-//save studentID in preferences
-                SharedPreferences.Editor ed = sPref.edit();
-                ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
-                ed.commit();
+
                 ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
                 parseDataInfoAsyncTask.execute();
             }
@@ -125,8 +122,11 @@ public class SetupFragment extends Fragment {
             Document doc = null;
             Connection.Response res = null;
 
-            SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
-            String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
+  //          SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+ //           String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
+            EditText editStudentID = (EditText) getView().findViewById(R.id.editStudentID);
+
+            String studentID=editStudentID.getText().toString();
 
             try {
                 res = Jsoup.connect("http://student.miu.by/learning-card.html")
@@ -142,7 +142,9 @@ public class SetupFragment extends Fragment {
             } catch (IOException e) {
                 //   e.printStackTrace();
                 System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
-
+                Log.e("MyError", e.toString());
+                error1="IO Error";
+                return null;
             //    return;
             }
 
@@ -156,109 +158,118 @@ public class SetupFragment extends Fragment {
                 e.printStackTrace();
             }
 
-
             //  System.out.print(doc);
 
-            Element table = doc.select("table").first();
-            Elements rows = table.select("tr");
-            for (int i = 1; i < rows.size(); i++) {
-                Element row = rows.get(i);
-                Elements cols = row.select("td");
-
-                System.out.print(cols.get(0).text());
-                System.out.print(" ");
-                System.out.print(cols.get(1).text());
-                System.out.println();
-            }
-
-            System.out.println("-------------------------------------------");
-
-            String link = table.select("tr").get(0).select("td").get(0).select("img").first().attr("src");
-
-            System.out.println("http://student.miu.by"+link);
-
-            imageFileName=link;
-            image_URL="http://student.miu.by"+link;
-
-            System.out.println("-------------------------------------------");
-
-            rows = doc.select("table").first().select("tr");
-
-            /*
-    final static public String SAVED_NAME_STUDENT = "nameStudent";
-    final static public String SAVED_SURNAME_STUDENT = "surnameStudent";
-    final static public String SAVED_MIDNAME_STUDENT = "midnameStudent";
-    final static public String SAVED_FACULTY = "faculty";
-    final static public String SAVED_SPECIALTY = "specialty";
-    final static public String SAVED_AVARAGE_SCORE = "avscoreStudent";
-    final static public String SAVED_NUMBER_GROUP = "numberGroup";
-             */
-
-            SharedPreferences.Editor ed = sPref.edit();
-            ed.putString(MainActivity.SAVED_NUMBER_GROUP, rows.get(0).select("td").get(2).text());
-            ed.commit();
-
-            ed = sPref.edit();
-            ed.putString(MainActivity.SAVED_SURNAME_STUDENT, rows.get(1).select("td").get(1).text());
-            ed.commit();
-
-            ed = sPref.edit();
-            ed.putString(MainActivity.SAVED_NAME_STUDENT, rows.get(2).select("td").get(1).text());
-            ed.commit();
-
-            ed = sPref.edit();
-            ed.putString(MainActivity.SAVED_MIDNAME_STUDENT, rows.get(3).select("td").get(1).text());
-            ed.commit();
-
-            ed = sPref.edit();
-            ed.putString(MainActivity.SAVED_FACULTY, rows.get(4).select("td").get(1).text());
-            ed.commit();
-
-            ed = sPref.edit();
-            ed.putString(MainActivity.SAVED_SPECIALTY,rows.get(5).select("td").get(1).text());
-            ed.commit();
-
-            ed = sPref.edit();
-            ed.putString(MainActivity.SAVED_AVARAGE_SCORE, rows.get(6).select("td").get(1).text());
-            ed.commit();
-
-            System.out.print(rows.get(1).select("td").get(1).text()); //surName
-            System.out.println();
-
-            System.out.print(rows.get(2).select("td").get(1).text()); //surName
-            System.out.println();
-
-            System.out.print(rows.get(3).select("td").get(1).text()); //surName
-            System.out.println();
-
-            System.out.print(rows.get(4).select("td").get(1).text()); //surName
-            System.out.println();
-
-            System.out.print(rows.get(5).select("td").get(1).text()); //surName
-            System.out.println();
-
-            System.out.print(rows.get(6).select("td").get(1).text()); //surName
-            System.out.println();
-
-
             try {
-                getPhotoFromURL();
-            } catch (IOException e) {
+                Element table = doc.select("table").first();
+                Elements rows = table.select("tr");
+                for (int i = 1; i < rows.size(); i++) {
+                    Element row = rows.get(i);
+                    Elements cols = row.select("td");
+
+                    System.out.print(cols.get(0).text());
+                    System.out.print(" ");
+                    System.out.print(cols.get(1).text());
+                    System.out.println();
+                }
+
+                System.out.println("-------------------------------------------");
+
+                String link = table.select("tr").get(0).select("td").get(0).select("img").first().attr("src");
+
+                System.out.println("http://student.miu.by"+link);
+
+                imageFileName=link;
+                image_URL="http://student.miu.by"+link;
+
+                System.out.println("-------------------------------------------");
+
+                rows = doc.select("table").first().select("tr");
+
+                SharedPreferences.Editor ed = sPref.edit();
+                ed.putString(MainActivity.SAVED_NUMBER_GROUP, rows.get(0).select("td").get(2).text());
+                ed.commit();
+
+                ed = sPref.edit();
+                ed.putString(MainActivity.SAVED_SURNAME_STUDENT, rows.get(1).select("td").get(1).text());
+                ed.commit();
+
+                ed = sPref.edit();
+                ed.putString(MainActivity.SAVED_NAME_STUDENT, rows.get(2).select("td").get(1).text());
+                ed.commit();
+
+                ed = sPref.edit();
+                ed.putString(MainActivity.SAVED_MIDNAME_STUDENT, rows.get(3).select("td").get(1).text());
+                ed.commit();
+
+                ed = sPref.edit();
+                ed.putString(MainActivity.SAVED_FACULTY, rows.get(4).select("td").get(1).text());
+                ed.commit();
+
+                ed = sPref.edit();
+                ed.putString(MainActivity.SAVED_SPECIALTY,rows.get(5).select("td").get(1).text());
+                ed.commit();
+
+                ed = sPref.edit();
+                ed.putString(MainActivity.SAVED_AVARAGE_SCORE, rows.get(6).select("td").get(1).text());
+                ed.commit();
+
+                //save studentID in preferences
+                ed = sPref.edit();
+                ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
+                ed.commit();
+
+                System.out.print(rows.get(1).select("td").get(1).text()); //surName
+                System.out.println();
+
+                System.out.print(rows.get(2).select("td").get(1).text()); //surName
+                System.out.println();
+
+                System.out.print(rows.get(3).select("td").get(1).text()); //surName
+                System.out.println();
+
+                System.out.print(rows.get(4).select("td").get(1).text()); //surName
+                System.out.println();
+
+                System.out.print(rows.get(5).select("td").get(1).text()); //surName
+                System.out.println();
+
+                System.out.print(rows.get(6).select("td").get(1).text()); //surName
+                System.out.println();
+
+                try {
+                    getPhotoFromURL();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    error1="Photo not load";
+                }
+            } catch (NullPointerException e) {
                 e.printStackTrace();
+                Log.e("MyError", "ID not found");
+                Log.e("MyError", e.toString());
+                error1="ID not found";
+                //Toast.makeText(getActivity(), "ID not found", Toast.LENGTH_SHORT).show();
+               e.printStackTrace();
             }
-
-
-
 
             return null;
         }
 
-
+private String error1="";
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
+
+            if (error1.equals("ID not found")){
+                Toast.makeText(getActivity(), "Ошибка!\nСтудент с таким ID не найден.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+             if (error1.equals("IO Error")){
+                Toast.makeText(getActivity(), "Ошибка подключения к сети!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             ImageView bmImage = (ImageView) getView().findViewById(R.id.imageView3);
             bmImage.setImageBitmap(bm);

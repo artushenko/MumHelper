@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="net.martp.mihail.mumhelper.AboutFragment">
+    tools:context="net.martp.mihail.mumhelper.AboutFragment"
+    android:background="#E1F5FE">
 
     <!-- TODO: Update blank fragment layout -->
 

@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context="net.martp.mihail.mumhelper.NewsFragment"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="#E1F5FE">
 
     <!-- TODO: Update blank fragment layout -->
 
