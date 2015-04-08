@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,8 @@ public class SetupFragment extends Fragment {
     EditText editText2_studentID;
     private String image_URL="";
     private String imageFileName="";
+    ImageView iv;
+
 
     public SetupFragment() {
         // Required empty public constructor
@@ -91,32 +94,6 @@ public class SetupFragment extends Fragment {
             }
         };
         btnSaveID.setOnClickListener(oclBtnSaveID);
-    }
-
-    ImageView iv;
-    String folderToSave = Environment.getExternalStorageDirectory().toString();
-
-    private String getStudentPhoto(String fileName) {
-
-        iv = (ImageView) getView().findViewById(R.id.imageView3);
-        OutputStream fOut = null;
-        try {
-            File file = new File(folderToSave, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
-            fOut = new FileOutputStream(file);
-
-            Bitmap bitmap = ((BitmapDrawable)iv.getDrawable()).getBitmap();
-
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-            fOut.flush();
-            fOut.close();
-         //   MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(),  file.getName());
-        }
-        catch (Exception e)
-        {
-            return e.getMessage();
-        }
-        return "";
-
     }
 
     @Override
@@ -270,8 +247,7 @@ public class SetupFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            //save photo to sdcard
-            getStudentPhoto(imageFileName);
+
 
 
             return null;
@@ -286,6 +262,9 @@ public class SetupFragment extends Fragment {
 
             ImageView bmImage = (ImageView) getView().findViewById(R.id.imageView3);
             bmImage.setImageBitmap(bm);
+
+            //save photo to sdcard
+            getStudentPhoto();
         }
     }
     private void hideKeyboard() {
@@ -346,6 +325,39 @@ public class SetupFragment extends Fragment {
         return inputStream;
     }
 
+    private String getStudentPhoto() {
+        String folderToSave = Environment.getExternalStorageDirectory().toString();
+        iv = (ImageView) getView().findViewById(R.id.imageView3);
+        OutputStream fOut = null;
+        try {
+            File file = new File(folderToSave, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
+            fOut = new FileOutputStream(file);
+
+            Bitmap bitmap = ((BitmapDrawable)iv.getDrawable()).getBitmap();
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+
+            SharedPreferences.Editor ed = sPref.edit();
+            ed.putString(MainActivity.SAVED_PHOTO, "yes");
+            Log.e("Show photo yes",sPref.getString(MainActivity.SAVED_PHOTO, ""));
+            ed.commit();
+
+            //   MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(),  file.getName());
+        }
+        catch (IOException e)
+        {
+            Log.e("Show photo", e.toString());
+            SharedPreferences.Editor ed = sPref.edit();
+            ed = sPref.edit();
+            ed.putString(MainActivity.SAVED_PHOTO, "no");
+            ed.commit();
+            return e.getMessage();
+        }
+        return "";
+
+    }
 
 
 }

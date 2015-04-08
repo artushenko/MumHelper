@@ -29,6 +29,7 @@ public class MainActivity extends ActionBarActivity
     final static public String SAVED_SPECIALTY = "specialty";
     final static public String SAVED_AVARAGE_SCORE = "avscoreStudent";
     final static public String SAVED_NUMBER_GROUP = "numberGroup";
+    final static public String SAVED_PHOTO = "no";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.

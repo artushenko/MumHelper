@@ -2,14 +2,27 @@ package net.martp.mihail.mumhelper;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Environment;
 import android.preference.Preference;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 
 /**
@@ -63,12 +76,34 @@ public class InfoFragment extends Fragment {
         showSpecialtyStudent.setText(savedSpecialty);
         showAvaregeScStudent.setText(savedAvaregeScore);
 
+ //       Log.e("Show photo", sPref.getString(MainActivity.SAVED_PHOTO, ""));
+//        Log.e("Show photo", SetupFragment.bm.toString());
+
         ImageView bmImage = (ImageView) getView().findViewById(R.id.studentPhoto);
-        if (SetupFragment.bm!=null) {
+        if (sPref.getString(MainActivity.SAVED_PHOTO, "").equals("yes")&&SetupFragment.bm!=null) {
             bmImage.setImageBitmap(SetupFragment.bm);
         }
+        else {
+            String folderToSave = Environment.getExternalStorageDirectory().toString();
+            FileInputStream in=null;
+            BufferedInputStream buf=null;
+            try {
+                in = new FileInputStream(folderToSave+"/photoStudent.jpg");
+                buf = new BufferedInputStream(in);
+                Bitmap bMap = BitmapFactory.decodeStream(buf);
+                bmImage.setImageBitmap(bMap);
 
-
+                if (in != null) {
+                    in.close();
+                }
+                if (buf != null) {
+                    buf.close();
+                }
+//               Toast.makeText(getActivity(), " Read from sdcard", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Log.e("Error reading file", e.toString());
+            }
+        }
 
     }
 }
