@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(29.02.2015)"
-        android:id="@+id/date"
+        android:id="@+id/dayDate"
         android:paddingLeft="30dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -80,7 +80,7 @@
         android:textSize="18dp"
         android:textStyle="bold"
         android:paddingTop="0dp"
-        android:layout_alignTop="@+id/date"
+        android:layout_alignTop="@+id/dayDate"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

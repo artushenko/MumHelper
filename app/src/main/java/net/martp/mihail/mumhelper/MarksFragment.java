@@ -163,7 +163,7 @@ public class MarksFragment extends Fragment {
             TextView textMark = (TextView) newTagView.findViewById(R.id.mark);
             textMark.setText(mark);
 
-            TextView textDate = (TextView) newTagView.findViewById(R.id.date);
+            TextView textDate = (TextView) newTagView.findViewById(R.id.dayDate);
             textDate.setText(date);
 
             queryTableLayout.addView(newTagView, index);
