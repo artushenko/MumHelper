@@ -74,36 +74,13 @@ public class ScheduleListFragment extends Fragment {
             dialog.show();
         }
 
-
-
-
-        private ArrayList<ScheduleStructure> getArraySchedule() {
-            return arrayListSchedule;
-        }
-
-        private void setArraySchedule(ArrayList<ScheduleStructure> arraySchedultf) {
-            arrayListSchedule = arraySchedultf;
-        }
-
-        ArrayList<String> arrayWeekSpinner = new ArrayList<>();
-
-
         @Override
         protected Void doInBackground(Void... params) {
 
             ArrayList<ScheduleStructure> arrayListScheduetLocal = new ArrayList<>();
 
-            ////++++++++++++++++++++++++++++
-
-            //   String week = "19"; //16
             String week = ScheduleFragment.weekSpinnerText;
             Log.e("LOG3", "week= - " + week);
-
-            //   String group = "91201з";
-            //   String prep = "Жуковский В.С.";
-
-            // tut nado schitat iz editbox
-            //String dataSearch = group;
 
             String dataSearch = ScheduleFragment.dataSearch;
             Log.e("LOG3", "dataSearch= - " + dataSearch);
@@ -115,7 +92,6 @@ public class ScheduleListFragment extends Fragment {
                 letterStatus = false;
             }
 
-            // Document doc = null;
             Document doc = null;
             try {
                 if (letterStatus) {
@@ -133,17 +109,15 @@ public class ScheduleListFragment extends Fragment {
                 }
             } catch (IOException e) {
                 // e.printStackTrace();
-                System.out.println("Ошибка подключени к сети main");
+             //   System.out.println("Ошибка подключени к сети main");
                 Log.v("LOG3", "Error in network!!!");
             }
 
-
             if (doc.text().equals("")) {
-                System.out.println("Error empty html");
+              //  System.out.println("Error empty html");
                 Log.v("LOG3", "Error empty html");
 
-            }
-            else {
+            } else {
 
                 Element table = doc.select("table").get(0);
                 Elements rows = table.select("tr");
@@ -154,14 +128,24 @@ public class ScheduleListFragment extends Fragment {
                 for (int i = 0; i < rows.size(); i++) {
                     Element row = rows.get(i);
                     Elements cols = row.select("td");
-                    //             System.out.print(cols.get(0).text());
                     if (cols.size() == 1) {
-                        //                 System.out.println();
                         date = cols.get(0).text();
                         continue;
                     }
 
-                    arrayListScheduetLocal.add(new ScheduleStructure(date, cols.get(0).text(), cols.get(1).text(), cols.get(2).text(), cols.get(3).text()));
+                    /// Log.v("LOG3", "+cols.get(1) = "+cols.get(1).text());
+                    String[] arraySubjectTypeLesson = cols.get(1).text().split(" ");
+                    //  Log.v("LOG3", "+arraySubjectTypeLesson.lenght = "+arraySubjectTypeLesson.length);
+                    String typeLesson = arraySubjectTypeLesson[arraySubjectTypeLesson.length - 1];
+                    //   Log.v("LOG3", "typeLesson = "+typeLesson);
+
+                    String subject = "";
+                    for (int j = 0; j < arraySubjectTypeLesson.length - 1; j++) {
+                        subject = subject + arraySubjectTypeLesson[j] + " ";
+                    }
+                    //    Log.v("LOG3", "Subject = "+subject);
+
+                    arrayListScheduetLocal.add(new ScheduleStructure(date, cols.get(0).text(), subject, cols.get(2).text(), cols.get(3).text(), typeLesson));
                 }
             }
 
@@ -179,6 +163,14 @@ public class ScheduleListFragment extends Fragment {
             setArraySchedule(arrayListScheduetLocal);
 
             return null;
+        }
+
+        private ArrayList<ScheduleStructure> getArraySchedule() {
+            return arrayListSchedule;
+        }
+
+        private void setArraySchedule(ArrayList<ScheduleStructure> arraySchedultf) {
+            arrayListSchedule = arraySchedultf;
         }
 
         @Override
@@ -199,7 +191,8 @@ public class ScheduleListFragment extends Fragment {
                             scheduleStructure.getTime(),
                             scheduleStructure.getSubject(),
                             scheduleStructure.getTeacher(),
-                            scheduleStructure.getClassroom(), i);
+                            scheduleStructure.getClassroom(),
+                            scheduleStructure.getTypelesson(), i);
                 }
             } else {
                 Toast toast = Toast.makeText(getActivity(), "Расписание не найдено!", Toast.LENGTH_SHORT);
@@ -209,7 +202,7 @@ public class ScheduleListFragment extends Fragment {
 
         String oldDate = "";
 
-        private void makeScheduleLine(String getDate, String getTime, String getSubject, String getTeacher, String getClassroom, int index) {
+        private void makeScheduleLine(String getDate, String getTime, String getSubject, String getTeacher, String getClassroom, String getTypelesson, int index) {
             context = getView().getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -239,10 +232,9 @@ public class ScheduleListFragment extends Fragment {
             textClassroom.setText(getClassroom);
 
             TextView textTypeLesson = (TextView) newTagView.findViewById(R.id.typeLesson);
-            textTypeLesson.setText(""); //!!!!!
+            textTypeLesson.setText(getTypelesson); //!!!!!
 
             querySchedultTableLayout.addView(newTagView, index);
-
         }
     }
 
