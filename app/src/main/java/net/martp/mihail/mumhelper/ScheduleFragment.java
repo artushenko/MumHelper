@@ -1,6 +1,7 @@
 package net.martp.mihail.mumhelper;
 
 
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,6 +38,8 @@ import java.util.Iterator;
 public class ScheduleFragment extends Fragment {
 
     private static ArrayList<ScheduleStructure> arrayListSchedule = new ArrayList<>();
+    static String weekSpinnerText = "1";
+    static String dataSearch="";
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -47,7 +50,7 @@ public class ScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View viev = inflater.inflate(R.layout.fragment_schedule2, container, false);
+        View viev = inflater.inflate(R.layout.fragment_schedule3, container, false);
         return viev;
     }
 
@@ -74,7 +77,7 @@ public class ScheduleFragment extends Fragment {
         parseDataScheduleAsyncTask.execute();
     }
 
-    String weekSpinnerText = "1";
+
 
     private class ParseDataScheduleAsyncTask extends AsyncTask<Void, Integer, Void> {
         public ProgressDialog dialog;
@@ -117,6 +120,7 @@ public class ScheduleFragment extends Fragment {
                 //  e.printStackTrace();
                 System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
 //                Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+                Log.v("TestLog", "Error in network!!!");
                 return null;
             }
 
@@ -156,90 +160,7 @@ public class ScheduleFragment extends Fragment {
                 arrayWeekSpinner.add(s);
             }
 
-
             Log.v("TestLog", "arrayWeekSpinner =" + arrayWeekSpinner);
-
-
-            ////++++++++++++++++++++++++++++
-
-            //   String week = "19"; //16
-            String week = weekSpinnerText;
-            Log.e("LOG2", "week= - " + weekSpinnerText);
-
-            //   String group = "91201з";
-            //   String prep = "Жуковский В.С.";
-
-            // tut nado schitat iz editbox
-            //String dataSearch = group;
-            EditText textEdit = (EditText) getView().findViewById(R.id.groupNumberSearch);
-            String dataSearch = textEdit.getText().toString();
-
-            boolean letterStatus = true;
-            try {
-                Integer.parseInt(dataSearch.substring(0, 1));
-            } catch (Exception e) {
-                letterStatus = false;
-            }
-
-            // Document doc = null;
-            doc = null;
-            try {
-                if (letterStatus) {
-                    doc = Jsoup.connect("http://miu.by/rus/schedule/shedule_load.php")
-                            .data("week", week)
-                            .data("group", dataSearch)
-                            .userAgent("Mozilla")
-                            .post();
-                } else {
-                    doc = Jsoup.connect("http://miu.by/rus/schedule/shedule_load.php")
-                            .data("week", week)
-                            .data("prep", dataSearch)
-                            .userAgent("Mozilla")
-                            .post();
-                }
-            } catch (IOException e) {
-                // e.printStackTrace();
-                System.out.println("Ошибка подключени к сети main");
-            }
-
-            //  System.out.println(doc);
-            //     ArrayList<ScheduleStructure> schedultStructureArrayList = new ArrayList<ScheduleStructure>();
-
-            if (doc.text().equals("")) System.out.println("Error empty html");
-            else {
-
-                Element table = doc.select("table").get(0);
-                Elements rows = table.select("tr");
-
-                System.out.println(rows.size());
-
-                String date = "";
-                for (int i = 0; i < rows.size(); i++) {
-                    Element row = rows.get(i);
-                    Elements cols = row.select("td");
-                    //             System.out.print(cols.get(0).text());
-                    if (cols.size() == 1) {
-                        //                 System.out.println();
-                        date = cols.get(0).text();
-                        continue;
-                    }
-
-                    arrayListScheduetLocal.add(new ScheduleStructure(date, cols.get(0).text(), cols.get(1).text(), cols.get(2).text(), cols.get(3).text()));
-                }
-            }
-
-            for (int i = 0; i < arrayListScheduetLocal.size(); i++) {
-                ScheduleStructure schedultStructure = arrayListScheduetLocal.get(i);
-                String getLastDay = "";
-                if (i > 0) getLastDay = arrayListScheduetLocal.get(i - 1).getDate();
-                if (schedultStructure.getDate().equals(getLastDay)) {
-                    System.out.println(schedultStructure.getTime() + " " + schedultStructure.getSubject() + " " + schedultStructure.getClassroom() + schedultStructure.getTypelesson() + schedultStructure.getTeacher());
-                } else {
-                    System.out.println(schedultStructure.getDate() + "\n" + schedultStructure.getTime() + " " + schedultStructure.getSubject() + " " + schedultStructure.getClassroom() + schedultStructure.getTypelesson() + schedultStructure.getTeacher());
-                }
-            }
-
-            setArraySchedule(arrayListScheduetLocal);
 
             return null;
         }
@@ -268,72 +189,26 @@ public class ScheduleFragment extends Fragment {
                     Toast toast = Toast.makeText(getActivity(), "Ваш выбор: " + spinnerWeek.getSelectedItem().toString(), Toast.LENGTH_SHORT);
                     toast.show();
                     Log.e("LOG1", "log vnutri - " + spinnerWeek.getSelectedItem().toString());
+
+
+                    EditText textEdit = (EditText) getView().findViewById(R.id.groupNumberSearch);
+                    dataSearch = textEdit.getText().toString();
+                    weekSpinnerText=spinnerWeek.getSelectedItem().toString();
+
+                    FragmentTransaction fTrans = getFragmentManager().beginTransaction();
+                    ScheduleListFragment scheduleListFragment=new ScheduleListFragment();
+                    fTrans.replace(R.id.scheduleFrameContainer, scheduleListFragment);
+                    fTrans.commit();
+
                 }
 
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
 
-            ArrayList<ScheduleStructure> arrayListScheduleLocal = getArraySchedule();
-
-            ScheduleStructure scheduleStructure;
-
-            querySchedultTableLayout = (TableLayout) getView().findViewById(R.id.scheduleTableLayout);
-
-            if (arrayListScheduleLocal.size() > 0) {
-                for (int i = 0; i < arrayListScheduleLocal.size(); i++) {
-                    scheduleStructure = arrayListScheduleLocal.get(i);
-                    makeScheduleLine(scheduleStructure.getDate(),
-                            scheduleStructure.getTime(),
-                            scheduleStructure.getSubject(),
-                            scheduleStructure.getTeacher(),
-                            scheduleStructure.getClassroom(), i);
-                }
-            } else {
-                Toast toast = Toast.makeText(getActivity(), "Расписание не найдено!", Toast.LENGTH_SHORT);
-                toast.show();
-            }
         }
 
-        String oldDate = "";
 
-        private void makeScheduleLine(String getDate, String getTime, String getSubject, String getTeacher, String getClassroom, int index) {
-            context = getView().getContext();
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-
-            View newTagView = inflater.inflate(R.layout.schedule_list_item, null);
-
-            TextView textDate = (TextView) newTagView.findViewById(R.id.dayDate);
-            if (oldDate.equals(getDate)) {
-                textDate.setVisibility(View.GONE);
-
-                TableRow tableRow = (TableRow) newTagView.findViewById(R.id.scheduleLine);
-                tableRow.setVisibility(View.GONE);
-            } else {
-                textDate.setText(getDate);
-                oldDate = getDate;
-            }
-
-            TextView textTime = (TextView) newTagView.findViewById(R.id.lessonTime);
-            textTime.setText(getTime);
-
-            TextView textSubject = (TextView) newTagView.findViewById(R.id.subject);
-            textSubject.setText(getSubject);
-
-            TextView textTeacher = (TextView) newTagView.findViewById(R.id.teacherName);
-            textTeacher.setText(getTeacher);
-
-            TextView textClassroom = (TextView) newTagView.findViewById(R.id.classroomNumber);
-            textClassroom.setText(getClassroom);
-
-            TextView textTypeLesson = (TextView) newTagView.findViewById(R.id.typeLesson);
-            textTypeLesson.setText(""); //!!!!!
-
-
-            querySchedultTableLayout.addView(newTagView, index);
-
-        }
     }
 
 
