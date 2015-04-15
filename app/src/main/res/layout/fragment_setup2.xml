@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="net.martp.mihail.mumhelper.SetupFragment"
+    android:background="#E1F5FE"
+    android:paddingTop="7dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="7dp">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Введите:"
+        android:id="@+id/textView16"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID студента"
+        android:id="@+id/textView18"
+        android:layout_below="@+id/textView16"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:focusable="false" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputStudentID"
+        android:layout_alignBottom="@+id/textView18"
+        android:layout_toRightOf="@+id/textView18"
+        android:layout_toEndOf="@+id/textView18"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:minWidth="160dp"
+        android:text="12345678901234"
+        android:inputType="number" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сохранить"
+        android:id="@+id/buttonSaveStudentID"
+        android:layout_below="@+id/inputStudentID"
+        android:layout_alignRight="@+id/inputStudentID"
+        android:layout_alignEnd="@+id/inputStudentID" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible" />
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tableRow2"
+        android:layout_span="2"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/buttonSaveStudentID"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/textView35"
+            android:layout_column="0"
+            android:background="#ff03a9f4"
+            android:layout_gravity="center_vertical"
+            android:layout_span="2"
+            android:gravity="center"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:layout_weight="12"
+            android:paddingTop="2dp"
+            android:textSize="0dp"
+            android:paddingBottom="0dp" />
+    </TableRow>
+
+</RelativeLayout>

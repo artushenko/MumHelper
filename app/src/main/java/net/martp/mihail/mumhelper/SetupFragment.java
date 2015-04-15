@@ -65,13 +65,13 @@ public class SetupFragment extends Fragment {
 
 
 //get studentID from preferences
-        EditText editStudentID = (EditText) getView().findViewById(R.id.editStudentID);
+        EditText editStudentID = (EditText) getView().findViewById(R.id.inputStudentID);
         sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
         editStudentID.setText(sPref.getString(MainActivity.SAVED_STUDENT_ID, ""));
 
 // saveStudentID
-        Button btnSaveID = (Button) getView().findViewById(R.id.buttonSaveID);
-        editText2_studentID = (EditText) getView().findViewById(R.id.editStudentID);
+        Button btnSaveID = (Button) getView().findViewById(R.id.buttonSaveStudentID);
+        editText2_studentID = (EditText) getView().findViewById(R.id.inputStudentID);
    //     sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
 
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
@@ -80,11 +80,6 @@ public class SetupFragment extends Fragment {
 
               //hidden keyboard
                 hideKeyboard();
-
-
-
- //               Toast.makeText(getActivity(), "press SaveID", Toast.LENGTH_SHORT).show();
-
 
                 ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
                 parseDataInfoAsyncTask.execute();
@@ -96,7 +91,7 @@ public class SetupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View viev = inflater.inflate(R.layout.fragment_setup, container, false);
+        View viev = inflater.inflate(R.layout.fragment_setup2, container, false);
         return viev;
     }
 
@@ -124,7 +119,7 @@ public class SetupFragment extends Fragment {
 
   //          SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
  //           String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
-            EditText editStudentID = (EditText) getView().findViewById(R.id.editStudentID);
+            EditText editStudentID = (EditText) getView().findViewById(R.id.inputStudentID);
 
             String studentID=editStudentID.getText().toString();
 
@@ -317,7 +312,7 @@ private String error1="";
     private InputStream OpenHttpConnection(String strURL) throws IOException {
         InputStream inputStream = null;
         URL url = new URL(strURL);
-        url = new URL(strURL);
+      //  url = new URL(strURL);
         URLConnection conn = url.openConnection();
 
 
