@@ -4,8 +4,11 @@ package net.martp.mihail.mumhelper;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,11 +84,13 @@ public class RatingNFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             ArrayList<RatingStructure> ratingGroupArrayListLocal = new ArrayList<>();
+            SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+            String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
             Document doc = null;
             Connection.Response res = null;
             try {
                 res = Jsoup.connect("http://student.miu.by/learning-card.html")
-                        .data("act", "regnum", "id", "id", "regnum", "20090312012423")
+                        .data("act", "regnum", "id", "id", "regnum", studentID)
                         .method(Connection.Method.POST)
                         .execute();
             } catch (IOException e) {
@@ -122,14 +127,28 @@ public class RatingNFragment extends Fragment {
                 }
                 System.out.print(cols.get(0).text());
                 System.out.print(" ");
-                splitFullNamefromStr(cols.get(2).text());
-                //  System.out.print(splitFullNamefromStr(cols.get(2).text()));
-                System.out.print(retName + retSurname);
-                System.out.print(" ");
-                srBall = cols.get(3).text(); ///не удалять
-                //System.out.print(srBall = cols.get(3).text());
-                System.out.print(srBall);
-                System.out.println();
+
+                if (cols.get(1).text().equals("")) {
+                    splitFullNamefromStr(cols.get(2).text());
+                    //  System.out.print(splitFullNamefromStr(cols.get(2).text()));
+                    System.out.print(retName + retSurname);
+                    System.out.print(" ");
+                    srBall = cols.get(3).text(); ///не удалять
+                    //System.out.print(srBall = cols.get(3).text());
+                    System.out.print(srBall);
+                    System.out.println();
+                }
+                else
+                {
+                    splitFullNamefromStr(cols.get(1).text());
+                    //  System.out.print(splitFullNamefromStr(cols.get(2).text()));
+                    System.out.print(retName + retSurname);
+                    System.out.print(" ");
+                    srBall = cols.get(2).text(); ///не удалять
+                    //System.out.print(srBall = cols.get(3).text());
+                    System.out.print(srBall);
+                    System.out.println();
+                }
                 //ratingGroupArrayListLocal.add(cols.get(0).text() + "\n" + splitFullNamefromStr(cols.get(2).text()) + " " + cols.get(3).text());
 
                 ratingGroupArrayListLocal.add(new RatingStructure(cols.get(0).text(), retSurname, retName, srBall));
@@ -191,6 +210,30 @@ public class RatingNFragment extends Fragment {
 
                 tableRow = (TableRow) newTagView.findViewById(R.id.tableRowLine);
                 tableRow.setVisibility(View.GONE);
+            }
+
+            SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+            String fullNameStudent = sPref.getString(MainActivity.SAVED_SURNAME_STUDENT, "")+
+                    sPref.getString(MainActivity.SAVED_NAME_STUDENT, "")+" "+
+                    sPref.getString(MainActivity.SAVED_MIDNAME_STUDENT, "");
+            String currentNameStudent= surname+name;
+
+            /*
+            Log.v("LOG4", "fullNameStudent = " + fullNameStudent);
+            Log.v("LOG4", "currentNameStudent = " + currentNameStudent);
+            boolean b= currentNameStudent.equals(fullNameStudent);
+            Log.v("LOG4", "currentNameStudent = " +b);
+*/
+
+
+            if  (currentNameStudent.equals(fullNameStudent)) {
+                TableRow tableRowSurname = (TableRow) newTagView.findViewById(R.id.tableRowSurname);
+             //   TableRow tableRowNumber = (TableRow) newTagView.findViewById(R.id.tableRowNumber);
+                TableRow tableRowName = (TableRow) newTagView.findViewById(R.id.tableRowName);
+                Resources resource = context.getResources();
+                tableRowSurname.setBackgroundColor(resource.getColor(R.color.light_blue44));
+                tableRowName.setBackgroundColor(resource.getColor(R.color.light_blue44));
+            //    tableRowNumber.setBackgroundColor(resource.getColor(R.color.light_blue44));
             }
 
             queryRatingTableLayout.addView(newTagView, index);
