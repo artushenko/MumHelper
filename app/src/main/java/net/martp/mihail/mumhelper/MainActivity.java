@@ -132,25 +132,27 @@ public class MainActivity extends ActionBarActivity
                 fTrans.replace(R.id.frgmCont, scheduleFragment);
                 fTrans.commit();
                 break;
-            case 7:
+ /*           case 7:
                 mTitle = getString(R.string.title_schedule_search);
                 fTrans.replace(R.id.frgmCont, scheduleSearchFragment);
                 fTrans.commit();
                 break;
-            case 8:
+                */
+            case 7:
                 mTitle = getString(R.string.title_setup);
                 fTrans.replace(R.id.frgmCont, setupFragment);
                 fTrans.commit();
                 break;
-            case 9:
+            case 8:
                 mTitle = getString(R.string.title_about_ap);
                 fTrans = getFragmentManager().beginTransaction();
                 fTrans.replace(R.id.frgmCont, aboutFragment);
                 fTrans.commit();
                 break;
-            case 10:
+      /*      case 10:
                 mTitle = getString(R.string.title_exit);
                 break;
+                */
         }
     }
 

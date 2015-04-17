@@ -108,7 +108,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_rating_group),
                         getString(R.string.title_news),
                         getString(R.string.title_schedule),
-                        getString(R.string.title_schedule_search),
+                     //   getString(R.string.title_schedule_search),
                         getString(R.string.title_setup),
                         getString(R.string.title_about_ap),
                 }));

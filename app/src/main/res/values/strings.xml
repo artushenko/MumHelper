@@ -10,7 +10,7 @@
     <string name="title_news">Новости университета</string>
     <string name="title_marks">Оценки студента</string>
     <string name="title_order">Приказы</string>
-    <string name="title_schedule">Текущее расписание</string>
+    <string name="title_schedule">Расписание занятий</string>
     <string name="title_rating_group">Рейтинг в группе</string>
     <string name="title_about_ap">О программе</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
