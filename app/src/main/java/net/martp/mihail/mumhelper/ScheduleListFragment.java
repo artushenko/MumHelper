@@ -58,7 +58,6 @@ public class ScheduleListFragment extends Fragment {
         parseDataScheduleWeekAsyncTask.execute();
     }
 
-
     private class ParseDataScheduleWeekAsyncTask extends AsyncTask<Void, Integer, Void> {
         public ProgressDialog dialog;
         TableLayout querySchedultTableLayout;
@@ -73,6 +72,8 @@ public class ScheduleListFragment extends Fragment {
             dialog.setCancelable(false);
             dialog.show();
         }
+
+        private String scheduleListGetDataError="";
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -111,6 +112,8 @@ public class ScheduleListFragment extends Fragment {
                 // e.printStackTrace();
              //   System.out.println("Ошибка подключени к сети main");
                 Log.v("LOG3", "Error in network!!!");
+                scheduleListGetDataError="network";
+                return null;
             }
 
             if (doc.text().equals("")) {
@@ -177,6 +180,15 @@ public class ScheduleListFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
+
+            if (!scheduleListGetDataError.equals("")) {
+                if (scheduleListGetDataError.equals("network")) {
+                    Toast.makeText(getActivity(), "Ошибка подключения к сети", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
 
             ArrayList<ScheduleStructure> arrayListScheduleLocal = getArraySchedule();
 

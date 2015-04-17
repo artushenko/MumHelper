@@ -70,6 +70,8 @@ public class OrdersFragment extends Fragment {
             arrayListOrders = arrayOrdersf;
         }
 
+        private String ordersGetDataError="";
+
         @Override
         protected Void doInBackground(Void... params) {
 
@@ -79,7 +81,7 @@ public class OrdersFragment extends Fragment {
             SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
             String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
 
-
+            ordersGetDataError="";
             Document doc = null;
             Connection.Response res = null;
 
@@ -92,6 +94,7 @@ public class OrdersFragment extends Fragment {
                 //  e.printStackTrace();
                 System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
 //                Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+                ordersGetDataError = "network";
                 return null;
             }
 
@@ -102,7 +105,8 @@ public class OrdersFragment extends Fragment {
                         .cookie("PHPSESSID", sessionId).get();
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+                ordersGetDataError = "network";
                 return null;
             }
 
@@ -123,6 +127,15 @@ public class OrdersFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
+
+            if (!ordersGetDataError.equals("")) {
+                if (ordersGetDataError.equals("network")) {
+                    Toast.makeText(getActivity(), "Ошибка подключения к сети", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
 
             ArrayList<OrderStructure> arrayListOrderLocal = getArrayOrders();
 

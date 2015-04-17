@@ -44,12 +44,16 @@ public class FirstStartFragment extends Fragment {
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "press SaveID", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Save ID", Toast.LENGTH_SHORT).show();
 
 //seved studentID to preferences
                 SharedPreferences.Editor ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
                 ed.commit();
+                
+
+                /// tut nado skachat dannye !!!!!!
+
             }
         };
         btnSaveID.setOnClickListener(oclBtnSaveID);

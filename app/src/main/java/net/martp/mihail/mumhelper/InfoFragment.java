@@ -102,6 +102,7 @@ public class InfoFragment extends Fragment {
 //               Toast.makeText(getActivity(), " Read from sdcard", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Log.e("Error reading file", e.toString());
+                Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
             }
         }
 

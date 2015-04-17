@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -72,6 +73,8 @@ public class MarksFragment extends Fragment {
             arrayListMarks = arrayMarksf;
         }
 
+        private String marksGetDataError = "";
+
         @Override
         protected Void doInBackground(Void... params) {
             ArrayList<MarkStructure> arrayListMarksLocal = new ArrayList<>();
@@ -88,6 +91,7 @@ public class MarksFragment extends Fragment {
             } catch (IOException e) {
                 System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
             //    Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+                marksGetDataError = "network";
                 return null;
             }
 
@@ -127,6 +131,17 @@ public class MarksFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
+
+            if (!marksGetDataError.equals("")) {
+                if (marksGetDataError.equals("network")) {
+                    Toast.makeText(getActivity(), "Ошибка подключения к сети", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+
             ArrayList<MarkStructure> arrayListMarkLocal = getArrayMarks();
 
             MarkStructure mark;

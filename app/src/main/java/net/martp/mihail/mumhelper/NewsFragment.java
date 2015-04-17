@@ -181,16 +181,21 @@ public class NewsFragment extends Fragment {
             arrayNews = arrayNewsf;
         }
 
+        private String newsGetDataError = "";
+
         @Override
         protected Void doInBackground(Void... params) {
             String[][] arrayNewslocal = new String[5][4];
             Document doc = null;
+            newsGetDataError = "";
             try {
                 doc = Jsoup.connect("http://miu.by/").get();
             } catch (IOException e) {
                 // e.printStackTrace();
                 System.out.println("Ошибка подключени к сети" + getClass().getSimpleName());
              //   Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+
+                 newsGetDataError = "network";
                  return null; //ERROR!!!!
             }
             Elements cols = doc.select("table").get(5).select("tr").get(21).select("td");
@@ -228,7 +233,16 @@ public class NewsFragment extends Fragment {
             super.onPostExecute(aVoid);
             dialog.dismiss();
 
-            Toast.makeText(getActivity(), "Reading news is comlpete", Toast.LENGTH_SHORT).show();
+            if (!newsGetDataError.equals("")) {
+                if (newsGetDataError.equals("network")) {
+                    Toast.makeText(getActivity(), "Ошибка подключения к сети", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            //Toast.makeText(getActivity(), "Reading news is comlpete", Toast.LENGTH_SHORT).show();
 
             String[][] arrayNewslocal = new String[5][4];
             arrayNewslocal = getArrayNews();

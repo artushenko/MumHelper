@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -81,6 +82,8 @@ public class RatingNFragment extends Fragment {
             arrayListRatingN = arrayRating;
         }
 
+        private String ratingGetDataError = "";
+
         @Override
         protected Void doInBackground(Void... params) {
             ArrayList<RatingStructure> ratingGroupArrayListLocal = new ArrayList<>();
@@ -88,6 +91,7 @@ public class RatingNFragment extends Fragment {
             String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
             Document doc = null;
             Connection.Response res = null;
+            ratingGetDataError = "";
             try {
                 res = Jsoup.connect("http://student.miu.by/learning-card.html")
                         .data("act", "regnum", "id", "id", "regnum", studentID)
@@ -97,6 +101,8 @@ public class RatingNFragment extends Fragment {
                 //   e.printStackTrace();
                 System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
                 //  return;
+                ratingGetDataError = "network";
+                return null;
             }
 
             String sessionId = res.cookie("PHPSESSID");
@@ -137,9 +143,7 @@ public class RatingNFragment extends Fragment {
                     //System.out.print(srBall = cols.get(3).text());
                     System.out.print(srBall);
                     System.out.println();
-                }
-                else
-                {
+                } else {
                     splitFullNamefromStr(cols.get(1).text());
                     //  System.out.print(splitFullNamefromStr(cols.get(2).text()));
                     System.out.print(retName + retSurname);
@@ -169,6 +173,16 @@ public class RatingNFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
+
+            if (!ratingGetDataError.equals("")) {
+                if (ratingGetDataError.equals("network")) {
+                    Toast.makeText(getActivity(), "Ошибка подключения к сети", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
             ArrayList<RatingStructure> arrayListRatingLocal = getArrayRatingN();
 
             RatingStructure ratingStructure;
@@ -213,10 +227,10 @@ public class RatingNFragment extends Fragment {
             }
 
             SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
-            String fullNameStudent = sPref.getString(MainActivity.SAVED_SURNAME_STUDENT, "")+
-                    sPref.getString(MainActivity.SAVED_NAME_STUDENT, "")+" "+
+            String fullNameStudent = sPref.getString(MainActivity.SAVED_SURNAME_STUDENT, "") +
+                    sPref.getString(MainActivity.SAVED_NAME_STUDENT, "") + " " +
                     sPref.getString(MainActivity.SAVED_MIDNAME_STUDENT, "");
-            String currentNameStudent= surname+name;
+            String currentNameStudent = surname + name;
 
             /*
             Log.v("LOG4", "fullNameStudent = " + fullNameStudent);
@@ -224,16 +238,14 @@ public class RatingNFragment extends Fragment {
             boolean b= currentNameStudent.equals(fullNameStudent);
             Log.v("LOG4", "currentNameStudent = " +b);
 */
-
-
-            if  (currentNameStudent.equals(fullNameStudent)) {
+            if (currentNameStudent.equals(fullNameStudent)) {
                 TableRow tableRowSurname = (TableRow) newTagView.findViewById(R.id.tableRowSurname);
-             //   TableRow tableRowNumber = (TableRow) newTagView.findViewById(R.id.tableRowNumber);
+                //   TableRow tableRowNumber = (TableRow) newTagView.findViewById(R.id.tableRowNumber);
                 TableRow tableRowName = (TableRow) newTagView.findViewById(R.id.tableRowName);
                 Resources resource = context.getResources();
                 tableRowSurname.setBackgroundColor(resource.getColor(R.color.light_blue44));
                 tableRowName.setBackgroundColor(resource.getColor(R.color.light_blue44));
-            //    tableRowNumber.setBackgroundColor(resource.getColor(R.color.light_blue44));
+                //    tableRowNumber.setBackgroundColor(resource.getColor(R.color.light_blue44));
             }
 
             queryRatingTableLayout.addView(newTagView, index);
