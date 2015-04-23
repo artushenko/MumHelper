@@ -5,8 +5,8 @@
 
     <!-- TODO: Update blank fragment layout -->
     <ImageView
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="200dp"
+        android:layout_height="195dp"
         android:id="@+id/imageView2"
         android:src="@drawable/muu_logo_300x293"
         android:layout_alignParentTop="true"

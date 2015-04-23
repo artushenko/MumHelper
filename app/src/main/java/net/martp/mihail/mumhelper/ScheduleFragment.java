@@ -186,8 +186,8 @@ public class ScheduleFragment extends Fragment {
 
                     Spinner spinnerWeek = (Spinner) getView().findViewById(R.id.spinnerWeekNumberSearch);
 
-                    Toast toast = Toast.makeText(getActivity(), "Ваш выбор: " + spinnerWeek.getSelectedItem().toString(), Toast.LENGTH_SHORT);
-                    toast.show();
+    //                Toast toast = Toast.makeText(getActivity(), "Ваш выбор: " + spinnerWeek.getSelectedItem().toString(), Toast.LENGTH_SHORT);
+    //                toast.show();
                     Log.e("LOG1", "log vnutri - " + spinnerWeek.getSelectedItem().toString());
 
 

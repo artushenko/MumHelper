@@ -13,13 +13,12 @@
 
         <ImageView
             android:layout_width="200dp"
-            android:layout_height="193dp"
+            android:layout_height="195dp"
             android:id="@+id/imageView"
             android:src="@drawable/muu_logo_300x293"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:paddingTop="5dp"
-            android:scaleType="fitXY" />
+            android:paddingTop="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,7 +37,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="04.04.2015"
+            android:text="23.04.2015"
             android:id="@+id/textView13_date_reliz"
             android:layout_below="@+id/textView18_version_app"
             android:layout_alignLeft="@+id/textView18_version_app"
