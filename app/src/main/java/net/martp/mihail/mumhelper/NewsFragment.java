@@ -124,7 +124,7 @@ public class NewsFragment extends Fragment {
     private class OutToActivity extends Activity {
         private OutToActivity() {
 
-            Toast.makeText(getActivity(), " OutToActivity", Toast.LENGTH_SHORT).show();
+     //       Toast.makeText(getActivity(), " OutToActivity", Toast.LENGTH_SHORT).show();
       /*
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View nowView = inflater.inflate(R.layout.fragment_news, null);

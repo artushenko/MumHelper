@@ -41,10 +41,9 @@
         android:paddingTop="0dp" />
 
     <EditText
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number|numberDecimal"
-        android:ems="10"
         android:id="@+id/editStudentID"
         android:layout_gravity="center"
         android:width="0dp"
@@ -55,9 +54,10 @@
         android:numeric="integer"
         android:lines="1"
         android:maxLength="14"
+        android:minWidth="200dp"
         android:layout_below="@+id/textView11"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold" />
 
     <Button
         android:layout_width="wrap_content"
@@ -67,5 +67,13 @@
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/editStudentID"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:id="@+id/imageView4"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible" />
 
 </RelativeLayout>

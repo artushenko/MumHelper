@@ -57,7 +57,7 @@ public class MainActivity extends ActionBarActivity
         mTitle = getTitle();
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
+       mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
@@ -84,14 +84,16 @@ public class MainActivity extends ActionBarActivity
         InfoFragment infoFragment = new InfoFragment();
         FirstStartFragment firstStartFragment=new FirstStartFragment();
 
+
+        SharedPreferences sPref = getPreferences(MODE_PRIVATE);
         switch (number) {
             case 1:
                 //       mTitle = getString(R.string.app_name);
              //   System.out.println("??? - SAVED_STUDENT_ID");
-                mTitle = getString(R.string.title_info);
+           //     mTitle = getString(R.string.title_info);
 
                 //get studentID from preferences
-                SharedPreferences sPref = getPreferences(MODE_PRIVATE);
+                sPref = getPreferences(MODE_PRIVATE);
                 if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
                     mTitle = getString(R.string.title_setup);
                     fTrans.replace(R.id.frgmCont, firstStartFragment);
@@ -108,19 +110,38 @@ public class MainActivity extends ActionBarActivity
  */
                 break;
             case 2:
+                 sPref = getPreferences(MODE_PRIVATE);
+                if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
+                    mTitle = getString(R.string.title_setup);
+                    fTrans.replace(R.id.frgmCont, firstStartFragment);
+                    fTrans.commit();
+                } else {
                 mTitle = getString(R.string.title_marks);
                 fTrans.replace(R.id.frgmCont, marksFragment);
-                fTrans.commit();
+                fTrans.commit();}
                 break;
             case 3:
-                mTitle = getString(R.string.title_order);
+                sPref = getPreferences(MODE_PRIVATE);
+                if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
+                    mTitle = getString(R.string.title_setup);
+                    fTrans.replace(R.id.frgmCont, firstStartFragment);
+                    fTrans.commit();
+                } else {
+                    mTitle = getString(R.string.title_order);
+
                 fTrans.replace(R.id.frgmCont, ordersFragment);
-                fTrans.commit();
+                fTrans.commit();}
                 break;
             case 4:
+                sPref = getPreferences(MODE_PRIVATE);
+                if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
+                    mTitle = getString(R.string.title_setup);
+                    fTrans.replace(R.id.frgmCont, firstStartFragment);
+                    fTrans.commit();
+                } else {
                 mTitle = getString(R.string.title_rating_group);
                 fTrans.replace(R.id.frgmCont, ratingNFragment);
-                fTrans.commit();
+                fTrans.commit();}
                 break;
             case 5:
                 mTitle = getString(R.string.title_news);
