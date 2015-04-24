@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -172,8 +173,13 @@ public class ScheduleFragment extends Fragment {
 
             Spinner spinnerWeek = (Spinner) getView().findViewById(R.id.spinnerWeekNumberSearch);
 
+   //         ArrayAdapter<String> snprAdapter = new ArrayAdapter(getView().getContext(),
+   //                 android.R.layout.simple_spinner_item, arrayWeekSpinner);
+
             ArrayAdapter<String> snprAdapter = new ArrayAdapter(getView().getContext(),
-                    android.R.layout.simple_spinner_item, arrayWeekSpinner);
+                    R.layout.schedule_spinner_layout, arrayWeekSpinner);
+            snprAdapter.setDropDownViewResource(R.layout.schedule_spinner_layout);
+
             spinnerWeek.setAdapter(snprAdapter);
 
             spinnerWeek.setSelection(arrayWeekSpinner.size() - 1);
@@ -183,6 +189,15 @@ public class ScheduleFragment extends Fragment {
             spinnerWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> parent,
                                            View itemSelected, int selectedItemPosition, long selectedId) {
+
+
+                    //hide keyboard when navigation menu is open
+                    View view = getActivity().getCurrentFocus();
+                    if (view != null) {
+                        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                    //--------------------------------------------
 
                     Spinner spinnerWeek = (Spinner) getView().findViewById(R.id.spinnerWeekNumberSearch);
 
