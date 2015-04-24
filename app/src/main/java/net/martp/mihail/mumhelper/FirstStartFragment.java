@@ -44,15 +44,12 @@ import java.net.URLConnection;
  */
 public class FirstStartFragment extends Fragment {
 
-
     private String image_URL="";
     private String imageFileName="";
     ImageView iv;
 
-
     public FirstStartFragment() {
         // Required empty public constructor
-
     }
 
     SharedPreferences sPref;
@@ -142,12 +139,6 @@ private class ParseDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
 
         try {
             res = Jsoup.connect("http://student.miu.by/learning-card.html")
-                    /*
-                    .data("act", "regnum")
-                    .data("id", "id")
-                    .data("regnum", "20090312012423")
-                    */
-                    //  .data("act", "regnum", "id", "id", "regnum", "20090312012423")
                     .data("act", "regnum", "id", "id", "regnum", studentID)
                     .method(Connection.Method.POST)
                     .execute();
@@ -169,8 +160,6 @@ private class ParseDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //  System.out.print(doc);
 
         try {
             Element table = doc.select("table").first();
