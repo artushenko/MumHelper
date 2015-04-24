@@ -1,7 +1,5 @@
 package net.martp.mihail.mumhelper;
 
-
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -40,7 +34,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 
 
 /**
@@ -50,8 +43,8 @@ public class SetupFragment extends Fragment {
 
     SharedPreferences sPref;
     EditText editText2_studentID;
-    private String image_URL="";
-    private String imageFileName="";
+    private String image_URL = "";
+    private String imageFileName = "";
     ImageView iv;
 
 
@@ -63,7 +56,6 @@ public class SetupFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
 //get studentID from preferences
         EditText editStudentID = (EditText) getView().findViewById(R.id.inputStudentID);
         sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
@@ -72,13 +64,12 @@ public class SetupFragment extends Fragment {
 // saveStudentID
         Button btnSaveID = (Button) getView().findViewById(R.id.buttonSaveStudentID);
         editText2_studentID = (EditText) getView().findViewById(R.id.inputStudentID);
-   //     sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
 
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-              //hidden keyboard
+                //hidden keyboard
                 hideKeyboard();
 
                 ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
@@ -94,7 +85,6 @@ public class SetupFragment extends Fragment {
         View viev = inflater.inflate(R.layout.fragment_setup2, container, false);
         return viev;
     }
-
 
     private class ParseDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
         ProgressDialog dialog;
@@ -115,32 +105,20 @@ public class SetupFragment extends Fragment {
         protected Void doInBackground(Void... params) {
 
             Document doc = null;
-            Connection.Response res = null;
+            Connection.Response res;// = null;
 
-  //          SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
- //           String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
             EditText editStudentID = (EditText) getView().findViewById(R.id.inputStudentID);
 
-            String studentID=editStudentID.getText().toString();
+            String studentID = editStudentID.getText().toString();
 
             try {
                 res = Jsoup.connect("http://student.miu.by/learning-card.html")
-                    /*
-                    .data("act", "regnum")
-                    .data("id", "id")
-                    .data("regnum", "20090312012423")
-                    */
-                      //  .data("act", "regnum", "id", "id", "regnum", "20090312012423")
                         .data("act", "regnum", "id", "id", "regnum", studentID)
                         .method(Connection.Method.POST)
                         .execute();
             } catch (IOException e) {
-                //   e.printStackTrace();
-                System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
-                Log.e("MyError", e.toString());
-                error1="IO Error";
+                error1 = "IO Error";
                 return null;
-            //    return;
             }
 
             String sessionId = res.cookie("PHPSESSID");
@@ -152,8 +130,6 @@ public class SetupFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            //  System.out.print(doc);
 
             try {
                 Element table = doc.select("table").first();
@@ -172,10 +148,10 @@ public class SetupFragment extends Fragment {
 
                 String link = table.select("tr").get(0).select("td").get(0).select("img").first().attr("src");
 
-                System.out.println("http://student.miu.by"+link);
+                System.out.println("http://student.miu.by" + link);
 
-                imageFileName=link;
-                image_URL="http://student.miu.by"+link;
+                imageFileName = link;
+                image_URL = "http://student.miu.by" + link;
 
                 System.out.println("-------------------------------------------");
 
@@ -202,7 +178,7 @@ public class SetupFragment extends Fragment {
                 ed.commit();
 
                 ed = sPref.edit();
-                ed.putString(MainActivity.SAVED_SPECIALTY,rows.get(5).select("td").get(1).text());
+                ed.putString(MainActivity.SAVED_SPECIALTY, rows.get(5).select("td").get(1).text());
                 ed.commit();
 
                 ed = sPref.edit();
@@ -236,32 +212,28 @@ public class SetupFragment extends Fragment {
                     getPhotoFromURL();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    error1="Photo not load";
+                    error1 = "Photo not load";
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                Log.e("MyError", "ID not found");
-                Log.e("MyError", e.toString());
-                error1="ID not found";
-                //Toast.makeText(getActivity(), "ID not found", Toast.LENGTH_SHORT).show();
-               e.printStackTrace();
+                error1 = "ID not found";
+                e.printStackTrace();
             }
-
             return null;
         }
 
-private String error1="";
+        private String error1 = "";
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
 
-            if (error1.equals("ID not found")){
+            if (error1.equals("ID not found")) {
                 Toast.makeText(getActivity(), "Ошибка!\nСтудент с таким ID не найден.", Toast.LENGTH_SHORT).show();
                 return;
             }
-             if (error1.equals("IO Error")){
+            if (error1.equals("IO Error")) {
                 Toast.makeText(getActivity(), "Ошибка подключения к сети!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -273,6 +245,7 @@ private String error1="";
             getStudentPhoto();
         }
     }
+
     private void hideKeyboard() {
         // Check if no view has focus:
         View view = getActivity().getCurrentFocus();
@@ -281,13 +254,14 @@ private String error1="";
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-   static   Bitmap bm;
+
+    static Bitmap bm;
+
     public void getPhotoFromURL() throws IOException {
 
         BitmapFactory.Options bmOptions;
         bmOptions = new BitmapFactory.Options();
         bmOptions.inSampleSize = 1;
-        //Bitmap bm = LoadImage(image_URL, bmOptions);
         bm = LoadImage(image_URL, bmOptions);
 
     }
@@ -300,7 +274,7 @@ private String error1="";
             bitmap = BitmapFactory.decodeStream(in, null, options);
         } catch (Exception ex) {
             //Toast.makeText(getApplicationContext(), "Problems: " + ex.getMessage(), 1).show();
-         //   Toast.makeText(getApplicationContext(), "Problems: access to network is closed", 1).show();
+            //   Toast.makeText(getApplicationContext(), "Problems: access to network is closed", 1).show();
         } finally {
             if (in != null) {
                 in.close();
@@ -312,9 +286,7 @@ private String error1="";
     private InputStream OpenHttpConnection(String strURL) throws IOException {
         InputStream inputStream = null;
         URL url = new URL(strURL);
-      //  url = new URL(strURL);
         URLConnection conn = url.openConnection();
-
 
         try {
             HttpURLConnection httpConn = (HttpURLConnection) conn;
@@ -326,7 +298,7 @@ private String error1="";
             }
         } catch (Exception ex) {
             //Toast.makeText(getApplicationContext(), "Problems: " + ex.getMessage(), 1).show();
-          //  Toast.makeText(getApplicationContext(), "Problems: access to network is closed", 1).show();
+            //  Toast.makeText(getApplicationContext(), "Problems: access to network is closed", 1).show();
         }
         return inputStream;
     }
@@ -334,12 +306,12 @@ private String error1="";
     private String getStudentPhoto() {
         String folderToSave = Environment.getExternalStorageDirectory().toString();
         iv = (ImageView) getView().findViewById(R.id.imageView3);
-        OutputStream fOut = null;
+        OutputStream fOut;// = null;
         try {
             File file = new File(folderToSave, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
             fOut = new FileOutputStream(file);
 
-            Bitmap bitmap = ((BitmapDrawable)iv.getDrawable()).getBitmap();
+            Bitmap bitmap = ((BitmapDrawable) iv.getDrawable()).getBitmap();
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
             fOut.flush();
@@ -347,23 +319,17 @@ private String error1="";
 
             SharedPreferences.Editor ed = sPref.edit();
             ed.putString(MainActivity.SAVED_PHOTO, "yes");
-            Log.e("Show photo yes",sPref.getString(MainActivity.SAVED_PHOTO, ""));
+            Log.e("Show photo yes", sPref.getString(MainActivity.SAVED_PHOTO, ""));
             ed.commit();
 
-            //   MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(),  file.getName());
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             Log.e("Show photo", e.toString());
-            SharedPreferences.Editor ed = sPref.edit();
+            SharedPreferences.Editor ed;// = sPref.edit();
             ed = sPref.edit();
             ed.putString(MainActivity.SAVED_PHOTO, "no");
             ed.commit();
             return e.getMessage();
         }
         return "";
-
     }
-
-
 }

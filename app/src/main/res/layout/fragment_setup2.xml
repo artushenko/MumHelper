@@ -40,18 +40,19 @@
         android:layout_toEndOf="@+id/textView18"
         android:textStyle="bold"
         android:textSize="18dp"
-        android:minWidth="160dp"
+        android:minWidth="150dp"
         android:text="12345678901234"
-        android:inputType="number" />
+        android:inputType="number"
+        android:maxLength="14" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Сохранить"
         android:id="@+id/buttonSaveStudentID"
-        android:layout_below="@+id/inputStudentID"
-        android:layout_alignRight="@+id/inputStudentID"
-        android:layout_alignEnd="@+id/inputStudentID" />
+        android:layout_alignTop="@+id/inputStudentID"
+        android:layout_toRightOf="@+id/inputStudentID"
+        android:layout_toEndOf="@+id/inputStudentID" />
 
     <ImageView
         android:layout_width="wrap_content"

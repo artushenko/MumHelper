@@ -1,6 +1,6 @@
 package net.martp.mihail.mumhelper;
 
-import android.app.Activity;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.net.Uri;
@@ -13,12 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
 
 
@@ -81,12 +79,7 @@ public class NewsFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+
 
     @Override
     public void onDetach() {
@@ -98,80 +91,29 @@ public class NewsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         ParseDadaNewsAsyncTask parseDadaNewsAsyncTask = new ParseDadaNewsAsyncTask();
         parseDadaNewsAsyncTask.execute();
-        OutToActivity outToActivity = new OutToActivity();
-
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 
-    private class OutToActivity extends Activity {
-        private OutToActivity() {
-
-     //       Toast.makeText(getActivity(), " OutToActivity", Toast.LENGTH_SHORT).show();
-      /*
-            LayoutInflater inflater = getActivity().getLayoutInflater();
-            View nowView = inflater.inflate(R.layout.fragment_news, null);
-
-
-
-
-            //        setContentView(R.layout.fragment_news);
-
-            TextView newsDate1text = (TextView) nowView.findViewById(R.id.textView4); //to here
-            newsDate1text.setText("01.01.2015");
-
-
-            //          TextView newsText1text=(TextView) nowView.findViewById(R.id.textView); //to here
-            //         newsText1text.setText("Bla-bla-bla-bla");
-
-            /*
-            TextView newsDate2text=(TextView) findViewById(R.id.textView6); //to here
-            TextView newsText2text=(TextView) findViewById(R.id.textView2); //to here
-            TextView newsDate3text=(TextView) findViewById(R.id.textView7); //to here
-            TextView newsText3text=(TextView) findViewById(R.id.textView3); //to here
-            TextView newsDate4text=(TextView) findViewById(R.id.textView8); //to here
-            TextView newsText4text=(TextView) findViewById(R.id.textView5); //to here
-            */
-        }
-
-
-    }
 
     private class ParseDadaNewsAsyncTask extends AsyncTask<Void, Integer, Void> {
-        //   private ProgressDialog spinner;
-
-        public ProgressDialog dialog;
+        ProgressDialog dialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
 
             dialog = new ProgressDialog(getView().getContext());
             dialog.setMessage("Загрузка...");
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
             dialog.show();
-
         }
-
 
         private String[][] getArrayNews() {
             return arrayNews;
@@ -186,24 +128,17 @@ public class NewsFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             String[][] arrayNewslocal = new String[5][4];
-            Document doc = null;
+            Document doc;
             newsGetDataError = "";
             try {
                 doc = Jsoup.connect("http://miu.by/").get();
             } catch (IOException e) {
-                // e.printStackTrace();
-                System.out.println("Ошибка подключени к сети" + getClass().getSimpleName());
-             //   Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
-
-                 newsGetDataError = "network";
-                 return null; //ERROR!!!!
+                newsGetDataError = "network";
+                return null; //ERROR!!!!
             }
             Elements cols = doc.select("table").get(5).select("tr").get(21).select("td");
-
-
             doc = Jsoup.parse(cols.get(0).html());
-            Element link = doc.select("a").first();
-
+            Element link;// = doc.select("a").first();
 
             int n = 0;
             for (int i = 0; i < 10; i++) {
@@ -242,9 +177,7 @@ public class NewsFragment extends Fragment {
                 return;
             }
 
-            //Toast.makeText(getActivity(), "Reading news is comlpete", Toast.LENGTH_SHORT).show();
-
-            String[][] arrayNewslocal = new String[5][4];
+            String[][] arrayNewslocal;// = new String[5][4];
             arrayNewslocal = getArrayNews();
 
             if (arrayNewslocal[0][0] != null) {
@@ -279,8 +212,5 @@ public class NewsFragment extends Fragment {
                 newsText5text.setText(arrayNewslocal[4][2]);
             }
         }
-
     }
-
-
 }
