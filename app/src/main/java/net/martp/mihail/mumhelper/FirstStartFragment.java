@@ -84,16 +84,20 @@ public class FirstStartFragment extends Fragment {
   //              Toast.makeText(getActivity(), "Save ID", Toast.LENGTH_SHORT).show();
 
 //seved studentID to preferences
-                SharedPreferences.Editor ed = sPref.edit();
-                ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
-                ed.commit();
+                if (!editText2_studentID.getText().toString().equals("")) {
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
+                    ed.commit();
 
-          //      hideKeyboard();
+                    //      hideKeyboard();
 
-                ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
-                parseDataInfoAsyncTask.execute();
-
-                /// tut nado skachat dannye !!!!!!
+                    ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
+                    parseDataInfoAsyncTask.execute();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Ошибка!\nСтудент с таким ID не найден.", Toast.LENGTH_SHORT).show();
+                }
+                /// tut nado by skachat dannye !!!!!!
 
             }
         };
