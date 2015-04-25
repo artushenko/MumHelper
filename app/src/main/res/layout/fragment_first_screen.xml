@@ -44,8 +44,9 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number|numberDecimal"
+        android:inputType="number"
         android:id="@+id/editStudentID"
+        android:imeOptions="actionGo"
         android:layout_gravity="center"
         android:width="0dp"
         android:textSize="22dp"

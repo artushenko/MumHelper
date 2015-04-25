@@ -68,12 +68,15 @@ public class SetupFragment extends Fragment {
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (editText2_studentID.getText().length() == 14) {
+                    //hidden keyboard
+                    hideKeyboard();
 
-                //hidden keyboard
-                hideKeyboard();
-
-                ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
-                parseDataInfoAsyncTask.execute();
+                    ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
+                    parseDataInfoAsyncTask.execute();
+                } else {
+                    Toast.makeText(getActivity(), "Ошибка!\nID должен состоять из 14 цифр.", Toast.LENGTH_SHORT).show();
+                }
             }
         };
         btnSaveID.setOnClickListener(oclBtnSaveID);
