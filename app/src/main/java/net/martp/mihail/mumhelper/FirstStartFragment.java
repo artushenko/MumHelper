@@ -83,15 +83,13 @@ public class FirstStartFragment extends Fragment {
                     } else {
                         Toast.makeText(getActivity(), "Ошибка!\nID должен состоять из 14 цифр.", Toast.LENGTH_SHORT).show();
                     }
-
                     return true;
                 }
                 return false;
             }
         });
 
-        getActivity().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
 // saveStudentID
         Button btnSaveID = (Button) getView().findViewById(R.id.buttonSaveID);
@@ -101,6 +99,7 @@ public class FirstStartFragment extends Fragment {
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 //save studentID to preferences
            //     if (!editText2_studentID.getText().toString().equals("")) {
                 if (editText2_studentID.getText().length()==14) {
@@ -116,11 +115,9 @@ public class FirstStartFragment extends Fragment {
                     Toast.makeText(getActivity(), "Ошибка!\nID должен состоять из 14 цифр.", Toast.LENGTH_SHORT).show();
                 }
                 /// tut nado by skachat dannye !!!!!!
-
             }
         };
         btnSaveID.setOnClickListener(oclBtnSaveID);
-
     }
 
     @Override
@@ -130,10 +127,8 @@ public class FirstStartFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_first_screen, container, false);
     }
 
-
     private class ParseDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
         ProgressDialog dialog;
-
 
         @Override
         protected void onPreExecute() {
@@ -273,7 +268,6 @@ public class FirstStartFragment extends Fragment {
                 //Toast.makeText(getActivity(), "ID not found", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
-
             return null;
         }
 
@@ -326,13 +320,11 @@ public class FirstStartFragment extends Fragment {
     static Bitmap bm;
 
     public void getPhotoFromURL() throws IOException {
-
         BitmapFactory.Options bmOptions;
         bmOptions = new BitmapFactory.Options();
         bmOptions.inSampleSize = 1;
         //Bitmap bm = LoadImage(image_URL, bmOptions);
         bm = LoadImage(image_URL, bmOptions);
-
     }
 
     public Bitmap LoadImage(String URL, BitmapFactory.Options options) throws IOException {
@@ -357,7 +349,6 @@ public class FirstStartFragment extends Fragment {
         URL url = new URL(strURL);
         //  url = new URL(strURL);
         URLConnection conn = url.openConnection();
-
 
         try {
             HttpURLConnection httpConn = (HttpURLConnection) conn;
@@ -403,8 +394,5 @@ public class FirstStartFragment extends Fragment {
             return e.getMessage();
         }
         return "";
-
     }
-
-
 }
