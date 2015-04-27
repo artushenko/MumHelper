@@ -80,6 +80,18 @@ public class SetupFragment extends Fragment {
             }
         };
         btnSaveID.setOnClickListener(oclBtnSaveID);
+
+        Button btnDeleteID = (Button) getView().findViewById(R.id.buttonDeleteStudentID);
+        View.OnClickListener oclBtnDeleteID = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor ed = sPref.edit();
+                ed.putString(MainActivity.SAVED_STUDENT_ID, "");
+                ed.commit();
+            }
+        };
+        btnDeleteID.setOnClickListener(oclBtnDeleteID);
+
     }
 
     @Override
