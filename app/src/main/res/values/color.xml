@@ -2,6 +2,10 @@
 <resources>
 
     <color name="light_blue44">#81D4FA</color>
+    <color name="light_blue100">#B3E5FC</color>
+    <color name="background_interlace_line1">#ffe1f5f0</color>
+    <color name="background_interlace_line2">#E0F7FA</color>
+    <color name="background_interlace_line">#CDEFF3</color>
 
 
     <color name="button_focused_color_start">#7FA40E</color>

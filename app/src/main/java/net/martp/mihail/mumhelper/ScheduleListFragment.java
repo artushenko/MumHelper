@@ -10,16 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,7 +23,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /**
@@ -214,11 +209,23 @@ public class ScheduleListFragment extends Fragment {
 
         String oldDate = "";
 
+        private boolean interlaceLine =true;
+
         private void makeScheduleLine(String getDate, String getTime, String getSubject, String getTeacher, String getClassroom, String getTypelesson, int index) {
             context = getView().getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            View newTagView = inflater.inflate(R.layout.schedule_list_item, null);
+          // View newTagView = inflater.inflate(R.layout.schedule_list_item, null);
+
+           View newTagView = inflater.inflate(R.layout.schedule_list_item2, null);
+
+            if (interlaceLine) {
+                RelativeLayout scgeduleLayout = (RelativeLayout) newTagView.findViewById(R.id.subjectLayout);
+             //   scgeduleLayout.setBackgroundColor(R.color.light_blue100);
+              //  scgeduleLayout.setBackgroundColor(R.color.background_interlace_line);
+                scgeduleLayout.setBackgroundResource(R.color.background_interlace_line);
+            }
+            interlaceLine = !interlaceLine;
 
             TextView textDate = (TextView) newTagView.findViewById(R.id.dayDate);
             if (oldDate.equals(getDate)) {
