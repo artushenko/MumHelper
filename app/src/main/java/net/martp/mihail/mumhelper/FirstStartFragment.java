@@ -74,6 +74,8 @@ public class FirstStartFragment extends Fragment {
 
                   //  if (!editText2_studentID.getText().toString().equals("")||editText2_studentID.getText().length()==14) {
                     if (editText2_studentID.getText().length()==14) {
+                     //   hideKeyboard();
+
                         SharedPreferences.Editor ed = sPref.edit();
                         ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
                         ed.commit();
@@ -103,11 +105,12 @@ public class FirstStartFragment extends Fragment {
 //save studentID to preferences
            //     if (!editText2_studentID.getText().toString().equals("")) {
                 if (editText2_studentID.getText().length()==14) {
+
+                 //   hideKeyboard();
+
                     SharedPreferences.Editor ed = sPref.edit();
                     ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
                     ed.commit();
-
-                    //      hideKeyboard();
 
                     ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
                     parseDataInfoAsyncTask.execute();
@@ -126,6 +129,8 @@ public class FirstStartFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_first_screen, container, false);
     }
+
+
 
     private class ParseDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
         ProgressDialog dialog;
@@ -298,8 +303,15 @@ public class FirstStartFragment extends Fragment {
             bmImage.setImageBitmap(bm);
 
             //save photo to sdcard
-            getStudentPhoto();
+            try {
+                getStudentPhoto();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(), "Произошла какая-то ошибка", Toast.LENGTH_SHORT).show();
+            }
             //     Toast.makeText(getActivity(), "Все прошло успешно!!!!", Toast.LENGTH_SHORT).show();
+            hideKeyboard();
+
             FragmentTransaction fTrans = getFragmentManager().beginTransaction();
             InfoFragment infoFragment = new InfoFragment();
 

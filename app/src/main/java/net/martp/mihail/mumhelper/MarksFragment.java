@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -156,10 +157,21 @@ public class MarksFragment extends Fragment {
             }
         }
 
+        private boolean interlaceLine =true;
+
         private void makeMarksLine(String nameOfDiscipline, String formOfControl, String mark, String date, boolean status, int index) {
             context = getView().getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View newTagView = inflater.inflate(R.layout.marks_list_item2, null);
+            View newTagView = inflater.inflate(R.layout.marks_list_item3, null);
+
+
+            if (interlaceLine) {
+                RelativeLayout subjectMarkLayout = (RelativeLayout) newTagView.findViewById(R.id.subjectMarkLayout);
+                //   scgeduleLayout.setBackgroundColor(R.color.light_blue100);
+                //  scgeduleLayout.setBackgroundColor(R.color.background_interlace_line);
+                subjectMarkLayout.setBackgroundResource(R.color.background_interlace_line);
+            }
+            interlaceLine = !interlaceLine;
 
             ImageView statusPredmet = (ImageView) newTagView.findViewById(R.id.statusPredmetImageView);
             Bitmap srcBitmapLocal = BitmapFactory.decodeResource(context.getApplicationContext().getResources(), R.drawable.tick);

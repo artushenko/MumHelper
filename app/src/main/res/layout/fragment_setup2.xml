@@ -40,7 +40,7 @@
         android:layout_toEndOf="@+id/textView18"
         android:textStyle="bold"
         android:textSize="18dp"
-        android:minWidth="150dp"
+        android:minWidth="155dp"
         android:text="12345678901234"
         android:inputType="number"
         android:maxLength="14" />
@@ -165,7 +165,8 @@
         android:id="@+id/checkBox"
         android:layout_below="@+id/tableRow3"
         android:layout_alignRight="@+id/buttonDeleteStudentID"
-        android:layout_alignEnd="@+id/buttonDeleteStudentID" />
+        android:layout_alignEnd="@+id/buttonDeleteStudentID"
+        android:paddingRight="15dp" />
 
     <TableRow
         android:layout_width="fill_parent"

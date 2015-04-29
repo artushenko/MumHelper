@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="net.martp.mihail.mumhelper.SetupFragment"
-    android:background="#E1F5FE"
-    android:windowSoftInputMode="adjustPan">
+    android:background="#E1F5FE">
 
     <!-- TODO: Update blank fragment layout -->
     <ImageView
