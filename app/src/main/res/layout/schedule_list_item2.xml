@@ -47,7 +47,6 @@
             android:layout_height="wrap_content"
             android:text="Время проведения занятия"
             android:id="@+id/lessonTime"
-            android:layout_below="@+id/dayDate"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:textStyle="bold"
