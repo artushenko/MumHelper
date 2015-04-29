@@ -75,7 +75,7 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_news, container, false);
-        View view = inflater.inflate(R.layout.fragment_news2, container, false);
+        View view = inflater.inflate(R.layout.fragment_news, container, false);
         return view;
     }
 
