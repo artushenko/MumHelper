@@ -7,118 +7,127 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <LinearLayout
-        android:orientation="vertical"
+
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView8" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/empty_title"
-            android:id="@+id/textView4_date_1"
-            android:linksClickable="true"
-            android:textSize="18dp"
-            android:layout_marginTop="10dp"
-            android:textColor="#ff03a9f4"
-            android:textColorLink="#ff03a9f4" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/empty_title"
-            android:id="@+id/textView"
-            android:textSize="14dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/empty_title"
-            android:id="@+id/textView6_date_2"
-            android:textSize="18dp"
-            android:layout_marginTop="10dp"
-            android:linksClickable="true"
-            android:textColor="#ff03a9f4"
-            android:textColorLink="#ff03a9f4" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/action_example"
+                android:id="@+id/textView4_date_1"
+                android:linksClickable="true"
+                android:textSize="22dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#ff03a9f4"
+                android:textColorLink="#ff03a9f4" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/empty_title"
-            android:id="@+id/textView2"
-            android:textSize="14dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            style="text-align:justify"
-            android:layout_gravity="left|center|right" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_example"
+                android:id="@+id/textView"
+                android:textSize="18dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/empty_title"
-            android:id="@+id/textView7_date_3"
-            android:textSize="18dp"
-            android:layout_marginTop="10dp"
-            android:linksClickable="true"
-            android:textColor="#ff03a9f4"
-            android:textColorLink="#ff03a9f4" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/action_example"
+                android:id="@+id/textView6_date_2"
+                android:textSize="22dp"
+                android:layout_marginTop="10dp"
+                android:linksClickable="true"
+                android:textColor="#ff03a9f4"
+                android:textColorLink="#ff03a9f4" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/empty_title"
-            android:id="@+id/textView3"
-            android:textSize="14dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_example"
+                android:id="@+id/textView2"
+                android:textSize="18dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                style="text-align:justify"
+                android:layout_gravity="left|center|right" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/empty_title"
-            android:id="@+id/textView8_date_4"
-            android:textSize="18dp"
-            android:layout_marginTop="10dp"
-            android:linksClickable="true"
-            android:textColor="#ff03a9f4"
-            android:textColorLink="#ff03a9f4" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/action_example"
+                android:id="@+id/textView7_date_3"
+                android:textSize="22dp"
+                android:layout_marginTop="10dp"
+                android:linksClickable="true"
+                android:textColor="#ff03a9f4"
+                android:textColorLink="#ff03a9f4" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/empty_title"
-            android:id="@+id/textView5"
-            android:textSize="14dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_example"
+                android:id="@+id/textView3"
+                android:textSize="18dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/empty_title"
-            android:id="@+id/textView9_date_5"
-            android:textSize="18dp"
-            android:layout_marginTop="10dp"
-            android:linksClickable="true"
-            android:textColor="#ff03a9f4"
-            android:textColorLink="#ff03a9f4" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/action_example"
+                android:id="@+id/textView8_date_4"
+                android:textSize="22dp"
+                android:layout_marginTop="10dp"
+                android:linksClickable="true"
+                android:textColor="#ff03a9f4"
+                android:textColorLink="#ff03a9f4" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/empty_title"
-            android:id="@+id/textView10"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:textSize="14dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_example"
+                android:id="@+id/textView5"
+                android:textSize="18dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/action_example"
+                android:id="@+id/textView9_date_5"
+                android:textSize="22dp"
+                android:layout_marginTop="10dp"
+                android:linksClickable="true"
+                android:textColor="#ff03a9f4"
+                android:textColorLink="#ff03a9f4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_example"
+                android:id="@+id/textView10"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>
