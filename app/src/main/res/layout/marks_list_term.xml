@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:id="@+id/buttonTermLayout">
+
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tableRowEmpty1"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+    </TableRow>
+
+    <Button
+        android:layout_width="298dp"
+        android:layout_height="wrap_content"
+        android:text="Все семестры"
+        android:id="@+id/buttonAllSemestrs"
+        android:layout_below="@+id/tableRowEmpty1"
+        android:layout_centerHorizontal="true" />
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonAllSemestrs"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/semestrsButtonTableRow"
+        android:padding="5dp">
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:id="@+id/button1" />
+
+        <TextView
+            android:layout_width="6dp"
+            android:layout_height="wrap_content"
+            android:text="  "
+            android:id="@+id/textView31Empty" />
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:id="@+id/button2" />
+
+        <TextView
+            android:layout_width="6dp"
+            android:layout_height="wrap_content"
+            android:text="  "
+            android:id="@+id/textView33Empty" />
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:id="@+id/button3" />
+
+        <TextView
+            android:layout_width="6dp"
+            android:layout_height="wrap_content"
+            android:text=" "
+            android:id="@+id/textView32Empty" />
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="4"
+            android:id="@+id/button4" />
+    </TableRow>
+
+</RelativeLayout>

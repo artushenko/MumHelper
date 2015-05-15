@@ -8,12 +8,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,15 +89,20 @@ public class MarksFragment extends Fragment {
 
             Document doc = null;
             try {
-                doc = Jsoup.connect("http://student.miu.by/learning-card/~/sem.all.html")
-                      //  .data("act", "regnum").data("id", "id").data("regnum", "20090312012423").post();
+                //   doc = Jsoup.connect("http://student.miu.by/learning-card/~/sem.all.html")
+                doc = Jsoup.connect("http://student.miu.by/learning-card.html")
+                        //  .data("act", "regnum").data("id", "id").data("regnum", "20090312012423").post();
                         .data("act", "regnum").data("id", "id").data("regnum", studentID).post();
             } catch (IOException e) {
                 System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
-            //    Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
                 marksGetDataError = "network";
                 return null;
             }
+
+            Elements countSemestrsHTML = doc.select("a#butsel.but");
+            countSemestrs = Integer.parseInt(countSemestrsHTML.get(0).text());
+           // System.out.print(countSemestrs);
 
             Element table = doc.select("table").get(1);
             Elements rows = table.select("tr");
@@ -155,9 +163,27 @@ public class MarksFragment extends Fragment {
                         mark.getDate(),
                         mark.getStatud(), i);
             }
+
+            int countSemestrsLine = arrayListMarkLocal.size();
+            if (countSemestrs > 4) {
+                for (int i = 0; i < normalizeCountSemestrs(); i++) {
+                    makeSemestrLine(i, countSemestrsLine++);
+                }
+            } else {
+                makeSemestrLine(0, countSemestrsLine);
+            }
+
+
         }
 
-        private boolean interlaceLine =true;
+        private int normalizeCountSemestrs() {
+            int a = (countSemestrs / 4) + 1;
+            if (countSemestrs == 8 || countSemestrs == 12) a--;
+            return a;
+        }
+
+        private int countSemestrs = 8;
+        private boolean interlaceLine = true;
 
         private void makeMarksLine(String nameOfDiscipline, String formOfControl, String mark, String date, boolean status, int index) {
             context = getView().getContext();
@@ -195,5 +221,91 @@ public class MarksFragment extends Fragment {
 
             queryTableLayout.addView(newTagView, index);
         }
+
+        private void makeSemestrLine(int countSemestrsN, int index) {
+            context = getView().getContext();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View newTagView = inflater.inflate(R.layout.marks_list_term, null);
+
+            Button buttonAll = (Button) newTagView.findViewById(R.id.buttonAllSemestrs);
+            if (countSemestrs > 4 && countSemestrsN > 0) {
+                TableRow tableRow = (TableRow) newTagView.findViewById(R.id.tableRowEmpty1);
+                tableRow.setVisibility(View.GONE);
+                buttonAll.setVisibility(View.GONE);
+            }
+            buttonAll.setTag("0");
+            buttonAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickButtonSemestr(v);
+                }
+            });
+
+            Button button1 = (Button) newTagView.findViewById(R.id.button1);
+            button1.setText((countSemestrsN * 4 + 1) + "");
+            button1.setTag((countSemestrsN * 4 + 1) + "");
+            button1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickButtonSemestr(v);
+                }
+            });
+
+            Button button2 = (Button) newTagView.findViewById(R.id.button2);
+            if ((countSemestrsN * 4 + 2) > countSemestrs) {
+                button2.setVisibility(View.GONE);
+                TextView textView31 = (TextView) newTagView.findViewById(R.id.textView31Empty);
+                textView31.setVisibility(View.GONE);
+            } else {
+                button2.setText((countSemestrsN * 4 + 2) + "");
+                button2.setTag((countSemestrsN * 4 + 2) + "");
+                button2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickButtonSemestr(v);
+                    }
+                });
+            }
+
+            Button button3 = (Button) newTagView.findViewById(R.id.button3);
+            if ((countSemestrsN * 4 + 3) > countSemestrs) {
+                button3.setVisibility(View.GONE);
+                TextView textView33 = (TextView) newTagView.findViewById(R.id.textView33Empty);
+                textView33.setVisibility(View.GONE);
+            } else {
+                button3.setText((countSemestrsN * 4 + 3) + "");
+                button3.setTag((countSemestrsN * 4 + 3) + "");
+                button3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickButtonSemestr(v);
+                    }
+                });
+            }
+
+            Button button4 = (Button) newTagView.findViewById(R.id.button4);
+            if ((countSemestrsN * 4 + 4) > countSemestrs) {
+                button4.setVisibility(View.GONE);
+                TextView textView32 = (TextView) newTagView.findViewById(R.id.textView32Empty);
+                textView32.setVisibility(View.GONE);
+            } else {
+                button4.setText((countSemestrsN * 4 + 4) + "");
+                button4.setTag((countSemestrsN * 4 + 4) + "");
+                button4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickButtonSemestr(v);
+                    }
+                });
+            }
+
+            queryTableLayout.addView(newTagView, index);
+        }
+
+
+        public void onClickButtonSemestr(View v) {
+            Log.v("LOGSEMSTR", "Выбран семестр № " + v.getTag());
+        }
+
     }
 }

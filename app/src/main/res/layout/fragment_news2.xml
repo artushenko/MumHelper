@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/empty_title"
+                android:text="Delete this fragment"
                 android:id="@+id/textView4_date_1"
                 android:linksClickable="true"
                 android:textSize="18dp"
