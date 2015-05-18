@@ -1,6 +1,7 @@
 package net.martp.mihail.mumhelper;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -33,7 +34,9 @@ import java.util.ArrayList;
  */
 public class MarksFragment extends Fragment {
 
+
     private static ArrayList<MarkStructure> arrayListMarks = new ArrayList<>();
+    private static String marksUrl = "http://student.miu.by/learning-card.html";
 
     public MarksFragment() {
         // Required empty public constructor
@@ -90,7 +93,8 @@ public class MarksFragment extends Fragment {
             Document doc = null;
             try {
                 //   doc = Jsoup.connect("http://student.miu.by/learning-card/~/sem.all.html")
-                doc = Jsoup.connect("http://student.miu.by/learning-card.html")
+                //    doc = Jsoup.connect("http://student.miu.by/learning-card.html")
+                doc = Jsoup.connect(marksUrl)
                         //  .data("act", "regnum").data("id", "id").data("regnum", "20090312012423").post();
                         .data("act", "regnum").data("id", "id").data("regnum", studentID).post();
             } catch (IOException e) {
@@ -100,9 +104,16 @@ public class MarksFragment extends Fragment {
                 return null;
             }
 
-            Elements countSemestrsHTML = doc.select("a#butsel.but");
-            countSemestrs = Integer.parseInt(countSemestrsHTML.get(0).text());
-           // System.out.print(countSemestrs);
+            try {
+                //Elements countSemestrsHTML = doc.select("a#butsel.but");
+                Elements countSemestrsHTML = doc.select("a.but");
+                // String countSemestrsHTMLString=countSemestrsHTML.get(0).text();
+                countSemestrs = Integer.parseInt(countSemestrsHTML.get(0).text());
+                // System.out.print(countSemestrs);
+            } catch (Exception e) {
+                marksGetDataError = "network";
+                return null;
+            }
 
             Element table = doc.select("table").get(1);
             Elements rows = table.select("tr");
@@ -305,6 +316,17 @@ public class MarksFragment extends Fragment {
 
         public void onClickButtonSemestr(View v) {
             Log.v("LOGSEMSTR", "Выбран семестр № " + v.getTag());
+            if (v.getTag().toString().equals("0"))
+                marksUrl = "http://student.miu.by/learning-card/~/sem.all.html";
+            else
+                marksUrl = "http://student.miu.by/learning-card/~/sem." + v.getTag().toString() + ".html";
+            // http://student.miu.by/learning-card/~/sem.1.html
+            // "http://student.miu.by/learning-card/~/sem."+ v.getTag()+".html"
+            FragmentTransaction fTrans = getFragmentManager().beginTransaction();
+            MarksFragment marksFragment = new MarksFragment();
+            //mTitle = getString(R.string.title_marks);
+            fTrans.replace(R.id.frgmCont, marksFragment);
+            fTrans.commit();
         }
 
     }
