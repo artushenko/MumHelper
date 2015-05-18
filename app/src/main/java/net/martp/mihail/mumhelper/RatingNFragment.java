@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -203,7 +204,27 @@ public class RatingNFragment extends Fragment {
         private void makeRatingsLine(String number, String surname, String name, String avarege, int index) {
             context = getView().getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View newTagView = inflater.inflate(R.layout.rating_list_item, null);
+            View newTagView = inflater.inflate(R.layout.rating_list_item2, null);
+
+            ImageView rtImage = (ImageView)  newTagView.findViewById(R.id.imageViewRaiting);
+          //  Log.v("LOG4", "number = " + number);
+            rtImage.setImageResource(R.drawable.rait10);
+
+            switch (number) {
+        //    switch (Integer.getInteger(number)) {
+                case "1":rtImage.setImageResource(R.drawable.rait1); break;
+                case "2":rtImage.setImageResource(R.drawable.rait2); break;
+                case "3":rtImage.setImageResource(R.drawable.rait3); break;
+                case "4":rtImage.setImageResource(R.drawable.rait4); break;
+                case "5":rtImage.setImageResource(R.drawable.rait5); break;
+                case "6":rtImage.setImageResource(R.drawable.rait6); break;
+                case "7":rtImage.setImageResource(R.drawable.rait7); break;
+                case "8":rtImage.setImageResource(R.drawable.rait8); break;
+                case "9":rtImage.setImageResource(R.drawable.rait9); break;
+                case "10":rtImage.setImageResource(R.drawable.rait10); break;
+                default:rtImage.setImageResource(R.drawable.rait10);break;
+            }
+
 
             TextView textNumberRating = (TextView) newTagView.findViewById(R.id.numberRating);
             textNumberRating.setText(number);
@@ -219,10 +240,10 @@ public class RatingNFragment extends Fragment {
 
 
             if (number.equals("0")) {
-                TableRow tableRow = (TableRow) newTagView.findViewById(R.id.tableRowNumber);
-                tableRow.setVisibility(View.GONE);
+                textNumberRating.setVisibility(View.GONE);
+                rtImage.setVisibility(View.GONE);
 
-                tableRow = (TableRow) newTagView.findViewById(R.id.tableRowLine);
+                TableRow  tableRow = (TableRow) newTagView.findViewById(R.id.tableRowLine);
                 tableRow.setVisibility(View.GONE);
             }
 
@@ -240,7 +261,6 @@ public class RatingNFragment extends Fragment {
 */
             if (currentNameStudent.equals(fullNameStudent)) {
                 TableRow tableRowSurname = (TableRow) newTagView.findViewById(R.id.tableRowSurname);
-                //   TableRow tableRowNumber = (TableRow) newTagView.findViewById(R.id.tableRowNumber);
                 TableRow tableRowName = (TableRow) newTagView.findViewById(R.id.tableRowName);
                 Resources resource = context.getResources();
                 tableRowSurname.setBackgroundColor(resource.getColor(R.color.light_blue44));
