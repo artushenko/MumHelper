@@ -37,7 +37,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15.05.2015"
+            android:text="@string/date_reliz"
             android:id="@+id/textView13_date_reliz"
             android:layout_below="@+id/textView18_version_app"
             android:layout_alignLeft="@+id/textView18_version_app"
@@ -92,7 +92,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Версия 2.1"
+            android:text="@string/version_app"
             android:id="@+id/textView18_version_app"
             android:layout_below="@+id/textView12_app_name"
             android:layout_centerHorizontal="true"

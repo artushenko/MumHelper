@@ -208,7 +208,7 @@ public class RatingNFragment extends Fragment {
 
             ImageView rtImage = (ImageView)  newTagView.findViewById(R.id.imageViewRaiting);
           //  Log.v("LOG4", "number = " + number);
-            rtImage.setImageResource(R.drawable.rait10);
+   //         rtImage.setImageResource(R.drawable.rait10);
 
             switch (number) {
         //    switch (Integer.getInteger(number)) {
