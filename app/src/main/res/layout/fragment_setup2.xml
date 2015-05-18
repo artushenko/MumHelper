@@ -162,7 +162,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/checkBox"
+        android:id="@+id/checkBoxCasheData"
         android:layout_below="@+id/tableRow3"
         android:layout_alignRight="@+id/buttonDeleteStudentID"
         android:layout_alignEnd="@+id/buttonDeleteStudentID"
@@ -185,6 +185,62 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/textView29"
+            android:layout_column="0"
+            android:background="#BDBDBD"
+            android:layout_gravity="center_vertical"
+            android:layout_span="2"
+            android:gravity="center"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:layout_weight="12"
+            android:paddingTop="1dp"
+            android:textSize="0dp"
+            android:paddingBottom="0dp" />
+    </TableRow>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Обновить список преподавателей"
+        android:id="@+id/textView37"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="8dp"
+        android:layout_below="@+id/tableRow4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/buttonUpdateTeachers"
+        android:layout_alignRight="@+id/textView27"
+        android:layout_alignEnd="@+id/textView27" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выполнить"
+        android:id="@+id/buttonUpdateTeachers"
+        android:layout_below="@+id/tableRow4"
+        android:layout_alignRight="@+id/buttonSaveStudentID"
+        android:layout_alignEnd="@+id/buttonSaveStudentID"
+        android:enabled="false" />
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tableRow"
+        android:layout_span="2"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_below="@+id/buttonUpdateTeachers"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/textView38"
             android:layout_column="0"
             android:background="#BDBDBD"
             android:layout_gravity="center_vertical"
