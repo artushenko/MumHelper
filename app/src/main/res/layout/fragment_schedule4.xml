@@ -43,7 +43,8 @@
         android:layout_alignBottom="@+id/textView14"
         android:layout_toRightOf="@+id/textView14"
         android:layout_toEndOf="@+id/textView14"
-        android:lines="1" />
+        android:lines="1"
+        android:singleLine="true" />
 
     <TextView
         android:layout_width="wrap_content"

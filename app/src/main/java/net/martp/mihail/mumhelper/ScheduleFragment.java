@@ -1,6 +1,5 @@
 package net.martp.mihail.mumhelper;
 
-
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -8,7 +7,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,36 +15,34 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
-import android.widget.TableLayout;
+import android.widget.Toast;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ScheduleFragment extends Fragment {
 
-    private static ArrayList<ScheduleStructure> arrayListSchedule = new ArrayList<>();
     static String weekSpinnerText = "1";
     static String dataSearch = "";
+    ArrayList<String> arrayWeekSpinner = new ArrayList<>();
+    private String marksGetDataError = "";
 
     public ScheduleFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        weekSpinnerText = "1";
+        dataSearch = "";
         // Inflate the layout for this fragment
         View viev = inflater.inflate(R.layout.fragment_schedule4, container, false);
         return viev;
@@ -63,24 +59,27 @@ public class ScheduleFragment extends Fragment {
         SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
         String savedNumberGroup = sPref.getString(MainActivity.SAVED_NUMBER_GROUP, "");
 
-        //EditText textEdit = (EditText) getView().findViewById(R.id.groupNumberSearch);
-        //textEdit.setText(savedNumberGroup);
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 getView().findViewById(R.id.groupNumberSearch);
         textView.setText(savedNumberGroup);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getView().getContext(),
                 android.R.layout.simple_dropdown_item_1line, teachers_array);
         textView.setAdapter(adapter);
+        textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                sendRequestToGetSchedule();
+            }
+        });
 
         Spinner spinnerWeek = (Spinner) getView().findViewById(R.id.spinnerWeekNumberSearch);
-        //      Log.e("LOG2", "Spinner= - " + spinnerWeek.getSelectedItem());
 
         if (spinnerWeek.getSelectedItem() != null) {
             weekSpinnerText = spinnerWeek.getSelectedItem().toString(); //16
         } else {
-            weekSpinnerText = "16";
+            weekSpinnerText = "1";
         }
-        Log.e("LOG2", "SpinnerTXT= - " + weekSpinnerText.toString());
 
         ParseDataScheduleAsyncTask parseDataScheduleAsyncTask = new ParseDataScheduleAsyncTask();
         parseDataScheduleAsyncTask.execute();
@@ -89,8 +88,6 @@ public class ScheduleFragment extends Fragment {
 
     private class ParseDataScheduleAsyncTask extends AsyncTask<Void, Integer, Void> {
         public ProgressDialog dialog;
-        TableLayout querySchedultTableLayout;
-        Context context;
 
         @Override
         protected void onPreExecute() {
@@ -102,74 +99,27 @@ public class ScheduleFragment extends Fragment {
             dialog.show();
         }
 
-        private ArrayList<ScheduleStructure> getArraySchedule() {
-            return arrayListSchedule;
-        }
-
-        private void setArraySchedule(ArrayList<ScheduleStructure> arraySchedultf) {
-            arrayListSchedule = arraySchedultf;
-        }
-
-        ArrayList<String> arrayWeekSpinner = new ArrayList<>();
-
-
         @Override
         protected Void doInBackground(Void... params) {
-
-            ArrayList<ScheduleStructure> arrayListScheduetLocal = new ArrayList<>();
-
-
             Document doc = null;
-            Connection.Response res = null;
 
             try {
-                doc = Jsoup.connect("http://miu.by/rus/schedule/schedule.php").get();
+                doc = Jsoup.connect("http://martp.net/miuby.info/parse_miuby_schedule.php?weekn=1").get();
             } catch (IOException e) {
-                //  e.printStackTrace();
-                System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
-//                Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
-                Log.v("TestLog", "Error in network!!!");
+                marksGetDataError = "network";
                 return null;
             }
+            Elements numberWeek = doc.select("body");
 
-            ArrayList<String> arrayN = new ArrayList<String>();
-            Elements elems = doc.select("option");
-            for (Element elem : elems) {
-                arrayN.add(elem.attr("value"));
+            int numberWeekInt = 0;
+            try {
+                numberWeekInt = Integer.parseInt(numberWeek.text());
+            } catch (NumberFormatException e) {
+                numberWeekInt = 40;
             }
-
-            Iterator<String> iterator = arrayN.iterator();
-            ArrayList<String> arrayWeek = new ArrayList<String>();
-            while (iterator.hasNext()) {
-                String arrayEl = iterator.next();
-                if (arrayEl.equals("")) break;
-                arrayWeek.add(arrayEl);
+            for (int i = 1; i < numberWeekInt + 1; i++) {
+                arrayWeekSpinner.add(String.valueOf(i));
             }
-
-            /*
-            ArrayList<String> arraySpeciality = new ArrayList<String>();
-            while (iterator.hasNext()) {
-                String arrayEl = iterator.next();
-                if (arrayEl.equals("")) break;
-                arraySpeciality.add(arrayEl);
-            }
-
-            ArrayList<String> arrayChair = new ArrayList<String>();
-            while (iterator.hasNext()) {
-                String arrayEl = iterator.next();
-                if (arrayEl.equals("")) break;
-                arrayChair.add(arrayEl);
-            }
-*/
-
-            System.out.println("Неделя:");
-            for (String s : arrayWeek) {
-                System.out.print(s + ", ");
-                arrayWeekSpinner.add(s);
-            }
-
-            Log.v("TestLog", "arrayWeekSpinner =" + arrayWeekSpinner);
-
             return null;
         }
 
@@ -178,62 +128,54 @@ public class ScheduleFragment extends Fragment {
             super.onPostExecute(aVoid);
             dialog.dismiss();
 
+            if (!marksGetDataError.equals("")) {
+                if (marksGetDataError.equals("network")) {
+                    Toast.makeText(getActivity(), "Ошибка подключения к сети", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
             Spinner spinnerWeek = (Spinner) getView().findViewById(R.id.spinnerWeekNumberSearch);
-
-            //         ArrayAdapter<String> snprAdapter = new ArrayAdapter(getView().getContext(),
-            //                 android.R.layout.simple_spinner_item, arrayWeekSpinner);
-
             ArrayAdapter<String> snprAdapter = new ArrayAdapter(getView().getContext(),
                     R.layout.schedule_spinner_layout, arrayWeekSpinner);
             snprAdapter.setDropDownViewResource(R.layout.schedule_spinner_layout);
-
             spinnerWeek.setAdapter(snprAdapter);
-
             spinnerWeek.setSelection(arrayWeekSpinner.size() - 1);
-            //setWeekSpinnerText(spinnerWeek.getSelectedItem().toString());
             weekSpinnerText = spinnerWeek.getSelectedItem().toString();
-
             spinnerWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> parent,
                                            View itemSelected, int selectedItemPosition, long selectedId) {
-
-
-                    //hide keyboard when navigation menu is open
-                    View view = getActivity().getCurrentFocus();
-                    if (view != null) {
-                        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    }
-                    //--------------------------------------------
-
-                    Spinner spinnerWeek = (Spinner) getView().findViewById(R.id.spinnerWeekNumberSearch);
-
-                    //                Toast toast = Toast.makeText(getActivity(), "Ваш выбор: " + spinnerWeek.getSelectedItem().toString(), Toast.LENGTH_SHORT);
-                    //                toast.show();
-                    Log.e("LOG1", "log vnutri - " + spinnerWeek.getSelectedItem().toString());
-
-
-                    //EditText textEdit = (EditText) getView().findViewById(R.id.groupNumberSearch);
-                    AutoCompleteTextView textView = (AutoCompleteTextView)
-                            getView().findViewById(R.id.groupNumberSearch);
-                    dataSearch = textView.getText().toString();
-                    weekSpinnerText = spinnerWeek.getSelectedItem().toString();
-
-                    FragmentTransaction fTrans = getFragmentManager().beginTransaction();
-                    ScheduleListFragment scheduleListFragment = new ScheduleListFragment();
-                    fTrans.replace(R.id.scheduleFrameContainer, scheduleListFragment);
-                    fTrans.commit();
-
+                    sendRequestToGetSchedule();
                 }
 
                 public void onNothingSelected(AdapterView<?> parent) {
+                    sendRequestToGetSchedule();//??????
                 }
             });
-
         }
-
-
     }
 
+    private void sendRequestToGetSchedule() {
+        //hide keyboard when navigation menu is open
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+        //--------------------------------------------
 
+        Spinner spinnerWeek = (Spinner) getView().findViewById(R.id.spinnerWeekNumberSearch);
+
+        AutoCompleteTextView textView = (AutoCompleteTextView)
+                getView().findViewById(R.id.groupNumberSearch);
+        dataSearch = textView.getText().toString();
+        weekSpinnerText = spinnerWeek.getSelectedItem().toString();
+
+        FragmentTransaction fTrans = getFragmentManager().beginTransaction();
+        ScheduleListFragment scheduleListFragment = new ScheduleListFragment();
+        fTrans.replace(R.id.scheduleFrameContainer, scheduleListFragment);
+        fTrans.commit();
+    }
 }

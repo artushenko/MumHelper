@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="version_app">Версия 2.1</string>
-    <string name="date_reliz">15.05.2015</string>
+    <string name="version_app">Версия 1.2</string>
+    <string name="date_reliz">19.05.2015</string>
     <string name="app_name_full">Помощник студента МУУ</string>
     <string name="app_name">Student.miu.by</string>
     <string name="title_section1">Section 1</string>
