@@ -38,14 +38,17 @@ public class ScheduleFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public View getViewScheduleFragment;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         weekSpinnerText = "1";
         dataSearch = "";
         // Inflate the layout for this fragment
-        View viev = inflater.inflate(R.layout.fragment_schedule4, container, false);
-        return viev;
+        return getViewScheduleFragment = inflater.inflate(R.layout.fragment_schedule4, container, false);
+       // return inflater.inflate(R.layout.fragment_schedule4, container, false);
+        //viev = inflater.inflate(R.layout.fragment_schedule4, container, false);
+        //return viev;
     }
 
     public static String[] teachers_array = new String[]{
@@ -60,9 +63,10 @@ public class ScheduleFragment extends Fragment {
         String savedNumberGroup = sPref.getString(MainActivity.SAVED_NUMBER_GROUP, "");
 
         AutoCompleteTextView textView = (AutoCompleteTextView)
-                getView().findViewById(R.id.groupNumberSearch);
+                getViewScheduleFragment.findViewById(R.id.groupNumberSearch);
+            //    getView().findViewById(R.id.groupNumberSearch);
         textView.setText(savedNumberGroup);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getView().getContext(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getViewScheduleFragment.getContext(),
                 android.R.layout.simple_dropdown_item_1line, teachers_array);
         textView.setAdapter(adapter);
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,7 +77,7 @@ public class ScheduleFragment extends Fragment {
             }
         });
 
-        Spinner spinnerWeek = (Spinner) getView().findViewById(R.id.spinnerWeekNumberSearch);
+        Spinner spinnerWeek = (Spinner) getViewScheduleFragment.findViewById(R.id.spinnerWeekNumberSearch);
 
         if (spinnerWeek.getSelectedItem() != null) {
             weekSpinnerText = spinnerWeek.getSelectedItem().toString(); //16
@@ -92,16 +96,17 @@ public class ScheduleFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = new ProgressDialog(getView().getContext());
-            dialog.setMessage("Загрузка...");
-            dialog.setIndeterminate(true);
-            dialog.setCancelable(false);
-            dialog.show();
+                dialog = new ProgressDialog(getViewScheduleFragment.getContext());
+                dialog.setMessage("Загрузка...");
+                dialog.setIndeterminate(true);
+                dialog.setCancelable(false);
+                dialog.show();
+
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            Document doc = null;
+            Document doc;
 
             try {
                 doc = Jsoup.connect("http://martp.net/miuby.info/parse_miuby_schedule.php?weekn=1").get();
@@ -111,7 +116,7 @@ public class ScheduleFragment extends Fragment {
             }
             Elements numberWeek = doc.select("body");
 
-            int numberWeekInt = 0;
+            int numberWeekInt;
             try {
                 numberWeekInt = Integer.parseInt(numberWeek.text());
             } catch (NumberFormatException e) {
@@ -137,8 +142,8 @@ public class ScheduleFragment extends Fragment {
                 return;
             }
 
-            Spinner spinnerWeek = (Spinner) getView().findViewById(R.id.spinnerWeekNumberSearch);
-            ArrayAdapter<String> snprAdapter = new ArrayAdapter(getView().getContext(),
+            Spinner spinnerWeek = (Spinner) getViewScheduleFragment.findViewById(R.id.spinnerWeekNumberSearch);
+            ArrayAdapter<String> snprAdapter = new ArrayAdapter(getViewScheduleFragment.getContext(),
                     R.layout.schedule_spinner_layout, arrayWeekSpinner);
             snprAdapter.setDropDownViewResource(R.layout.schedule_spinner_layout);
             spinnerWeek.setAdapter(snprAdapter);
@@ -166,10 +171,10 @@ public class ScheduleFragment extends Fragment {
         }
         //--------------------------------------------
 
-        Spinner spinnerWeek = (Spinner) getView().findViewById(R.id.spinnerWeekNumberSearch);
+        Spinner spinnerWeek = (Spinner) getViewScheduleFragment.findViewById(R.id.spinnerWeekNumberSearch);
 
         AutoCompleteTextView textView = (AutoCompleteTextView)
-                getView().findViewById(R.id.groupNumberSearch);
+                getViewScheduleFragment.findViewById(R.id.groupNumberSearch);
         dataSearch = textView.getText().toString();
         weekSpinnerText = spinnerWeek.getSelectedItem().toString();
 
