@@ -166,7 +166,8 @@
         android:layout_below="@+id/tableRow3"
         android:layout_alignRight="@+id/buttonDeleteStudentID"
         android:layout_alignEnd="@+id/buttonDeleteStudentID"
-        android:paddingRight="15dp" />
+        android:paddingRight="15dp"
+        android:enabled="true" />
 
     <TableRow
         android:layout_width="fill_parent"

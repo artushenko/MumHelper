@@ -44,7 +44,7 @@ public class SetupFragment extends Fragment {
     SharedPreferences sPref;
     EditText editText2_studentID;
     private String image_URL = "";
-    private String imageFileName = "";
+    public String imageFileName = "";
     ImageView iv;
 
 
@@ -88,6 +88,7 @@ public class SetupFragment extends Fragment {
                 SharedPreferences.Editor ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_STUDENT_ID, "");
                 ed.commit();
+                editText2_studentID.setText("");
             }
         };
         btnDeleteID.setOnClickListener(oclBtnDeleteID);
@@ -120,10 +121,9 @@ public class SetupFragment extends Fragment {
         protected Void doInBackground(Void... params) {
 
             Document doc = null;
-            Connection.Response res;// = null;
+            Connection.Response res;
 
             EditText editStudentID = (EditText) getView().findViewById(R.id.inputStudentID);
-
             String studentID = editStudentID.getText().toString();
 
             try {
@@ -145,94 +145,84 @@ public class SetupFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            Element table = doc.select("table").first();
 
             try {
-                Element table = doc.select("table").first();
-                Elements rows = table.select("tr");
-                for (int i = 1; i < rows.size(); i++) {
-                    Element row = rows.get(i);
-                    Elements cols = row.select("td");
-
-                    System.out.print(cols.get(0).text());
-                    System.out.print(" ");
-                    System.out.print(cols.get(1).text());
-                    System.out.println();
-                }
-
-                System.out.println("-------------------------------------------");
-
+                //search image photo url
                 String link = table.select("tr").get(0).select("td").get(0).select("img").first().attr("src");
 
-                System.out.println("http://student.miu.by" + link);
-
-                imageFileName = link;
+              imageFileName = link;
                 image_URL = "http://student.miu.by" + link;
+            } catch (NullPointerException e) {
+                error1 = "No photo in doc";
+           //     System.out.println(error1);
+            //    e.printStackTrace();
+            }
 
-                System.out.println("-------------------------------------------");
-
-                rows = doc.select("table").first().select("tr");
-
+            try {
+                Elements rows = doc.select("table").first().select("tr");
                 SharedPreferences.Editor ed = sPref.edit();
-                ed.putString(MainActivity.SAVED_NUMBER_GROUP, rows.get(0).select("td").get(2).text());
-                ed.commit();
 
-                ed = sPref.edit();
+                if (error1.equals("No photo in doc")) {
+                    ed.putString(MainActivity.SAVED_NUMBER_GROUP, rows.get(0).select("td").get(1).text());
+                } else{
+                   // SharedPreferences.Editor ed = sPref.edit();
+                 //   ed = sPref.edit();
+                   // ed.putString(MainActivity.SAVED_PHOTO, "no");
+                  //  ed.commit();
+                    ed.putString(MainActivity.SAVED_NUMBER_GROUP, rows.get(0).select("td").get(2).text());
+                }
+            //    ed.commit();
+
+          //      ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_SURNAME_STUDENT, rows.get(1).select("td").get(1).text());
-                ed.commit();
+  //              ed.commit();
 
-                ed = sPref.edit();
+    //            ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_NAME_STUDENT, rows.get(2).select("td").get(1).text());
-                ed.commit();
+      //          ed.commit();
 
-                ed = sPref.edit();
+        //        ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_MIDNAME_STUDENT, rows.get(3).select("td").get(1).text());
-                ed.commit();
+          //      ed.commit();
 
-                ed = sPref.edit();
+            //    ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_FACULTY, rows.get(4).select("td").get(1).text());
-                ed.commit();
+              //  ed.commit();
 
-                ed = sPref.edit();
+//                ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_SPECIALTY, rows.get(5).select("td").get(1).text());
-                ed.commit();
+  //              ed.commit();
 
-                ed = sPref.edit();
+    //            ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_AVARAGE_SCORE, rows.get(6).select("td").get(1).text());
-                ed.commit();
+      //          ed.commit();
 
                 //save studentID in preferences
-                ed = sPref.edit();
+        //        ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
                 ed.commit();
 
-                System.out.print(rows.get(1).select("td").get(1).text()); //surName
-                System.out.println();
 
-                System.out.print(rows.get(2).select("td").get(1).text()); //surName
-                System.out.println();
-
-                System.out.print(rows.get(3).select("td").get(1).text()); //surName
-                System.out.println();
-
-                System.out.print(rows.get(4).select("td").get(1).text()); //surName
-                System.out.println();
-
-                System.out.print(rows.get(5).select("td").get(1).text()); //surName
-                System.out.println();
-
-                System.out.print(rows.get(6).select("td").get(1).text()); //surName
-                System.out.println();
-
-                try {
-                    getPhotoFromURL();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    error1 = "Photo not load";
+                if (!error1.equals("No photo in doc")) {
+                    try {
+                        getPhotoFromURL();
+                        return null;
+                    } catch (IOException e) {
+                        error1 = "Photo not load";
+                    }
                 }
+                else {
+                    try {
+                        InputStream bitmap=getActivity().getAssets().open("no_foto2.png");
+                        bm=BitmapFactory.decodeStream(bitmap);
+                    } catch (IOException e) {
+                        error1 = "Photo not load";
+                    }
+                }
+
             } catch (NullPointerException e) {
-                e.printStackTrace();
                 error1 = "ID not found";
-                e.printStackTrace();
             }
             return null;
         }
@@ -273,12 +263,10 @@ public class SetupFragment extends Fragment {
     static Bitmap bm;
 
     public void getPhotoFromURL() throws IOException {
-
         BitmapFactory.Options bmOptions;
         bmOptions = new BitmapFactory.Options();
         bmOptions.inSampleSize = 1;
         bm = LoadImage(image_URL, bmOptions);
-
     }
 
     public Bitmap LoadImage(String URL, BitmapFactory.Options options) throws IOException {
@@ -288,8 +276,8 @@ public class SetupFragment extends Fragment {
             in = OpenHttpConnection(URL);
             bitmap = BitmapFactory.decodeStream(in, null, options);
         } catch (Exception ex) {
+          // Error!!!
             //Toast.makeText(getApplicationContext(), "Problems: " + ex.getMessage(), 1).show();
-            //   Toast.makeText(getApplicationContext(), "Problems: access to network is closed", 1).show();
         } finally {
             if (in != null) {
                 in.close();
@@ -312,8 +300,8 @@ public class SetupFragment extends Fragment {
                 inputStream = httpConn.getInputStream();
             }
         } catch (Exception ex) {
+            // Error!!!
             //Toast.makeText(getApplicationContext(), "Problems: " + ex.getMessage(), 1).show();
-            //  Toast.makeText(getApplicationContext(), "Problems: access to network is closed", 1).show();
         }
         return inputStream;
     }
@@ -334,13 +322,14 @@ public class SetupFragment extends Fragment {
 
             SharedPreferences.Editor ed = sPref.edit();
             ed.putString(MainActivity.SAVED_PHOTO, "yes");
-            Log.e("Show photo yes", sPref.getString(MainActivity.SAVED_PHOTO, ""));
+           // Log.e("photo", "SAVED"+sPref.getString(MainActivity.SAVED_PHOTO, ""));
+      //      Log.e("Show photo yes", sPref.getString(MainActivity.SAVED_PHOTO, ""));
             ed.commit();
 
         } catch (IOException e) {
-            Log.e("Show photo", e.toString());
-            SharedPreferences.Editor ed;// = sPref.edit();
-            ed = sPref.edit();
+        //    Log.e("Show photo", e.toString());
+            SharedPreferences.Editor ed= sPref.edit();
+        //    ed = sPref.edit();
             ed.putString(MainActivity.SAVED_PHOTO, "no");
             ed.commit();
             return e.getMessage();

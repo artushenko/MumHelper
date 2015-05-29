@@ -82,13 +82,13 @@ public class MainActivity extends ActionBarActivity
         RatingNFragment ratingNFragment = new RatingNFragment();
         SetupFragment setupFragment = new SetupFragment();
         OrdersFragment ordersFragment = new OrdersFragment();
-        ScheduleSearchFragment scheduleSearchFragment = new ScheduleSearchFragment();
+   //     ScheduleSearchFragment scheduleSearchFragment = new ScheduleSearchFragment();
         ScheduleFragment scheduleFragment = new ScheduleFragment();
         InfoFragment infoFragment = new InfoFragment();
         FirstStartFragment firstStartFragment=new FirstStartFragment();
 
 
-        SharedPreferences sPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences sPref;// = getPreferences(MODE_PRIVATE);
         switch (number) {
             case 1:
                 //       mTitle = getString(R.string.app_name);
