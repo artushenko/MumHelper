@@ -39,6 +39,7 @@ public class ScheduleFragment extends Fragment {
     }
 
     public View getViewScheduleFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class ScheduleFragment extends Fragment {
         dataSearch = "";
         // Inflate the layout for this fragment
         return getViewScheduleFragment = inflater.inflate(R.layout.fragment_schedule4, container, false);
-       // return inflater.inflate(R.layout.fragment_schedule4, container, false);
+        // return inflater.inflate(R.layout.fragment_schedule4, container, false);
         //viev = inflater.inflate(R.layout.fragment_schedule4, container, false);
         //return viev;
     }
@@ -64,9 +65,9 @@ public class ScheduleFragment extends Fragment {
 
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 getViewScheduleFragment.findViewById(R.id.groupNumberSearch);
-            //    getView().findViewById(R.id.groupNumberSearch);
+        //    getView().findViewById(R.id.groupNumberSearch);
         textView.setText(savedNumberGroup);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getViewScheduleFragment.getContext(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getViewScheduleFragment.getContext(),
                 android.R.layout.simple_dropdown_item_1line, teachers_array);
         textView.setAdapter(adapter);
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,19 +90,17 @@ public class ScheduleFragment extends Fragment {
         parseDataScheduleAsyncTask.execute();
     }
 
-
     private class ParseDataScheduleAsyncTask extends AsyncTask<Void, Integer, Void> {
         public ProgressDialog dialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-                dialog = new ProgressDialog(getViewScheduleFragment.getContext());
-                dialog.setMessage("Загрузка...");
-                dialog.setIndeterminate(true);
-                dialog.setCancelable(false);
-                dialog.show();
-
+            dialog = new ProgressDialog(getViewScheduleFragment.getContext());
+            dialog.setMessage("Загрузка...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
         @Override

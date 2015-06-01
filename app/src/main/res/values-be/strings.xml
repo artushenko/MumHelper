@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="version_app">Версія 1.3</string>
+    <string name="title_info"> Вучэбная карта</string>
+    <string name="title_schedule_search">Пошук па раскладзе </string>
+    <string name="title_news">Навіны універсітэта </string>
+    <string name="action_exit">Выхад</string>
+    <string name="action_settings">Налады</string>
+    <string name="hello_blank_fragment">Навіны універсітэта</string>
+    <string name="app_name_full">Памочнік студэнта МУУ</string>
+    <string name="title_marks">Адзнакі студэнта</string>
+    <string name="title_about_ap">Аб праграме</string>
+    <string name="title_exit">Выхад з праграмы</string>
+    <string name="title_order">Загады</string>
+    <string name="title_rating_group">Рэйтынг у групе</string>
+    <string name="title_schedule">Расклад заняткаў </string>
+    <string name="title_setup">Налады </string>
+    <string name="idea_string">Ідэя і распрацоўка:</string>
+    <string name="full_name_about_app">Мабільная вучэбная картка студэнта Мінскага універсітэта кіравання</string>
+    <string name="developer_name1">Міхаіл Арцюшэнка</string>
+    <string name="thanks_to_all_string">Вялікая ўдзячнасць ўсё тым, хто выказваў свае заўвагі, пажаданні і прапановы.</string>
+</resources>

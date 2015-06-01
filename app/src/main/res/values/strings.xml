@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="version_app">Версия 1.3</string>
-    <string name="date_reliz">29.05.2015</string>
+    <string name="date_reliz" translatable="false">01.06.2015</string>
     <string name="app_name_full">Помощник студента МУУ</string>
-    <string name="app_name">Student.miu.by</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
+    <string name="app_name" translatable="false">Student.MIU.BY</string>
+    <string name="title_section1" translatable="false">Section 1</string>
+    <string name="title_section2" translatable="false">Section 2</string>
 <!--
 <string name="title_main">Главная</string>
  -->
@@ -15,18 +15,21 @@
     <string name="title_schedule">Расписание занятий</string>
     <string name="title_rating_group">Рейтинг в группе</string>
     <string name="title_about_ap">О программе</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="action_example" translatable="false">Example action</string>
     <string name="action_settings">Настройки</string>
     <string name="action_exit">Выход</string>
-    <string name="title_exit">Выход из програмым</string>
+    <string name="title_exit">Выход из программы</string>
     <string name="hello_blank_fragment">Новости университета</string>
     <string name="title_setup">Настройки</string>
     <string name="title_schedule_search">Поиск по расписанию</string>
     <string name="title_info">Учебная карта</string>
-    <string name="empty_title"> </string>
-
+    <string name="empty_title" translatable="false"> </string>
+    <string name="idea_string">Идея и разработка:</string>
+    <string name="full_name_about_app">Мобильная учебная карточка студента Минского университета управления</string>
+    <string name="developer_name1">Михаил Артюшенко</string>
+    <string name="thanks_to_all_string">Огромная благодарность все тем, кто высказывал свои замечания, пожелания и предложения.</string>
 
 
 </resources>

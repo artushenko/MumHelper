@@ -27,6 +27,7 @@ import java.util.ArrayList;
  */
 public class OrdersFragment extends Fragment {
     private static ArrayList<OrderStructure> arrayListOrders = new ArrayList<>();
+    public View getViewOrdersFregment;
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -35,8 +36,7 @@ public class OrdersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View viev = inflater.inflate(R.layout.fragment_orders, container, false);
-        return viev;
+        return getViewOrdersFregment = inflater.inflate(R.layout.fragment_orders, container, false);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class OrdersFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = new ProgressDialog(getView().getContext());
+            dialog = new ProgressDialog(getViewOrdersFregment.getContext());
             dialog.setMessage("Загрузка...");
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
@@ -70,20 +70,19 @@ public class OrdersFragment extends Fragment {
             arrayListOrders = arrayOrdersf;
         }
 
-        private String ordersGetDataError="";
+        private String ordersGetDataError = "";
 
         @Override
         protected Void doInBackground(Void... params) {
-
             ArrayList<OrderStructure> arrayListOrdersLocal = new ArrayList<>();
 
             //Читаем studentID из preferences
             SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
             String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
 
-            ordersGetDataError="";
-            Document doc = null;
-            Connection.Response res = null;
+            ordersGetDataError = "";
+            Document doc;// = null;
+            Connection.Response res;// = null;
 
             try {
                 res = Jsoup.connect("http://student.miu.by/learning-card.html")
@@ -92,7 +91,7 @@ public class OrdersFragment extends Fragment {
                         .execute();
             } catch (IOException e) {
                 //  e.printStackTrace();
-                System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
+                //               System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
 //                Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
                 ordersGetDataError = "network";
                 return null;
@@ -104,22 +103,26 @@ public class OrdersFragment extends Fragment {
                 doc = Jsoup.connect("http://student.miu.by/learning-card/~/my.orders.html")
                         .cookie("PHPSESSID", sessionId).get();
             } catch (IOException e) {
-                e.printStackTrace();
-            //    Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
+                //              e.printStackTrace();
+                //    Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
                 ordersGetDataError = "network";
                 return null;
             }
 
-            Element table = doc.select("table").get(1);
-            Elements rows = table.select("tr");
+            try {
+                Element table = doc.select("table").get(1);
+                Elements rows = table.select("tr");
 
-            for (int i = 1; i < rows.size(); i++) {
-                Element row = rows.get(i);
-                Elements cols = row.select("td");
-                arrayListOrdersLocal.add(new OrderStructure(cols.get(0).text(), cols.get(1).text(), cols.get(2).text()));
+                for (int i = 1; i < rows.size(); i++) {
+                    Element row = rows.get(i);
+                    Elements cols = row.select("td");
+                    arrayListOrdersLocal.add(new OrderStructure(cols.get(0).text(), cols.get(1).text(), cols.get(2).text()));
+                }
+                setArrayOrders(arrayListOrdersLocal);
+            } catch (Exception e) {
+                e.printStackTrace();
+                ordersGetDataError = "other error";
             }
-            setArrayOrders(arrayListOrdersLocal);
-
             return null;
         }
 
@@ -141,7 +144,7 @@ public class OrdersFragment extends Fragment {
 
             OrderStructure orderStructure;
 
-            queryOrderTableLayout = (TableLayout) getView().findViewById(R.id.orderTable);
+            queryOrderTableLayout = (TableLayout) getViewOrdersFregment.findViewById(R.id.orderTable);
 
             for (int i = 0; i < arrayListOrderLocal.size(); i++) {
                 orderStructure = arrayListOrderLocal.get(i);
@@ -152,9 +155,10 @@ public class OrdersFragment extends Fragment {
         }
 
         private void makeOrdersLine(String getCourse, String getNumberOrder, String getTextOrder, int index) {
-            context = getView().getContext();
+            context = getViewOrdersFregment.getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View newTagView = inflater.inflate(R.layout.order_list_item, null);
+            //      View newTagView = inflater.inflate(R.layout.order_list_item, parent,false);
 
             TextView textNumberRating = (TextView) newTagView.findViewById(R.id.course);
             textNumberRating.setText(getCourse);

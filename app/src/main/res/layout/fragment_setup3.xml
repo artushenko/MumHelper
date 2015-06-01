@@ -157,8 +157,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:visibility="invisible" />
+        android:paddingBottom="8dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -168,8 +167,7 @@
         android:layout_alignRight="@+id/buttonDeleteStudentID"
         android:layout_alignEnd="@+id/buttonDeleteStudentID"
         android:paddingRight="15dp"
-        android:enabled="true"
-        android:visibility="invisible" />
+        android:enabled="true" />
 
     <TableRow
         android:layout_width="fill_parent"
@@ -198,8 +196,7 @@
             android:layout_weight="12"
             android:paddingTop="1dp"
             android:textSize="0dp"
-            android:paddingBottom="0dp"
-            android:visibility="invisible" />
+            android:paddingBottom="0dp" />
     </TableRow>
 
     <TextView
@@ -216,8 +213,7 @@
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/buttonUpdateTeachers"
         android:layout_alignRight="@+id/textView27"
-        android:layout_alignEnd="@+id/textView27"
-        android:visibility="invisible" />
+        android:layout_alignEnd="@+id/textView27" />
 
     <Button
         android:layout_width="wrap_content"
@@ -227,8 +223,7 @@
         android:layout_below="@+id/tableRow4"
         android:layout_alignRight="@+id/buttonSaveStudentID"
         android:layout_alignEnd="@+id/buttonSaveStudentID"
-        android:enabled="false"
-        android:visibility="invisible" />
+        android:enabled="false" />
 
     <TableRow
         android:layout_width="fill_parent"
@@ -240,8 +235,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_below="@+id/buttonUpdateTeachers"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible">
+        android:layout_centerHorizontal="true">
 
         <TextView
             android:layout_width="wrap_content"
