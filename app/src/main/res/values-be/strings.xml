@@ -19,4 +19,6 @@
     <string name="full_name_about_app">Мабільная вучэбная картка студэнта Мінскага універсітэта кіравання</string>
     <string name="developer_name1">Міхаіл Арцюшэнка</string>
     <string name="thanks_to_all_string">Вялікая ўдзячнасць ўсё тым, хто выказваў свае заўвагі, пажаданні і прапановы.</string>
+    <string name="string_enter_id_student">увядзіце ID студэнта</string>
+    <string name="string_enter_to_app">Увайсці ў прыкладанне</string>
 </resources>

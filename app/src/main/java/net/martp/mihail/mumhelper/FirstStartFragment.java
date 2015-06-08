@@ -55,7 +55,7 @@ public class FirstStartFragment extends Fragment {
     }
 
     SharedPreferences sPref;
-    EditText editText2_studentID;
+    EditText editStudentID;
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class FirstStartFragment extends Fragment {
         hideKeyboard();
 
 //get studentID from preferences
-        EditText editStudentID = (EditText) getView().findViewById(R.id.editStudentID);
+        editStudentID = (EditText) firstStartFragmentView.findViewById(R.id.editStudentID);
         sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
         editStudentID.setText(sPref.getString(MainActivity.SAVED_STUDENT_ID, ""));
         editStudentID.setFocusable(true);
@@ -76,12 +76,13 @@ public class FirstStartFragment extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_GO) {
 
                     //  if (!editText2_studentID.getText().toString().equals("")||editText2_studentID.getText().length()==14) {
-                    if (editText2_studentID.getText().length() == 14) {
+                    if (editStudentID.getText().length() == 14) {
                         //   hideKeyboard();
 
                         SharedPreferences.Editor ed = sPref.edit();
-                        ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
-                        ed.commit();
+                        ed.putString(MainActivity.SAVED_STUDENT_ID, editStudentID.getText().toString());
+                        //ed.commit();
+                        ed.apply();
 
                         ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
                         parseDataInfoAsyncTask.execute();
@@ -90,6 +91,7 @@ public class FirstStartFragment extends Fragment {
                     }
                     return true;
                 }
+
                 return false;
             }
         });
@@ -97,8 +99,8 @@ public class FirstStartFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
 // saveStudentID
-        Button btnSaveID = (Button) getView().findViewById(R.id.buttonSaveID);
-        editText2_studentID = (EditText) getView().findViewById(R.id.editStudentID);
+        Button btnSaveID = (Button) firstStartFragmentView.findViewById(R.id.buttonSaveID);
+    //    editText2_studentID = (EditText) firstStartFragmentView.findViewById(R.id.editStudentID);
         //     sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
 
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
@@ -107,13 +109,14 @@ public class FirstStartFragment extends Fragment {
 
 //save studentID to preferences
                 //     if (!editText2_studentID.getText().toString().equals("")) {
-                if (editText2_studentID.getText().length() == 14) {
+                if (editStudentID.getText().length() == 14) {
 
                     //   hideKeyboard();
 
                     SharedPreferences.Editor ed = sPref.edit();
-                    ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
-                    ed.commit();
+                    ed.putString(MainActivity.SAVED_STUDENT_ID, editStudentID.getText().toString());
+                    //ed.commit();
+                    ed.apply();
 
                     ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
                     parseDataInfoAsyncTask.execute();
@@ -126,11 +129,13 @@ public class FirstStartFragment extends Fragment {
         btnSaveID.setOnClickListener(oclBtnSaveID);
     }
 
+    View firstStartFragmentView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first_screen, container, false);
+        return firstStartFragmentView=inflater.inflate(R.layout.fragment_first_screen, container, false);
     }
 
     private class ParseDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
@@ -140,7 +145,7 @@ public class FirstStartFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            dialog = new ProgressDialog(getView().getContext());
+            dialog = new ProgressDialog(firstStartFragmentView.getContext());
             dialog.setMessage("Загрузка...");
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
@@ -150,10 +155,10 @@ public class FirstStartFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
 
-            Document doc = null;
-            Connection.Response res = null;
+            Document doc;// = null;
+            Connection.Response res;// = null;
 
-            EditText editStudentID = (EditText) getView().findViewById(R.id.editStudentID);
+            EditText editStudentID = (EditText) firstStartFragmentView.findViewById(R.id.editStudentID);
 
             String studentID = editStudentID.getText().toString();
 
@@ -209,8 +214,9 @@ public class FirstStartFragment extends Fragment {
                 ed.putString(MainActivity.SAVED_FACULTY, rows.get(4).select("td").get(1).text());
                 ed.putString(MainActivity.SAVED_SPECIALTY, rows.get(5).select("td").get(1).text());
                 ed.putString(MainActivity.SAVED_AVARAGE_SCORE, rows.get(6).select("td").get(1).text());
-                ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
-                ed.commit();
+                ed.putString(MainActivity.SAVED_STUDENT_ID, editStudentID.getText().toString());
+              //  ed.commit();
+                ed.apply();
 
                 if (!error1.equals("No photo in doc")) {
                     try {
@@ -245,18 +251,21 @@ public class FirstStartFragment extends Fragment {
                 Toast.makeText(getActivity(), "Ошибка!\nСтудент с таким ID не найден.", Toast.LENGTH_SHORT).show();
                 //  ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_STUDENT_ID, "");
-                ed.commit();
+               // ed.commit();
+                ed.apply();
                 return;
             }
             if (error1.equals("IO Error")) {
                 Toast.makeText(getActivity(), "Ошибка подключения к сети!", Toast.LENGTH_SHORT).show();
                 //  ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_STUDENT_ID, "");
-                ed.commit();
+              //  ed.commit();
+                ed.apply();
                 return;
             }
 
-            ImageView bmImage = (ImageView) getView().findViewById(R.id.imageView4);
+
+            ImageView bmImage = (ImageView) firstStartFragmentView.findViewById(R.id.imageView4);
             bmImage.setImageBitmap(bm);
 
             //save photo to sdcard
@@ -333,8 +342,8 @@ public class FirstStartFragment extends Fragment {
 
     private String getStudentPhoto() {
         String folderToSave = Environment.getExternalStorageDirectory().toString();
-        iv = (ImageView) getView().findViewById(R.id.imageView4);
-        OutputStream fOut = null;
+        iv = (ImageView) firstStartFragmentView.findViewById(R.id.imageView4);
+        OutputStream fOut;// = null;
         try {
             File file = new File(folderToSave, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
             fOut = new FileOutputStream(file);
@@ -348,7 +357,8 @@ public class FirstStartFragment extends Fragment {
             SharedPreferences.Editor ed = sPref.edit();
             ed.putString(MainActivity.SAVED_PHOTO, "yes");
             Log.e("Show photo yes", sPref.getString(MainActivity.SAVED_PHOTO, ""));
-            ed.commit();
+            //ed.commit();
+            ed.apply();
 
             //   MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(),  file.getName());
         } catch (IOException e) {
@@ -356,7 +366,8 @@ public class FirstStartFragment extends Fragment {
             SharedPreferences.Editor ed = sPref.edit();
             //  ed = sPref.edit();
             ed.putString(MainActivity.SAVED_PHOTO, "no");
-            ed.commit();
+            //ed.commit();
+            ed.apply();
             return e.getMessage();
         }
         return "";

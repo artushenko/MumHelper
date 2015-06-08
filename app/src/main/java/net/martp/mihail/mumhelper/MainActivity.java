@@ -17,12 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
-
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
 
     final static public String SAVED_STUDENT_ID = "studentID";
     final static public String SAVED_NAME_STUDENT = "nameStudent";
@@ -60,7 +57,7 @@ public class MainActivity extends ActionBarActivity
         mTitle = getTitle();
 
         // Set up the drawer.
-       mNavigationDrawerFragment.setUp(
+        mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
@@ -82,22 +79,20 @@ public class MainActivity extends ActionBarActivity
         RatingNFragment ratingNFragment = new RatingNFragment();
         SetupFragment setupFragment = new SetupFragment();
         OrdersFragment ordersFragment = new OrdersFragment();
-   //     ScheduleSearchFragment scheduleSearchFragment = new ScheduleSearchFragment();
         ScheduleFragment scheduleFragment = new ScheduleFragment();
         InfoFragment infoFragment = new InfoFragment();
-        FirstStartFragment firstStartFragment=new FirstStartFragment();
+        FirstStartFragment firstStartFragment = new FirstStartFragment();
 
+        SharedPreferences sPref = getPreferences(MODE_PRIVATE);
+        int savedStudentIDvalue;
 
-        SharedPreferences sPref;// = getPreferences(MODE_PRIVATE);
+        String idValue = sPref.getString(SAVED_STUDENT_ID, "");
+        if (idValue != null) savedStudentIDvalue = idValue.length();
+        else savedStudentIDvalue = 0;
+
         switch (number) {
             case 1:
-                //       mTitle = getString(R.string.app_name);
-             //   System.out.println("??? - SAVED_STUDENT_ID");
-           //     mTitle = getString(R.string.title_info);
-
-                //get studentID from preferences
-                sPref = getPreferences(MODE_PRIVATE);
-                if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
+                if (savedStudentIDvalue < 14) {
                     mTitle = getString(R.string.title_setup);
                     fTrans.replace(R.id.frgmCont, firstStartFragment);
                     fTrans.commit();
@@ -106,45 +101,40 @@ public class MainActivity extends ActionBarActivity
                     fTrans.replace(R.id.frgmCont, infoFragment);
                     fTrans.commit();
                 }
-
-             /*
-                fTrans.replace(R.id.frgmCont, infoFragment);
-                fTrans.commit();
- */
                 break;
             case 2:
-                 sPref = getPreferences(MODE_PRIVATE);
-                if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
+                if (savedStudentIDvalue < 14) {
                     mTitle = getString(R.string.title_setup);
                     fTrans.replace(R.id.frgmCont, firstStartFragment);
                     fTrans.commit();
                 } else {
-                mTitle = getString(R.string.title_marks);
-                fTrans.replace(R.id.frgmCont, marksFragment);
-                fTrans.commit();}
+                    mTitle = getString(R.string.title_marks);
+                    fTrans.replace(R.id.frgmCont, marksFragment);
+                    fTrans.commit();
+                }
                 break;
             case 3:
-                sPref = getPreferences(MODE_PRIVATE);
-                if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
+                if (savedStudentIDvalue < 14) {
                     mTitle = getString(R.string.title_setup);
                     fTrans.replace(R.id.frgmCont, firstStartFragment);
                     fTrans.commit();
                 } else {
                     mTitle = getString(R.string.title_order);
 
-                fTrans.replace(R.id.frgmCont, ordersFragment);
-                fTrans.commit();}
+                    fTrans.replace(R.id.frgmCont, ordersFragment);
+                    fTrans.commit();
+                }
                 break;
             case 4:
-                sPref = getPreferences(MODE_PRIVATE);
-                if (sPref.getString(SAVED_STUDENT_ID, "").length()<14) {
+                if (savedStudentIDvalue < 14) {
                     mTitle = getString(R.string.title_setup);
                     fTrans.replace(R.id.frgmCont, firstStartFragment);
                     fTrans.commit();
                 } else {
-                mTitle = getString(R.string.title_rating_group);
-                fTrans.replace(R.id.frgmCont, ratingNFragment);
-                fTrans.commit();}
+                    mTitle = getString(R.string.title_rating_group);
+                    fTrans.replace(R.id.frgmCont, ratingNFragment);
+                    fTrans.commit();
+                }
                 break;
             case 5:
                 mTitle = getString(R.string.title_news);
@@ -156,12 +146,6 @@ public class MainActivity extends ActionBarActivity
                 fTrans.replace(R.id.frgmCont, scheduleFragment);
                 fTrans.commit();
                 break;
- /*           case 7:
-                mTitle = getString(R.string.title_schedule_search);
-                fTrans.replace(R.id.frgmCont, scheduleSearchFragment);
-                fTrans.commit();
-                break;
-                */
             case 7:
                 mTitle = getString(R.string.title_setup);
                 fTrans.replace(R.id.frgmCont, setupFragment);
@@ -173,10 +157,8 @@ public class MainActivity extends ActionBarActivity
                 fTrans.replace(R.id.frgmCont, aboutFragment);
                 fTrans.commit();
                 break;
-      /*      case 10:
-                mTitle = getString(R.string.title_exit);
+            default:
                 break;
-                */
         }
     }
 
@@ -191,9 +173,7 @@ public class MainActivity extends ActionBarActivity
             InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -263,8 +243,8 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
+            //       View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            return inflater.inflate(R.layout.fragment_main, container, false);
         }
 
         @Override
@@ -274,6 +254,4 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
-
 }

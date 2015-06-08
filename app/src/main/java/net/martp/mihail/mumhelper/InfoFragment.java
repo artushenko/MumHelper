@@ -1,60 +1,50 @@
 package net.martp.mihail.mumhelper;
 
-
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.os.Environment;
-import android.preference.Preference;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class InfoFragment extends Fragment {
 
-
     public InfoFragment() {
         // Required empty public constructor
     }
 
+    View infoFragmentView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_info, container, false);
+        return infoFragmentView = inflater.inflate(R.layout.fragment_info, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView showStudentID = (TextView) getView().findViewById(R.id.studentID);
-        TextView showNumberGroup = (TextView) getView().findViewById(R.id.groupNumber);
-        TextView showSurnameStudent = (TextView) getView().findViewById(R.id.surnameStudent);
-        TextView showNameStudent = (TextView) getView().findViewById(R.id.nameStudent);
-        TextView showMidameStudent = (TextView) getView().findViewById(R.id.midnameStudent);
-        TextView showFacultyStudent = (TextView) getView().findViewById(R.id.faculty);
-        TextView showSpecialtyStudent = (TextView) getView().findViewById(R.id.specailty);
-        TextView showAvaregeScStudent = (TextView) getView().findViewById(R.id.avarageScore);
+        TextView showStudentID = (TextView) infoFragmentView.findViewById(R.id.studentID);
+        TextView showNumberGroup = (TextView) infoFragmentView.findViewById(R.id.groupNumber);
+        TextView showSurnameStudent = (TextView) infoFragmentView.findViewById(R.id.surnameStudent);
+        TextView showNameStudent = (TextView) infoFragmentView.findViewById(R.id.nameStudent);
+        TextView showMidameStudent = (TextView) infoFragmentView.findViewById(R.id.midnameStudent);
+        TextView showFacultyStudent = (TextView) infoFragmentView.findViewById(R.id.faculty);
+        TextView showSpecialtyStudent = (TextView) infoFragmentView.findViewById(R.id.specailty);
+        TextView showAvaregeScStudent = (TextView) infoFragmentView.findViewById(R.id.avarageScore);
 
         //get data from preferences
         SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
@@ -76,19 +66,20 @@ public class InfoFragment extends Fragment {
         showSpecialtyStudent.setText(savedSpecialty);
         showAvaregeScStudent.setText(savedAvaregeScore);
 
- //       Log.e("Show photo", sPref.getString(MainActivity.SAVED_PHOTO, ""));
-//        Log.e("Show photo", SetupFragment.bm.toString());
+        ImageView bmImage = (ImageView) infoFragmentView.findViewById(R.id.studentPhoto);
 
-        ImageView bmImage = (ImageView) getView().findViewById(R.id.studentPhoto);
-        if (sPref.getString(MainActivity.SAVED_PHOTO, "").equals("yes")&&SetupFragment.bm!=null) {
+        String statusSavedPhoto = "";
+        String statusSavedPhotoValue = sPref.getString(MainActivity.SAVED_PHOTO, "");
+        if (statusSavedPhotoValue != null) statusSavedPhoto = statusSavedPhotoValue;
+
+        if (statusSavedPhoto.equals("yes") && SetupFragment.bm != null) {
             bmImage.setImageBitmap(SetupFragment.bm);
-        }
-        else {
+        } else {
             String folderToSave = Environment.getExternalStorageDirectory().toString();
-            FileInputStream in=null;
-            BufferedInputStream buf=null;
+            FileInputStream in;// = null;
+            BufferedInputStream buf;// = null;
             try {
-                in = new FileInputStream(folderToSave+"/photoStudent.jpg");
+                in = new FileInputStream(folderToSave + "/photoStudent.jpg");
                 buf = new BufferedInputStream(in);
                 Bitmap bMap = BitmapFactory.decodeStream(buf);
                 bmImage.setImageBitmap(bMap);
@@ -101,10 +92,9 @@ public class InfoFragment extends Fragment {
                 }
 //               Toast.makeText(getActivity(), " Read from sdcard", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
-                Log.e("Error reading file", e.toString());
+                //               Log.e("Error reading file", e.toString());
                 Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 }

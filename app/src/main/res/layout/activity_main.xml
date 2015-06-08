@@ -12,10 +12,8 @@
         <FrameLayout
             android:id="@+id/frgmCont"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="left|top"></FrameLayout>
+            android:layout_height="fill_parent"></FrameLayout>
     </FrameLayout>
-
 
     <fragment android:id="@+id/navigation_drawer"
         android:layout_width="@dimen/navigation_drawer_width" android:layout_height="match_parent"
