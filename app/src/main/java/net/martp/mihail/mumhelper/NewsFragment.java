@@ -1,9 +1,7 @@
 package net.martp.mihail.mumhelper;
 
-
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -13,78 +11,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.io.IOException;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NewsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NewsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NewsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static String[][] arrayNews = new String[5][4];
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private OnFragmentInteractionListener mListener;
-
-    public NewsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NewsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NewsFragment newInstance(String param1, String param2) {
-        NewsFragment fragment = new NewsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private String newsGetDataError = "";
+    private View viewNewsFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_news, container, false);
-        View view = inflater.inflate(R.layout.fragment_news, container, false);
-        return view;
-    }
-
-
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+        return viewNewsFragment = inflater.inflate(R.layout.fragment_news, container, false);
     }
 
     @Override
@@ -95,12 +43,6 @@ public class NewsFragment extends Fragment {
         parseDadaNewsAsyncTask.execute();
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
-
-
     private class ParseDadaNewsAsyncTask extends AsyncTask<Void, Integer, Void> {
         ProgressDialog dialog;
 
@@ -108,58 +50,44 @@ public class NewsFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            dialog = new ProgressDialog(getView().getContext());
+            dialog = new ProgressDialog(viewNewsFragment.getContext());
             dialog.setMessage("Загрузка...");
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
             dialog.show();
         }
 
-        private String[][] getArrayNews() {
-            return arrayNews;
-        }
-
-        private void setArrayNews(String[][] arrayNewsf) {
-            arrayNews = arrayNewsf;
-        }
-
-        private String newsGetDataError = "";
-
         @Override
         protected Void doInBackground(Void... params) {
-            String[][] arrayNewslocal = new String[5][4];
             Document doc;
             newsGetDataError = "";
             try {
                 doc = Jsoup.connect("http://miu.by/").get();
             } catch (IOException e) {
                 newsGetDataError = "network";
-                return null; //ERROR!!!!
+                return null;
             }
-            Elements cols = doc.select("table").get(5).select("tr").get(21).select("td");
+
+            Elements cols = doc.select("table").get(5).select("tr").get(19).select("td");
             doc = Jsoup.parse(cols.get(0).html());
-            Element link;// = doc.select("a").first();
+            Element link;
 
             int n = 0;
             for (int i = 0; i < 10; i++) {
                 link = doc.select("a").get(i);
-                String newsAbsHref = link.attr("href"); // "http://jsoup.org/"
-                String newsAbsTextHref = link.text();
-                System.out.println(newsAbsTextHref + " " + newsAbsHref);
+                String newsHref = link.attr("href");
+                String newsTextHref = link.text();
+  //              System.out.println(newsTextHref + " " + newsHref);
 
-                if (arrayNewslocal[n][0] == null) {
-                    arrayNewslocal[n][0] = newsAbsTextHref;
-                    arrayNewslocal[n][1] = newsAbsHref;
-                } else if (arrayNewslocal[n][2] == null) {
-                    arrayNewslocal[n][2] = newsAbsTextHref;
-                    arrayNewslocal[n][3] = newsAbsHref;
+                if (arrayNews[n][0] == null) {
+                    arrayNews[n][0] = newsTextHref;
+                    arrayNews[n][1] = newsHref;
+                } else if (arrayNews[n][2] == null) {
+                    arrayNews[n][2] = newsTextHref;
+                    arrayNews[n][3] = newsHref;
                     n++;
                 }
-
-                setArrayNews(arrayNewslocal);
             }
-
-
             return null;
         }
 
@@ -177,40 +105,22 @@ public class NewsFragment extends Fragment {
                 return;
             }
 
-            String[][] arrayNewslocal;// = new String[5][4];
-            arrayNewslocal = getArrayNews();
-
-            if (arrayNewslocal[0][0] != null) {
-                TextView newsDate1text = (TextView) getView().findViewById(R.id.textView4_date_1); //to here
-                newsDate1text.setText(Html.fromHtml("<a href=\"http://miu.by" + arrayNewslocal[0][1].toString() + "\">" + arrayNewslocal[0][0].toString() + "</a>"));
-                newsDate1text.setMovementMethod(LinkMovementMethod.getInstance());
-                TextView newsText1text = (TextView) getView().findViewById(R.id.textView); //to here
-                newsText1text.setText(arrayNewslocal[0][2]);
-
-                TextView newsDate2text = (TextView) getView().findViewById(R.id.textView6_date_2); //to here
-                newsDate2text.setMovementMethod(LinkMovementMethod.getInstance());
-                newsDate2text.setText(Html.fromHtml("<a href=\"http://miu.by" + arrayNewslocal[1][1].toString() + "\">" + arrayNewslocal[1][0].toString() + "</a>"));
-                TextView newsText2text = (TextView) getView().findViewById(R.id.textView2); //to here
-                newsText2text.setText(arrayNewslocal[1][2]);
-
-                TextView newsDate3text = (TextView) getView().findViewById(R.id.textView7_date_3); //to here
-                newsDate3text.setMovementMethod(LinkMovementMethod.getInstance());
-                newsDate3text.setText(Html.fromHtml("<a href=\"http://miu.by" + arrayNewslocal[2][1].toString() + "\">" + arrayNewslocal[2][0].toString() + "</a>"));
-                TextView newsText3text = (TextView) getView().findViewById(R.id.textView3); //to here
-                newsText3text.setText(arrayNewslocal[2][2]);
-
-                TextView newsDate4text = (TextView) getView().findViewById(R.id.textView8_date_4); //to here
-                newsDate4text.setMovementMethod(LinkMovementMethod.getInstance());
-                newsDate4text.setText(Html.fromHtml("<a href=\"http://miu.by" + arrayNewslocal[3][1].toString() + "\">" + arrayNewslocal[3][0].toString() + "</a>"));
-                TextView newsText4text = (TextView) getView().findViewById(R.id.textView5); //to here
-                newsText4text.setText(arrayNewslocal[3][2]);
-
-                TextView newsDate5text = (TextView) getView().findViewById(R.id.textView9_date_5); //to here
-                newsDate5text.setMovementMethod(LinkMovementMethod.getInstance());
-                newsDate5text.setText(Html.fromHtml("<a href=\"http://miu.by" + arrayNewslocal[4][1].toString() + "\">" + arrayNewslocal[4][0].toString() + "</a>"));
-                TextView newsText5text = (TextView) getView().findViewById(R.id.textView10); //to here
-                newsText5text.setText(arrayNewslocal[4][2]);
+            if (arrayNews[0][0] != null) {
+                outLineTextNews(arrayNews[0][1], arrayNews[0][0], arrayNews[0][2], R.id.textView4_date_1, R.id.textView);
+                outLineTextNews(arrayNews[1][1], arrayNews[1][0], arrayNews[1][2], R.id.textView6_date_2, R.id.textView2);
+                outLineTextNews(arrayNews[2][1], arrayNews[2][0], arrayNews[2][2], R.id.textView7_date_3, R.id.textView3);
+                outLineTextNews(arrayNews[3][1], arrayNews[3][0], arrayNews[3][2], R.id.textView8_date_4, R.id.textView5);
+                outLineTextNews(arrayNews[4][1], arrayNews[4][0], arrayNews[4][2], R.id.textView9_date_5, R.id.textView10);
             }
         }
+
+        private void outLineTextNews(String urlNews, String dateNews, String textNews, int idDateNews, int idTextNews) {
+            TextView newsDatetext = (TextView) viewNewsFragment.findViewById(idDateNews);
+            newsDatetext.setText(Html.fromHtml("<a href=\"http://miu.by" + urlNews + "\">" + dateNews + "</a>"));
+            newsDatetext.setMovementMethod(LinkMovementMethod.getInstance());
+            TextView newsText = (TextView) viewNewsFragment.findViewById(idTextNews);
+            newsText.setText(textNews);
+        }
+
     }
 }
