@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,23 +34,18 @@ public class ScheduleFragment extends Fragment {
     static String dataSearch = "";
     ArrayList<String> arrayWeekSpinner = new ArrayList<>();
     private String marksGetDataError = "";
+    private View getViewScheduleFragment;
 
     public ScheduleFragment() {
         // Required empty public constructor
     }
-
-    public View getViewScheduleFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         weekSpinnerText = "1";
         dataSearch = "";
-        // Inflate the layout for this fragment
         return getViewScheduleFragment = inflater.inflate(R.layout.fragment_schedule4, container, false);
-        // return inflater.inflate(R.layout.fragment_schedule4, container, false);
-        //viev = inflater.inflate(R.layout.fragment_schedule4, container, false);
-        //return viev;
     }
 
     public static String[] teachers_array = new String[]{
@@ -65,7 +61,6 @@ public class ScheduleFragment extends Fragment {
 
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 getViewScheduleFragment.findViewById(R.id.groupNumberSearch);
-        //    getView().findViewById(R.id.groupNumberSearch);
         textView.setText(savedNumberGroup);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getViewScheduleFragment.getContext(),
                 android.R.layout.simple_dropdown_item_1line, teachers_array);
@@ -148,6 +143,9 @@ public class ScheduleFragment extends Fragment {
             spinnerWeek.setAdapter(snprAdapter);
             spinnerWeek.setSelection(arrayWeekSpinner.size() - 1);
             weekSpinnerText = spinnerWeek.getSelectedItem().toString();
+
+            Log.v("LOG4", "number = " + weekSpinnerText);
+
             spinnerWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> parent,
                                            View itemSelected, int selectedItemPosition, long selectedId) {

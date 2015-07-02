@@ -77,7 +77,8 @@
             android:textStyle="italic"
             android:clickable="false"
             android:layout_below="@+id/textView15_developer"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:autoLink="email" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,7 +88,9 @@
             android:clickable="false"
             android:linksClickable="true"
             android:layout_below="@+id/textView16_email"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:autoLink="web"
+            android:padding="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -107,7 +110,8 @@
             android:layout_below="@+id/textView17_link_blog"
             android:layout_centerHorizontal="true"
             android:clickable="false"
-            android:linksClickable="true" />
+            android:linksClickable="true"
+            android:autoLink="web" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -163,17 +163,19 @@ public class FirstStartFragment extends Fragment {
             String studentID = editStudentID.getText().toString();
 
             try {
-                res = Jsoup.connect("http://student.miu.by/learning-card.html")
+ //               res = Jsoup.connect("http://student.miu.by/learning-card.html")
+                doc = Jsoup.connect("http://student.miu.by/learning-card.html")
                         .data("act", "regnum", "id", "id", "regnum", studentID)
                         .method(Connection.Method.POST)
-                        .execute();
+                        .post();//!
+//                        .execute();
             } catch (IOException e) {
                 error1 = "IO Error";
                 return null;
             }
 
+            /*
             String sessionId = res.cookie("PHPSESSID");
-
             try {
                 doc = Jsoup.connect("http://student.miu.by/learning-card.html")
                         .cookie("PHPSESSID", sessionId)
@@ -182,7 +184,7 @@ public class FirstStartFragment extends Fragment {
                 error1 = "IO Error";
                 return null;
             }
-
+*/
             Element table = doc.select("table").first();
 
             try {

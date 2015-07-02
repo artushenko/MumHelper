@@ -1,8 +1,6 @@
-package net.martp.mihail.mumhelper;
+package net.martp.mihail.mumhelper.Structure;
 
-/**
- * Created by Mihail on 23.01.2015.
- */
+
 public class RatingStructure {
     private String number;
     private String surname;

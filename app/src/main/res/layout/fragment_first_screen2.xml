@@ -76,4 +76,17 @@
         android:layout_centerHorizontal="true"
         android:visibility="invisible" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="На сайте student.mui.by ведутся работы. Возможны сбои в работе приложения."
+        android:id="@+id/textView39"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/holo_red_light"
+        android:layout_below="@+id/buttonSaveID"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp" />
+
 </RelativeLayout>

@@ -73,11 +73,11 @@ public class NewsFragment extends Fragment {
             Element link;
 
             int n = 0;
-            for (int i = 0; i < 10; i++) {
+            for (int i = 1; i < 11; i++) {
                 link = doc.select("a").get(i);
                 String newsHref = link.attr("href");
                 String newsTextHref = link.text();
-  //              System.out.println(newsTextHref + " " + newsHref);
+                //              System.out.println(newsTextHref + " " + newsHref);
 
                 if (arrayNews[n][0] == null) {
                     arrayNews[n][0] = newsTextHref;
@@ -114,7 +114,7 @@ public class NewsFragment extends Fragment {
             }
         }
 
-        private void outLineTextNews(String urlNews, String dateNews, String textNews, int idDateNews, int idTextNews) {
+        private void outLineTextNews(String urlNews, String dateNews, String textNews,  int idDateNews, int idTextNews) {
             TextView newsDatetext = (TextView) viewNewsFragment.findViewById(idDateNews);
             newsDatetext.setText(Html.fromHtml("<a href=\"http://miu.by" + urlNews + "\">" + dateNews + "</a>"));
             newsDatetext.setMovementMethod(LinkMovementMethod.getInstance());

@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import net.martp.mihail.mumhelper.Structure.RatingStructure;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -33,7 +34,10 @@ import java.util.ArrayList;
  */
 public class RatingNFragment extends Fragment {
 
-    private static ArrayList<RatingStructure> arrayListRatingN = new ArrayList<>();
+    //  private static ArrayList<RatingStructure> arrayListRatingN = new ArrayList<>();
+    private String ratingGetDataError = "";
+    View getViewRatingFragment;
+    static private ArrayList<RatingStructure> ratingGroupArrayList = new ArrayList<>();
 
     public RatingNFragment() {
         // Required empty public constructor
@@ -43,8 +47,8 @@ public class RatingNFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_rating_n, container, false);
-        return view;
+        //  View getViewRatingFragment = inflater.inflate(R.layout.fragment_rating_n, container, false);
+        return getViewRatingFragment = inflater.inflate(R.layout.fragment_rating_n, container, false);
     }
 
     @Override
@@ -68,30 +72,29 @@ public class RatingNFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            dialog = new ProgressDialog(getView().getContext());
+            dialog = new ProgressDialog(getViewRatingFragment.getContext());
             dialog.setMessage("Загрузка...");
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
             dialog.show();
         }
 
-        private ArrayList<RatingStructure> getArrayRatingN() {
-            return arrayListRatingN;
-        }
-
+/*
         private void setArrayRatingN(ArrayList<RatingStructure> arrayRating) {
             arrayListRatingN = arrayRating;
         }
 
-        private String ratingGetDataError = "";
+        private ArrayList<RatingStructure> getArrayRatingN() {
+            return arrayListRatingN;
+        }
+*/
 
         @Override
         protected Void doInBackground(Void... params) {
-            ArrayList<RatingStructure> ratingGroupArrayListLocal = new ArrayList<>();
             SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
             String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
-            Document doc = null;
-            Connection.Response res = null;
+            Document doc;// = null;
+            Connection.Response res;// = null;
             ratingGetDataError = "";
             try {
                 res = Jsoup.connect("http://student.miu.by/learning-card.html")
@@ -100,7 +103,7 @@ public class RatingNFragment extends Fragment {
                         .execute();
             } catch (IOException e) {
                 //   e.printStackTrace();
-                System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
+                //    System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
                 //  return;
                 ratingGetDataError = "network";
                 return null;
@@ -113,11 +116,21 @@ public class RatingNFragment extends Fragment {
                         .cookie("PHPSESSID", sessionId)
                         .get();
             } catch (IOException e) {
-                e.printStackTrace();
+                ratingGetDataError = "network";
+                return null;
+                //  e.printStackTrace();
             }
 
-            Element table = doc.select("table").first();
-            Elements rows = table.select("tr");
+
+            Elements rows;// = null;
+            try {
+                Element table = doc.select("table").first();
+                rows = table.select("tr");
+            } catch (Exception e) {
+                ratingGetDataError = "other_error";
+                return null;
+            }
+
             String srBall = "";
             for (int i = 1; i < rows.size(); i++) {
                 Element row = rows.get(i);
@@ -125,41 +138,43 @@ public class RatingNFragment extends Fragment {
 
                 if (cols.size() == 1) {
                     splitFullNamefromStr(cols.get(0).text());
-                    System.out.println(retSurname + " " + retName + " " + srBall);
-                    ratingGroupArrayListLocal.add(new RatingStructure("0", retSurname, retName, srBall));
+                    //                  System.out.println(retSurname + " " + retName + " " + srBall);
+                    ratingGroupArrayList.add(new RatingStructure("0", retSurname, retName, srBall));
 
                     //System.out.println(splitFullNamefromStr(cols.get(0).text()) + " " + srBall);
-                    // ratingGroupArrayListLocal.add(splitFullNamefromStr(cols.get(0).text()) + " " + srBall);
+                    // ratingGroupArrayList.add(splitFullNamefromStr(cols.get(0).text()) + " " + srBall);
                     continue;
                 }
-                System.out.print(cols.get(0).text());
-                System.out.print(" ");
+//                System.out.print(cols.get(0).text());
+//                System.out.print(" ");
 
                 if (cols.get(1).text().equals("")) {
                     splitFullNamefromStr(cols.get(2).text());
                     //  System.out.print(splitFullNamefromStr(cols.get(2).text()));
-                    System.out.print(retName + retSurname);
-                    System.out.print(" ");
+                    //                   System.out.print(retName + retSurname);
+                    //                   System.out.print(" ");
                     srBall = cols.get(3).text(); ///не удалять
                     //System.out.print(srBall = cols.get(3).text());
-                    System.out.print(srBall);
-                    System.out.println();
+                    //                   System.out.print(srBall);
+                    //                  System.out.println();
                 } else {
                     splitFullNamefromStr(cols.get(1).text());
                     //  System.out.print(splitFullNamefromStr(cols.get(2).text()));
-                    System.out.print(retName + retSurname);
-                    System.out.print(" ");
+                    //                  System.out.print(retName + retSurname);
+                    //                   System.out.print(" ");
                     srBall = cols.get(2).text(); ///не удалять
                     //System.out.print(srBall = cols.get(3).text());
-                    System.out.print(srBall);
-                    System.out.println();
+//                    System.out.print(srBall);
+                    //                   System.out.println();
                 }
-                //ratingGroupArrayListLocal.add(cols.get(0).text() + "\n" + splitFullNamefromStr(cols.get(2).text()) + " " + cols.get(3).text());
+                //ratingGroupArrayList.add(cols.get(0).text() + "\n" + splitFullNamefromStr(cols.get(2).text()) + " " + cols.get(3).text());
 
-                ratingGroupArrayListLocal.add(new RatingStructure(cols.get(0).text(), retSurname, retName, srBall));
+                ratingGroupArrayList.add(new RatingStructure(cols.get(0).text(), retSurname, retName, srBall));
             }
 
-            setArrayRatingN(ratingGroupArrayListLocal);
+            if (ratingGroupArrayList.size() == 0) ratingGetDataError = "other_error";
+
+            //      setArrayRatingN(ratingGroupArrayList);
             return null;
         }
 
@@ -168,7 +183,6 @@ public class RatingNFragment extends Fragment {
             retSurname = strArray[0];
             retName = strArray[1] + " " + strArray[2];
         }
-
 
         @Override
         protected void onPostExecute(Void aVoid) {
@@ -184,15 +198,15 @@ public class RatingNFragment extends Fragment {
                 return;
             }
 
-            ArrayList<RatingStructure> arrayListRatingLocal = getArrayRatingN();
+            //         ArrayList<RatingStructure> arrayListRatingLocal = getArrayRatingN();
 
             RatingStructure ratingStructure;
 
-            queryRatingTableLayout = (TableLayout) getView().findViewById(R.id.ratingTable);
+            queryRatingTableLayout = (TableLayout) getViewRatingFragment.findViewById(R.id.ratingTable);
 
 
-            for (int i = 0; i < arrayListRatingLocal.size(); i++) {
-                ratingStructure = arrayListRatingLocal.get(i);
+            for (int i = 0; i < ratingGroupArrayList.size(); i++) {
+                ratingStructure = ratingGroupArrayList.get(i);
                 makeRatingsLine(ratingStructure.getNumber(),
                         ratingStructure.getSurname(),
                         ratingStructure.getName(),
@@ -202,27 +216,49 @@ public class RatingNFragment extends Fragment {
         }
 
         private void makeRatingsLine(String number, String surname, String name, String avarege, int index) {
-            context = getView().getContext();
+            context = getViewRatingFragment.getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View newTagView = inflater.inflate(R.layout.rating_list_item2, null);
 
-            ImageView rtImage = (ImageView)  newTagView.findViewById(R.id.imageViewRaiting);
-          //  Log.v("LOG4", "number = " + number);
-   //         rtImage.setImageResource(R.drawable.rait10);
+            ImageView rtImage = (ImageView) newTagView.findViewById(R.id.imageViewRaiting);
+            //  Log.v("LOG4", "number = " + number);
+            //         rtImage.setImageResource(R.drawable.rait10);
 
             switch (number) {
-        //    switch (Integer.getInteger(number)) {
-                case "1":rtImage.setImageResource(R.drawable.rait1); break;
-                case "2":rtImage.setImageResource(R.drawable.rait2); break;
-                case "3":rtImage.setImageResource(R.drawable.rait3); break;
-                case "4":rtImage.setImageResource(R.drawable.rait4); break;
-                case "5":rtImage.setImageResource(R.drawable.rait5); break;
-                case "6":rtImage.setImageResource(R.drawable.rait6); break;
-                case "7":rtImage.setImageResource(R.drawable.rait7); break;
-                case "8":rtImage.setImageResource(R.drawable.rait8); break;
-                case "9":rtImage.setImageResource(R.drawable.rait9); break;
-                case "10":rtImage.setImageResource(R.drawable.rait10); break;
-                default:rtImage.setImageResource(R.drawable.rait10);break;
+                //    switch (Integer.getInteger(number)) {
+                case "1":
+                    rtImage.setImageResource(R.drawable.rait1);
+                    break;
+                case "2":
+                    rtImage.setImageResource(R.drawable.rait2);
+                    break;
+                case "3":
+                    rtImage.setImageResource(R.drawable.rait3);
+                    break;
+                case "4":
+                    rtImage.setImageResource(R.drawable.rait4);
+                    break;
+                case "5":
+                    rtImage.setImageResource(R.drawable.rait5);
+                    break;
+                case "6":
+                    rtImage.setImageResource(R.drawable.rait6);
+                    break;
+                case "7":
+                    rtImage.setImageResource(R.drawable.rait7);
+                    break;
+                case "8":
+                    rtImage.setImageResource(R.drawable.rait8);
+                    break;
+                case "9":
+                    rtImage.setImageResource(R.drawable.rait9);
+                    break;
+                case "10":
+                    rtImage.setImageResource(R.drawable.rait10);
+                    break;
+                default:
+                    rtImage.setImageResource(R.drawable.rait10);
+                    break;
             }
 
 
@@ -243,7 +279,7 @@ public class RatingNFragment extends Fragment {
                 textNumberRating.setVisibility(View.GONE);
                 rtImage.setVisibility(View.GONE);
 
-                TableRow  tableRow = (TableRow) newTagView.findViewById(R.id.tableRowLine);
+                TableRow tableRow = (TableRow) newTagView.findViewById(R.id.tableRowLine);
                 tableRow.setVisibility(View.GONE);
             }
 

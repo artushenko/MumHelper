@@ -1,8 +1,5 @@
-package net.martp.mihail.mumhelper;
+package net.martp.mihail.mumhelper.Structure;
 
-/**
- * Created by Mihail on 24.12.2014.
- */
 public class MarkStructure {
     boolean status;
     String nameOfDiscipline;

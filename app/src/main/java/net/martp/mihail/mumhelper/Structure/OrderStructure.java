@@ -1,8 +1,5 @@
-package net.martp.mihail.mumhelper;
+package net.martp.mihail.mumhelper.Structure;
 
-/**
- * Created by Mihail on 26.01.2015.
- */
 public class OrderStructure {
 
     String courese;

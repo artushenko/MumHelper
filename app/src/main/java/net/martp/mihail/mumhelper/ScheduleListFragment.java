@@ -16,6 +16,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.martp.mihail.mumhelper.Structure.ScheduleStructure;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 public class ScheduleListFragment extends Fragment {
 
     private static ArrayList<ScheduleStructure> arrayListSchedule = new ArrayList<>();
+    private View viewScheduleFragment;
 
     public ScheduleListFragment() {
         // Required empty public constructor
@@ -40,9 +43,7 @@ public class ScheduleListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View viev = inflater.inflate(R.layout.fragment_schedule_list, container, false);
-        return viev;
+        return viewScheduleFragment = inflater.inflate(R.layout.fragment_schedule_list, container, false);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class ScheduleListFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = new ProgressDialog(getView().getContext());
+            dialog = new ProgressDialog(viewScheduleFragment.getContext());
             dialog.setMessage("Загрузка...");
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
@@ -88,9 +89,10 @@ public class ScheduleListFragment extends Fragment {
                 letterStatus = false;
             }
 
-            Document doc = null;
+            Document doc;
             try {
                 if (letterStatus) {
+                    Log.e("LOG3", "2week= - " + week);
                     doc = Jsoup.connect("http://miu.by/rus/schedule/shedule_load.php")
                             .data("week", week)
                             .data("group", dataSearch)
@@ -189,7 +191,7 @@ public class ScheduleListFragment extends Fragment {
 
             ScheduleStructure scheduleStructure;
 
-            querySchedultTableLayout = (TableLayout) getView().findViewById(R.id.scheduleTableLayout);
+            querySchedultTableLayout = (TableLayout) viewScheduleFragment.findViewById(R.id.scheduleTableLayout);
 
             if (arrayListScheduleLocal.size() > 0) {
                 for (int i = 0; i < arrayListScheduleLocal.size(); i++) {
@@ -212,7 +214,7 @@ public class ScheduleListFragment extends Fragment {
         private boolean interlaceLine =true;
 
         private void makeScheduleLine(String getDate, String getTime, String getSubject, String getTeacher, String getClassroom, String getTypelesson, int index) {
-            context = getView().getContext();
+            context = viewScheduleFragment.getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
           // View newTagView = inflater.inflate(R.layout.schedule_list_item, null);
