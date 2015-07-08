@@ -42,10 +42,12 @@ import java.net.URLConnection;
 public class SetupFragment extends Fragment {
 
     SharedPreferences sPref;
-    EditText editText2_studentID;
+    //  EditText editText2_studentID;
+    EditText editTextStudentID;
     private String image_URL = "";
     public String imageFileName = "";
-    ImageView iv;
+  //  ImageView iv;
+    View getVievSetupFragment;
 
 
     public SetupFragment() {
@@ -57,18 +59,18 @@ public class SetupFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 //get studentID from preferences
-        EditText editStudentID = (EditText) getView().findViewById(R.id.inputStudentID);
-        sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
-        editStudentID.setText(sPref.getString(MainActivity.SAVED_STUDENT_ID, ""));
+        editTextStudentID = (EditText) getVievSetupFragment.findViewById(R.id.inputStudentID);
+        sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        editTextStudentID.setText(sPref.getString(MainActivity.SAVED_STUDENT_ID, ""));
 
 // saveStudentID
-        Button btnSaveID = (Button) getView().findViewById(R.id.buttonSaveStudentID);
-        editText2_studentID = (EditText) getView().findViewById(R.id.inputStudentID);
+        Button btnSaveID = (Button) getVievSetupFragment.findViewById(R.id.buttonSaveStudentID);
+        // editText2_studentID = (EditText) getVievSetupFragment.findViewById(R.id.inputStudentID);
 
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editText2_studentID.getText().length() == 14) {
+                if (editTextStudentID.getText().length() == 14) {
                     //hidden keyboard
                     hideKeyboard();
 
@@ -81,14 +83,14 @@ public class SetupFragment extends Fragment {
         };
         btnSaveID.setOnClickListener(oclBtnSaveID);
 
-        Button btnDeleteID = (Button) getView().findViewById(R.id.buttonDeleteStudentID);
+        Button btnDeleteID = (Button) getVievSetupFragment.findViewById(R.id.buttonDeleteStudentID);
         View.OnClickListener oclBtnDeleteID = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_STUDENT_ID, "");
-                ed.commit();
-                editText2_studentID.setText("");
+                ed.apply();
+                editTextStudentID.setText("");
             }
         };
         btnDeleteID.setOnClickListener(oclBtnDeleteID);
@@ -98,8 +100,7 @@ public class SetupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View viev = inflater.inflate(R.layout.fragment_setup2, container, false);
-        return viev;
+        return getVievSetupFragment = inflater.inflate(R.layout.fragment_setup2, container, false);
     }
 
     private class ParseDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
@@ -110,7 +111,7 @@ public class SetupFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            dialog = new ProgressDialog(getView().getContext());
+            dialog = new ProgressDialog(getVievSetupFragment.getContext());
             dialog.setMessage("Загрузка...");
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
@@ -120,10 +121,10 @@ public class SetupFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
 
-            Document doc = null;
+            Document doc;// = null;
             Connection.Response res;
 
-            EditText editStudentID = (EditText) getView().findViewById(R.id.inputStudentID);
+            EditText editStudentID = (EditText) getVievSetupFragment.findViewById(R.id.inputStudentID);
             String studentID = editStudentID.getText().toString();
 
             try {
@@ -143,20 +144,26 @@ public class SetupFragment extends Fragment {
                         .cookie("PHPSESSID", sessionId)
                         .get();
             } catch (IOException e) {
-                e.printStackTrace();
+                error1 = "IO Error";
+                return null;
             }
-            Element table = doc.select("table").first();
+
+            Element table;// = null;
+            try {
+                table = doc.select("table").first();
+            } catch (Exception e) {
+                error1 = "Other error";
+                return null;
+            }
 
             try {
                 //search image photo url
                 String link = table.select("tr").get(0).select("td").get(0).select("img").first().attr("src");
 
-              imageFileName = link;
+                imageFileName = link;
                 image_URL = "http://student.miu.by" + link;
             } catch (NullPointerException e) {
                 error1 = "No photo in doc";
-           //     System.out.println(error1);
-            //    e.printStackTrace();
             }
 
             try {
@@ -165,44 +172,17 @@ public class SetupFragment extends Fragment {
 
                 if (error1.equals("No photo in doc")) {
                     ed.putString(MainActivity.SAVED_NUMBER_GROUP, rows.get(0).select("td").get(1).text());
-                } else{
-                   // SharedPreferences.Editor ed = sPref.edit();
-                 //   ed = sPref.edit();
-                   // ed.putString(MainActivity.SAVED_PHOTO, "no");
-                  //  ed.commit();
+                } else {
                     ed.putString(MainActivity.SAVED_NUMBER_GROUP, rows.get(0).select("td").get(2).text());
                 }
-            //    ed.commit();
-
-          //      ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_SURNAME_STUDENT, rows.get(1).select("td").get(1).text());
-  //              ed.commit();
-
-    //            ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_NAME_STUDENT, rows.get(2).select("td").get(1).text());
-      //          ed.commit();
-
-        //        ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_MIDNAME_STUDENT, rows.get(3).select("td").get(1).text());
-          //      ed.commit();
-
-            //    ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_FACULTY, rows.get(4).select("td").get(1).text());
-              //  ed.commit();
-
-//                ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_SPECIALTY, rows.get(5).select("td").get(1).text());
-  //              ed.commit();
-
-    //            ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_AVARAGE_SCORE, rows.get(6).select("td").get(1).text());
-      //          ed.commit();
-
-                //save studentID in preferences
-        //        ed = sPref.edit();
-                ed.putString(MainActivity.SAVED_STUDENT_ID, editText2_studentID.getText().toString());
-                ed.commit();
-
+                ed.putString(MainActivity.SAVED_STUDENT_ID, editTextStudentID.getText().toString());
+                ed.apply();
 
                 if (!error1.equals("No photo in doc")) {
                     try {
@@ -211,11 +191,10 @@ public class SetupFragment extends Fragment {
                     } catch (IOException e) {
                         error1 = "Photo not load";
                     }
-                }
-                else {
+                } else {
                     try {
-                        InputStream bitmap=getActivity().getAssets().open("no_foto2.png");
-                        bm=BitmapFactory.decodeStream(bitmap);
+                        InputStream bitmap = getActivity().getAssets().open("no_foto2.png");
+                        bm = BitmapFactory.decodeStream(bitmap);
                     } catch (IOException e) {
                         error1 = "Photo not load";
                     }
@@ -243,11 +222,15 @@ public class SetupFragment extends Fragment {
                 return;
             }
 
-            ImageView bmImage = (ImageView) getView().findViewById(R.id.imageView3);
+            if (error1.equals("Other error")) {
+                Toast.makeText(getActivity(), "Неизвестная ошибка!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            ImageView bmImage = (ImageView) getVievSetupFragment.findViewById(R.id.imageView3);
             bmImage.setImageBitmap(bm);
 
             //save photo to sdcard
-            getStudentPhoto();
+            getStudentPhoto((ImageView) getVievSetupFragment.findViewById(R.id.imageView3));
         }
     }
 
@@ -276,8 +259,7 @@ public class SetupFragment extends Fragment {
             in = OpenHttpConnection(URL);
             bitmap = BitmapFactory.decodeStream(in, null, options);
         } catch (Exception ex) {
-          // Error!!!
-            //Toast.makeText(getApplicationContext(), "Problems: " + ex.getMessage(), 1).show();
+            Toast.makeText(getActivity(), "Ошибка подключения к сети!", Toast.LENGTH_SHORT).show();
         } finally {
             if (in != null) {
                 in.close();
@@ -306,34 +288,43 @@ public class SetupFragment extends Fragment {
         return inputStream;
     }
 
-    private String getStudentPhoto() {
-        String folderToSave = Environment.getExternalStorageDirectory().toString();
-        iv = (ImageView) getView().findViewById(R.id.imageView3);
-        OutputStream fOut;// = null;
+    public void getStudentPhoto(ImageView getImageViewFrom) {
+        //    String folderToSave = Environment.getExternalStorageDirectory().toString();
+
+        File sdPath = Environment.getExternalStorageDirectory();
+        sdPath = new File(sdPath.getAbsolutePath() + "/student.miu.by");
+        if (sdPath.mkdirs()) {Toast.makeText(getActivity(), "Приложение создало каталог\n"+sdPath.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+
+        //   Toast.makeText(getActivity(), "sdPath.mkdirs()", Toast.LENGTH_SHORT).show();
+        //   iv = (ImageView) getVievSetupFragment.findViewById(R.id.imageView3);
+       // iv = getImageView;
+        OutputStream fOut;
+        SharedPreferences.Editor ed = sPref.edit();
         try {
-            File file = new File(folderToSave, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
+            // File file= new File(folderToSave, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
+            File file = new File(sdPath, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
             fOut = new FileOutputStream(file);
 
-            Bitmap bitmap = ((BitmapDrawable) iv.getDrawable()).getBitmap();
+            Bitmap bitmap = ((BitmapDrawable) getImageViewFrom.getDrawable()).getBitmap();
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
             fOut.flush();
             fOut.close();
 
-            SharedPreferences.Editor ed = sPref.edit();
-            ed.putString(MainActivity.SAVED_PHOTO, "yes");
-           // Log.e("photo", "SAVED"+sPref.getString(MainActivity.SAVED_PHOTO, ""));
-      //      Log.e("Show photo yes", sPref.getString(MainActivity.SAVED_PHOTO, ""));
-            ed.commit();
+
+            ed.putString(MainActivity.SAVED_PHOTO, "yes").apply();
+            //ed.apply();
 
         } catch (IOException e) {
-        //    Log.e("Show photo", e.toString());
-            SharedPreferences.Editor ed= sPref.edit();
-        //    ed = sPref.edit();
-            ed.putString(MainActivity.SAVED_PHOTO, "no");
-            ed.commit();
-            return e.getMessage();
+            //      SharedPreferences.Editor ed = sPref.edit();
+            ed.putString(MainActivity.SAVED_PHOTO, "no").apply();
+            //ed.apply();
+            Toast.makeText(getActivity(), "Произошла какая-то ошибка #8", Toast.LENGTH_SHORT).show();
+            Log.v("ERRR", "ERRR2 " + e);
+            //   return;
         }
-        return "";
     }
+    // return;
 }

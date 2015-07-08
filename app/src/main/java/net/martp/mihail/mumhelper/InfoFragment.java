@@ -1,6 +1,7 @@
 package net.martp.mihail.mumhelper;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,7 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,30 +28,31 @@ public class InfoFragment extends Fragment {
         // Required empty public constructor
     }
 
-    View infoFragmentView;
+    View getViewInfoFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return infoFragmentView = inflater.inflate(R.layout.fragment_info, container, false);
+        return getViewInfoFragment = inflater.inflate(R.layout.fragment_info, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState)  {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView showStudentID = (TextView) infoFragmentView.findViewById(R.id.studentID);
-        TextView showNumberGroup = (TextView) infoFragmentView.findViewById(R.id.groupNumber);
-        TextView showSurnameStudent = (TextView) infoFragmentView.findViewById(R.id.surnameStudent);
-        TextView showNameStudent = (TextView) infoFragmentView.findViewById(R.id.nameStudent);
-        TextView showMidameStudent = (TextView) infoFragmentView.findViewById(R.id.midnameStudent);
-        TextView showFacultyStudent = (TextView) infoFragmentView.findViewById(R.id.faculty);
-        TextView showSpecialtyStudent = (TextView) infoFragmentView.findViewById(R.id.specailty);
-        TextView showAvaregeScStudent = (TextView) infoFragmentView.findViewById(R.id.avarageScore);
+        TextView showStudentID = (TextView) getViewInfoFragment.findViewById(R.id.studentID);
+        TextView showNumberGroup = (TextView) getViewInfoFragment.findViewById(R.id.groupNumber);
+        TextView showSurnameStudent = (TextView) getViewInfoFragment.findViewById(R.id.surnameStudent);
+        TextView showNameStudent = (TextView) getViewInfoFragment.findViewById(R.id.nameStudent);
+        TextView showMidameStudent = (TextView) getViewInfoFragment.findViewById(R.id.midnameStudent);
+        TextView showFacultyStudent = (TextView) getViewInfoFragment.findViewById(R.id.faculty);
+        TextView showSpecialtyStudent = (TextView) getViewInfoFragment.findViewById(R.id.specailty);
+        TextView showAvaregeScStudent = (TextView) getViewInfoFragment.findViewById(R.id.avarageScore);
 
         //get data from preferences
-        SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+      //  SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+        SharedPreferences sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String savedStudentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
         String savedSurnameStudent = sPref.getString(MainActivity.SAVED_SURNAME_STUDENT, "");
         String savedNameStudent = sPref.getString(MainActivity.SAVED_NAME_STUDENT, "");
@@ -66,34 +71,52 @@ public class InfoFragment extends Fragment {
         showSpecialtyStudent.setText(savedSpecialty);
         showAvaregeScStudent.setText(savedAvaregeScore);
 
-        ImageView bmImage = (ImageView) infoFragmentView.findViewById(R.id.studentPhoto);
+        ImageView bmImage = (ImageView) getViewInfoFragment.findViewById(R.id.studentPhoto);
 
         String statusSavedPhoto = "";
         String statusSavedPhotoValue = sPref.getString(MainActivity.SAVED_PHOTO, "");
         if (statusSavedPhotoValue != null) statusSavedPhoto = statusSavedPhotoValue;
 
-        if (statusSavedPhoto.equals("yes") && SetupFragment.bm != null) {
+        if (statusSavedPhoto.equals("yes") && (SetupFragment.bm != null)) {
             bmImage.setImageBitmap(SetupFragment.bm);
         } else {
-            String folderToSave = Environment.getExternalStorageDirectory().toString();
-            FileInputStream in;// = null;
-            BufferedInputStream buf;// = null;
+            //get url path app folder
+            File sdPath = Environment.getExternalStorageDirectory();
+            sdPath = new File(sdPath.getAbsolutePath() + "/student.miu.by");
+
+            FileInputStream in = null;
+            BufferedInputStream buf = null;
             try {
-                in = new FileInputStream(folderToSave + "/photoStudent.jpg");
+                in = new FileInputStream(sdPath + "/photoStudent.jpg");
                 buf = new BufferedInputStream(in);
                 Bitmap bMap = BitmapFactory.decodeStream(buf);
                 bmImage.setImageBitmap(bMap);
-
+            } catch (Exception e) {
+                // if file photoStudent.jpg not found get file no_foto2.png from Assets
+                Toast.makeText(getActivity(), "Неизвестная ошибка #3", Toast.LENGTH_SHORT).show();
+                try {
+                    InputStream bitmap = getActivity().getAssets().open("no_foto2.png");
+                    Bitmap bm = BitmapFactory.decodeStream(bitmap);
+                    bmImage.setImageBitmap(bm);
+                } catch (IOException e1) {
+                    Toast.makeText(getActivity(), "Неизвестная ошибка #4", Toast.LENGTH_SHORT).show();
+                }
+            }
+            finally {
                 if (in != null) {
-                    in.close();
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        Toast.makeText(getActivity(), "Неизвестная ошибка #1", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 if (buf != null) {
-                    buf.close();
+                    try {
+                        buf.close();
+                    } catch (IOException e) {
+                        Toast.makeText(getActivity(), "Неизвестная ошибка #2", Toast.LENGTH_SHORT).show();
+                    }
                 }
-//               Toast.makeText(getActivity(), " Read from sdcard", Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                //               Log.e("Error reading file", e.toString());
-                Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
             }
         }
     }

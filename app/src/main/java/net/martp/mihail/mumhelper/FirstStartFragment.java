@@ -46,9 +46,8 @@ import java.net.URLConnection;
 public class FirstStartFragment extends Fragment {
 
     private String image_URL = "";
-//    private String imageFileName;// = "";
-    ImageView iv;
-    private static Bitmap bm;
+ //   ImageView iv;
+//    private static Bitmap bm;
 
     public FirstStartFragment() {
         // Required empty public constructor
@@ -65,7 +64,8 @@ public class FirstStartFragment extends Fragment {
 
 //get studentID from preferences
         editStudentID = (EditText) firstStartFragmentView.findViewById(R.id.editStudentID);
-        sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+       // sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+        sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         editStudentID.setText(sPref.getString(MainActivity.SAVED_STUDENT_ID, ""));
         editStudentID.setFocusable(true);
 
@@ -74,14 +74,11 @@ public class FirstStartFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId,
                                           KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_GO) {
-
-                    //  if (!editText2_studentID.getText().toString().equals("")||editText2_studentID.getText().length()==14) {
                     if (editStudentID.getText().length() == 14) {
                         //   hideKeyboard();
 
                         SharedPreferences.Editor ed = sPref.edit();
                         ed.putString(MainActivity.SAVED_STUDENT_ID, editStudentID.getText().toString());
-                        //ed.commit();
                         ed.apply();
 
                         ParseDataInfoAsyncTask parseDataInfoAsyncTask = new ParseDataInfoAsyncTask();
@@ -100,15 +97,11 @@ public class FirstStartFragment extends Fragment {
 
 // saveStudentID
         Button btnSaveID = (Button) firstStartFragmentView.findViewById(R.id.buttonSaveID);
-    //    editText2_studentID = (EditText) firstStartFragmentView.findViewById(R.id.editStudentID);
-        //     sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
-
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 //save studentID to preferences
-                //     if (!editText2_studentID.getText().toString().equals("")) {
                 if (editStudentID.getText().length() == 14) {
 
                     //   hideKeyboard();
@@ -155,8 +148,8 @@ public class FirstStartFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
 
-            Document doc;// = null;
-            Connection.Response res;// = null;
+            Document doc;
+      //      Connection.Response res;
 
             EditText editStudentID = (EditText) firstStartFragmentView.findViewById(R.id.editStudentID);
 
@@ -230,7 +223,7 @@ public class FirstStartFragment extends Fragment {
                 } else {
                     try {
                         InputStream bitmap = getActivity().getAssets().open("no_foto2.png");
-                        bm = BitmapFactory.decodeStream(bitmap);
+                        SetupFragment.bm = BitmapFactory.decodeStream(bitmap);
                     } catch (IOException e1) {
                         error1 = "Photo not load";
                     }
@@ -251,33 +244,30 @@ public class FirstStartFragment extends Fragment {
             SharedPreferences.Editor ed = sPref.edit();
             if (error1.equals("ID not found")) {
                 Toast.makeText(getActivity(), "Ошибка!\nСтудент с таким ID не найден.", Toast.LENGTH_SHORT).show();
-                //  ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_STUDENT_ID, "");
-               // ed.commit();
                 ed.apply();
                 return;
             }
             if (error1.equals("IO Error")) {
                 Toast.makeText(getActivity(), "Ошибка подключения к сети!", Toast.LENGTH_SHORT).show();
-                //  ed = sPref.edit();
                 ed.putString(MainActivity.SAVED_STUDENT_ID, "");
-              //  ed.commit();
                 ed.apply();
                 return;
             }
 
-
             ImageView bmImage = (ImageView) firstStartFragmentView.findViewById(R.id.imageView4);
-            bmImage.setImageBitmap(bm);
+            bmImage.setImageBitmap(SetupFragment.bm);
 
             //save photo to sdcard
             try {
-                getStudentPhoto();
+                //SetupFragment.getStudentPhoto(R.id.imageView4);
+           //    new SetupFragment().getStudentPhoto((ImageView) firstStartFragmentView.findViewById(R.id.imageView4));
+            getStudentPhoto((ImageView) firstStartFragmentView.findViewById(R.id.imageView4));
+
             } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getActivity(), "Произошла какая-то ошибка", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Произошла какая-то ошибка #5", Toast.LENGTH_SHORT).show();
+                Log.v("ERRR", "ERRR " + e);
             }
-            //     Toast.makeText(getActivity(), "Все прошло успешно!!!!", Toast.LENGTH_SHORT).show();
             hideKeyboard();
 
             FragmentTransaction fTrans = getFragmentManager().beginTransaction();
@@ -301,8 +291,7 @@ public class FirstStartFragment extends Fragment {
         BitmapFactory.Options bmOptions;
         bmOptions = new BitmapFactory.Options();
         bmOptions.inSampleSize = 1;
-        //Bitmap bm = LoadImage(image_URL, bmOptions);
-        bm = LoadImage(image_URL, bmOptions);
+        SetupFragment.bm = LoadImage(image_URL, bmOptions);
     }
 
     public Bitmap LoadImage(String URL, BitmapFactory.Options options) throws IOException {
@@ -312,8 +301,7 @@ public class FirstStartFragment extends Fragment {
             in = OpenHttpConnection(URL);
             bitmap = BitmapFactory.decodeStream(in, null, options);
         } catch (Exception ex) {
-            //Toast.makeText(getApplicationContext(), "Problems: " + ex.getMessage(), 1).show();
-            //   Toast.makeText(getApplicationContext(), "Problems: access to network is closed", 1).show();
+            Toast.makeText(getActivity(), "Произошла какая-то ошибка #6", Toast.LENGTH_SHORT).show();
         } finally {
             if (in != null) {
                 in.close();
@@ -336,42 +324,76 @@ public class FirstStartFragment extends Fragment {
                 inputStream = httpConn.getInputStream();
             }
         } catch (Exception ex) {
-            //Toast.makeText(getApplicationContext(), "Problems: " + ex.getMessage(), 1).show();
-            //  Toast.makeText(getApplicationContext(), "Problems: access to network is closed", 1).show();
+            Toast.makeText(getActivity(), "Произошла какая-то ошибка #7", Toast.LENGTH_SHORT).show();
         }
         return inputStream;
     }
-
+/*
     private String getStudentPhoto() {
-        String folderToSave = Environment.getExternalStorageDirectory().toString();
+        File sdPath = Environment.getExternalStorageDirectory();
+        sdPath = new File(sdPath.getAbsolutePath() + "/student.miu.by");
+
         iv = (ImageView) firstStartFragmentView.findViewById(R.id.imageView4);
-        OutputStream fOut;// = null;
+        OutputStream fOut;
         try {
-            File file = new File(folderToSave, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
+            File file = new File(sdPath, "photoStudent.jpg");
             fOut = new FileOutputStream(file);
-
             Bitmap bitmap = ((BitmapDrawable) iv.getDrawable()).getBitmap();
-
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
             fOut.flush();
             fOut.close();
 
             SharedPreferences.Editor ed = sPref.edit();
             ed.putString(MainActivity.SAVED_PHOTO, "yes");
-            Log.e("Show photo yes", sPref.getString(MainActivity.SAVED_PHOTO, ""));
-            //ed.commit();
+  //          Log.e("Show photo yes", sPref.getString(MainActivity.SAVED_PHOTO, ""));
             ed.apply();
-
-            //   MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(),  file.getName());
         } catch (IOException e) {
-            Log.e("Show photo", e.toString());
+          //  Log.e("Show photo", e.toString());
             SharedPreferences.Editor ed = sPref.edit();
-            //  ed = sPref.edit();
             ed.putString(MainActivity.SAVED_PHOTO, "no");
-            //ed.commit();
             ed.apply();
             return e.getMessage();
         }
         return "";
     }
+    */
+
+    public void getStudentPhoto(ImageView getImageViewFrom) {
+        //    String folderToSave = Environment.getExternalStorageDirectory().toString();
+
+        File sdPath = Environment.getExternalStorageDirectory();
+        sdPath = new File(sdPath.getAbsolutePath() + "/student.miu.by");
+        if (sdPath.mkdirs()) {Toast.makeText(getActivity(), "Приложение создало каталог\n"+sdPath.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        //   Toast.makeText(getActivity(), "sdPath.mkdirs()", Toast.LENGTH_SHORT).show();
+        //   iv = (ImageView) getVievSetupFragment.findViewById(R.id.imageView3);
+        // iv = getImageView;
+        OutputStream fOut;
+        SharedPreferences.Editor ed = sPref.edit();
+        try {
+            // File file= new File(folderToSave, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
+            File file = new File(sdPath, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
+            fOut = new FileOutputStream(file);
+
+            Bitmap bitmap = ((BitmapDrawable) getImageViewFrom.getDrawable()).getBitmap();
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+
+
+            ed.putString(MainActivity.SAVED_PHOTO, "yes").apply();
+            //ed.apply();
+
+        } catch (IOException e) {
+            //      SharedPreferences.Editor ed = sPref.edit();
+            ed.putString(MainActivity.SAVED_PHOTO, "no").apply();
+            //ed.apply();
+            Toast.makeText(getActivity(), "Произошла какая-то ошибка #8", Toast.LENGTH_SHORT).show();
+            Log.v("ERRR", "ERRR2 " + e);
+            //   return;
+        }
+    }
+    // return;
 }
