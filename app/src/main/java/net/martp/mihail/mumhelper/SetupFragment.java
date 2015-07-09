@@ -10,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,8 @@ public class SetupFragment extends Fragment {
     EditText editTextStudentID;
     private String image_URL = "";
     public String imageFileName = "";
-  //  ImageView iv;
+    static Bitmap bm;
+    //  ImageView iv;
     View getVievSetupFragment;
 
 
@@ -94,7 +94,6 @@ public class SetupFragment extends Fragment {
             }
         };
         btnDeleteID.setOnClickListener(oclBtnDeleteID);
-
     }
 
     @Override
@@ -105,7 +104,6 @@ public class SetupFragment extends Fragment {
 
     private class ParseDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
         ProgressDialog dialog;
-
 
         @Override
         protected void onPreExecute() {
@@ -121,7 +119,7 @@ public class SetupFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
 
-            Document doc;// = null;
+            Document doc;
             Connection.Response res;
 
             EditText editStudentID = (EditText) getVievSetupFragment.findViewById(R.id.inputStudentID);
@@ -148,7 +146,7 @@ public class SetupFragment extends Fragment {
                 return null;
             }
 
-            Element table;// = null;
+            Element table;
             try {
                 table = doc.select("table").first();
             } catch (Exception e) {
@@ -223,7 +221,7 @@ public class SetupFragment extends Fragment {
             }
 
             if (error1.equals("Other error")) {
-                Toast.makeText(getActivity(), "Неизвестная ошибка!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Произошла какая-то ошибка #10", Toast.LENGTH_SHORT).show();
                 return;
             }
             ImageView bmImage = (ImageView) getVievSetupFragment.findViewById(R.id.imageView3);
@@ -242,8 +240,6 @@ public class SetupFragment extends Fragment {
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-
-    static Bitmap bm;
 
     public void getPhotoFromURL() throws IOException {
         BitmapFactory.Options bmOptions;
@@ -282,29 +278,22 @@ public class SetupFragment extends Fragment {
                 inputStream = httpConn.getInputStream();
             }
         } catch (Exception ex) {
-            // Error!!!
-            //Toast.makeText(getApplicationContext(), "Problems: " + ex.getMessage(), 1).show();
+            Toast.makeText(getActivity(), "Произошла какая-то ошибка #9", Toast.LENGTH_SHORT).show();
         }
         return inputStream;
     }
 
     public void getStudentPhoto(ImageView getImageViewFrom) {
-        //    String folderToSave = Environment.getExternalStorageDirectory().toString();
-
         File sdPath = Environment.getExternalStorageDirectory();
         sdPath = new File(sdPath.getAbsolutePath() + "/student.miu.by");
-        if (sdPath.mkdirs()) {Toast.makeText(getActivity(), "Приложение создало каталог\n"+sdPath.toString(), Toast.LENGTH_SHORT).show();
+        if (sdPath.mkdirs()) {
+            Toast.makeText(getActivity(), "Приложение создало каталог\n" + sdPath.toString(), Toast.LENGTH_SHORT).show();
         }
 
-
-        //   Toast.makeText(getActivity(), "sdPath.mkdirs()", Toast.LENGTH_SHORT).show();
-        //   iv = (ImageView) getVievSetupFragment.findViewById(R.id.imageView3);
-       // iv = getImageView;
         OutputStream fOut;
         SharedPreferences.Editor ed = sPref.edit();
         try {
-            // File file= new File(folderToSave, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
-            File file = new File(sdPath, "photoStudent.jpg"); // создать уникальное имя для файла основываясь на дате сохранения
+            File file = new File(sdPath, "photoStudent.jpg");
             fOut = new FileOutputStream(file);
 
             Bitmap bitmap = ((BitmapDrawable) getImageViewFrom.getDrawable()).getBitmap();
@@ -313,18 +302,10 @@ public class SetupFragment extends Fragment {
             fOut.flush();
             fOut.close();
 
-
             ed.putString(MainActivity.SAVED_PHOTO, "yes").apply();
-            //ed.apply();
-
         } catch (IOException e) {
-            //      SharedPreferences.Editor ed = sPref.edit();
             ed.putString(MainActivity.SAVED_PHOTO, "no").apply();
-            //ed.apply();
             Toast.makeText(getActivity(), "Произошла какая-то ошибка #8", Toast.LENGTH_SHORT).show();
-            Log.v("ERRR", "ERRR2 " + e);
-            //   return;
         }
     }
-    // return;
 }

@@ -42,7 +42,6 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
         android:id="@+id/editStudentID"
         android:imeOptions="actionGo"
         android:layout_gravity="center"
@@ -50,8 +49,8 @@
         android:textSize="22sp"
         android:textIsSelectable="false"
         android:gravity="center"
-        android:phoneNumber="false"
-        android:numeric="integer"
+        android:inputType="number"
+        android:digits="0123456789"
         android:lines="1"
         android:maxLength="14"
         android:minWidth="200dp"

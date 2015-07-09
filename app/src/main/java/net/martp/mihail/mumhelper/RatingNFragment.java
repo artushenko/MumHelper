@@ -79,11 +79,12 @@ public class RatingNFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             //SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
-            SharedPreferences sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-            String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
+           // SharedPreferences sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+            String studentID = getActivity().getPreferences(Context.MODE_PRIVATE).getString(MainActivity.SAVED_STUDENT_ID, "");
             Document doc;
             Connection.Response res;
             ratingGetDataError = "";
+            ratingGroupArrayList.clear();
             try {
                 res = Jsoup.connect("http://student.miu.by/learning-card.html")
                         .data("act", "regnum", "id", "id", "regnum", studentID)
@@ -155,7 +156,7 @@ public class RatingNFragment extends Fragment {
                 if (ratingGetDataError.equals("network")) {
                     Toast.makeText(getActivity(), "Ошибка подключения к сети", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Произошла какая-то ошибка #13", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }

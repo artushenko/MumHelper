@@ -1,11 +1,11 @@
 package net.martp.mihail.mumhelper;
 
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,14 +31,11 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class ScheduleListFragment extends Fragment {
-
-    private static ArrayList<ScheduleStructure> arrayListSchedule = new ArrayList<>();
     private View viewScheduleFragment;
 
     public ScheduleListFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,8 +53,10 @@ public class ScheduleListFragment extends Fragment {
 
     private class ParseDataScheduleWeekAsyncTask extends AsyncTask<Void, Integer, Void> {
         public ProgressDialog dialog;
-        TableLayout querySchedultTableLayout;
-        Context context;
+        private TableLayout querySchedultTableLayout;
+        private Context context;
+        private ArrayList<ScheduleStructure> arrayListSchedule = new ArrayList<>();
+        private String scheduleListGetDataError = "";
 
         @Override
         protected void onPreExecute() {
@@ -69,12 +68,9 @@ public class ScheduleListFragment extends Fragment {
             dialog.show();
         }
 
-        private String scheduleListGetDataError="";
-
         @Override
         protected Void doInBackground(Void... params) {
-
-            ArrayList<ScheduleStructure> arrayListScheduetLocal = new ArrayList<>();
+            arrayListSchedule.clear();
 
             String week = ScheduleFragment.weekSpinnerText;
             Log.e("LOG3", "week= - " + week);
@@ -82,12 +78,17 @@ public class ScheduleListFragment extends Fragment {
             String dataSearch = ScheduleFragment.dataSearch;
             Log.e("LOG3", "dataSearch= - " + dataSearch);
 
-            boolean letterStatus = true;
-            try {
-                Integer.parseInt(dataSearch.substring(0, 1));
-            } catch (Exception e) {
-                letterStatus = false;
-            }
+            boolean letterStatus = dataSearch.substring(0, 1).matches("[-+]?\\d+");
+
+            // = true;
+            //          try {
+            //               int a=Integer.parseInt(dataSearch.substring(0, 1));
+
+            //first letter is Digital?
+            //      if (dataSearch.substring(0, 1).matches("[-+]?\\d+")) letterStatus=true;                else letterStatus=false;
+            //        } catch (Exception e) {
+            //           letterStatus = false;
+            //        }
 
             Document doc;
             try {
@@ -107,16 +108,15 @@ public class ScheduleListFragment extends Fragment {
                 }
             } catch (IOException e) {
                 // e.printStackTrace();
-             //   System.out.println("Ошибка подключени к сети main");
+                //   System.out.println("Ошибка подключени к сети main");
                 Log.v("LOG3", "Error in network!!!");
-                scheduleListGetDataError="network";
+                scheduleListGetDataError = "network";
                 return null;
             }
 
             if (doc.text().equals("")) {
-              //  System.out.println("Error empty html");
+                //  System.out.println("Error empty html");
                 Log.v("LOG3", "Error empty html");
-
             } else {
 
                 Element table = doc.select("table").get(0);
@@ -144,33 +144,23 @@ public class ScheduleListFragment extends Fragment {
                         subject = subject + arraySubjectTypeLesson[j] + " ";
                     }
                     //    Log.v("LOG3", "Subject = "+subject);
-
-                    arrayListScheduetLocal.add(new ScheduleStructure(date, cols.get(0).text(), subject, cols.get(2).text(), cols.get(3).text(), typeLesson));
+                    arrayListSchedule.add(new ScheduleStructure(date, cols.get(0).text(), subject, cols.get(2).text(), cols.get(3).text(), typeLesson));
                 }
             }
 
-            for (int i = 0; i < arrayListScheduetLocal.size(); i++) {
-                ScheduleStructure schedultStructure = arrayListScheduetLocal.get(i);
+            /*
+            for (int i = 0; i < arrayListSchedule.size(); i++) {
+                ScheduleStructure schedultStructure = arrayListSchedule.get(i);
                 String getLastDay = "";
-                if (i > 0) getLastDay = arrayListScheduetLocal.get(i - 1).getDate();
+                if (i > 0) getLastDay = arrayListSchedule.get(i - 1).getDate();
                 if (schedultStructure.getDate().equals(getLastDay)) {
                     System.out.println(schedultStructure.getTime() + " " + schedultStructure.getSubject() + " " + schedultStructure.getClassroom() + schedultStructure.getTypelesson() + schedultStructure.getTeacher());
                 } else {
                     System.out.println(schedultStructure.getDate() + "\n" + schedultStructure.getTime() + " " + schedultStructure.getSubject() + " " + schedultStructure.getClassroom() + schedultStructure.getTypelesson() + schedultStructure.getTeacher());
                 }
             }
-
-            setArraySchedule(arrayListScheduetLocal);
-
+            */
             return null;
-        }
-
-        private ArrayList<ScheduleStructure> getArraySchedule() {
-            return arrayListSchedule;
-        }
-
-        private void setArraySchedule(ArrayList<ScheduleStructure> arraySchedultf) {
-            arrayListSchedule = arraySchedultf;
         }
 
         @Override
@@ -182,20 +172,16 @@ public class ScheduleListFragment extends Fragment {
                 if (scheduleListGetDataError.equals("network")) {
                     Toast.makeText(getActivity(), "Ошибка подключения к сети", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Произошла какая-то ошибка #12", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
 
-            ArrayList<ScheduleStructure> arrayListScheduleLocal = getArraySchedule();
-
-            ScheduleStructure scheduleStructure;
-
             querySchedultTableLayout = (TableLayout) viewScheduleFragment.findViewById(R.id.scheduleTableLayout);
 
-            if (arrayListScheduleLocal.size() > 0) {
-                for (int i = 0; i < arrayListScheduleLocal.size(); i++) {
-                    scheduleStructure = arrayListScheduleLocal.get(i);
+            if (arrayListSchedule.size() > 0) {
+                for (int i = 0; i < arrayListSchedule.size(); i++) {
+                    ScheduleStructure scheduleStructure = arrayListSchedule.get(i);
                     makeScheduleLine(scheduleStructure.getDate(),
                             scheduleStructure.getTime(),
                             scheduleStructure.getSubject(),
@@ -210,21 +196,15 @@ public class ScheduleListFragment extends Fragment {
         }
 
         String oldDate = "";
-
-        private boolean interlaceLine =true;
+        private boolean interlaceLine = true;
 
         private void makeScheduleLine(String getDate, String getTime, String getSubject, String getTeacher, String getClassroom, String getTypelesson, int index) {
             context = viewScheduleFragment.getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-          // View newTagView = inflater.inflate(R.layout.schedule_list_item, null);
-
-           View newTagView = inflater.inflate(R.layout.schedule_list_item2, null);
+            View newTagView = inflater.inflate(R.layout.schedule_list_item2, (ViewGroup) getView(), false);
 
             if (interlaceLine) {
                 RelativeLayout scgeduleLayout = (RelativeLayout) newTagView.findViewById(R.id.subjectLayout);
-             //   scgeduleLayout.setBackgroundColor(R.color.light_blue100);
-              //  scgeduleLayout.setBackgroundColor(R.color.background_interlace_line);
                 scgeduleLayout.setBackgroundResource(R.color.background_interlace_line);
             }
             interlaceLine = !interlaceLine;
@@ -258,5 +238,4 @@ public class ScheduleListFragment extends Fragment {
             querySchedultTableLayout.addView(newTagView, index);
         }
     }
-
 }

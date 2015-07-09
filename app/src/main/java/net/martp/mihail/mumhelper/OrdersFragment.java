@@ -3,7 +3,6 @@ package net.martp.mihail.mumhelper;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,8 +27,9 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class OrdersFragment extends Fragment {
-    private static ArrayList<OrderStructure> arrayListOrders = new ArrayList<>();
+
     public View getViewOrdersFregment;
+
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -51,8 +51,10 @@ public class OrdersFragment extends Fragment {
 
     private class ParseDataOrdersAsyncTask extends AsyncTask<Void, Integer, Void> {
         public ProgressDialog dialog;
-        TableLayout queryOrderTableLayout;
-        Context context;
+        private TableLayout queryOrderTableLayout;
+        private Context context;
+        private String ordersGetDataError = "";
+        private ArrayList<OrderStructure> arrayListOrders = new ArrayList<>();
 
         @Override
         protected void onPreExecute() {
@@ -64,27 +66,13 @@ public class OrdersFragment extends Fragment {
             dialog.show();
         }
 
-        private ArrayList<OrderStructure> getArrayOrders() {
-            return arrayListOrders;
-        }
-
-        private void setArrayOrders(ArrayList<OrderStructure> arrayOrdersf) {
-            arrayListOrders = arrayOrdersf;
-        }
-
-        private String ordersGetDataError = "";
-
         @Override
         protected Void doInBackground(Void... params) {
-            ArrayList<OrderStructure> arrayListOrdersLocal = new ArrayList<>();
-
-            //Читаем studentID из preferences
-            SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
-            String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
-
+            String studentID = getActivity().getPreferences(Context.MODE_PRIVATE).getString(MainActivity.SAVED_STUDENT_ID, "");
             ordersGetDataError = "";
-            Document doc;// = null;
-            Connection.Response res;// = null;
+            arrayListOrders.clear();
+            Document doc;
+            Connection.Response res;
 
             try {
                 res = Jsoup.connect("http://student.miu.by/learning-card.html")
@@ -92,9 +80,6 @@ public class OrdersFragment extends Fragment {
                         .method(Connection.Method.POST)
                         .execute();
             } catch (IOException e) {
-                //  e.printStackTrace();
-                //               System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
-//                Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
                 ordersGetDataError = "network";
                 return null;
             }
@@ -105,8 +90,6 @@ public class OrdersFragment extends Fragment {
                 doc = Jsoup.connect("http://student.miu.by/learning-card/~/my.orders.html")
                         .cookie("PHPSESSID", sessionId).get();
             } catch (IOException e) {
-                //              e.printStackTrace();
-                //    Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
                 ordersGetDataError = "network";
                 return null;
             }
@@ -118,11 +101,9 @@ public class OrdersFragment extends Fragment {
                 for (int i = 1; i < rows.size(); i++) {
                     Element row = rows.get(i);
                     Elements cols = row.select("td");
-                    arrayListOrdersLocal.add(new OrderStructure(cols.get(0).text(), cols.get(1).text(), cols.get(2).text()));
+                    arrayListOrders.add(new OrderStructure(cols.get(0).text(), cols.get(1).text(), cols.get(2).text()));
                 }
-                setArrayOrders(arrayListOrdersLocal);
             } catch (Exception e) {
-                e.printStackTrace();
                 ordersGetDataError = "other error";
             }
             return null;
@@ -137,19 +118,15 @@ public class OrdersFragment extends Fragment {
                 if (ordersGetDataError.equals("network")) {
                     Toast.makeText(getActivity(), "Ошибка подключения к сети", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Произошла какая-то ошибка #11", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
 
-            ArrayList<OrderStructure> arrayListOrderLocal = getArrayOrders();
-
-            OrderStructure orderStructure;
-
             queryOrderTableLayout = (TableLayout) getViewOrdersFregment.findViewById(R.id.orderTable);
 
-            for (int i = 0; i < arrayListOrderLocal.size(); i++) {
-                orderStructure = arrayListOrderLocal.get(i);
+            for (int i = 0; i < arrayListOrders.size(); i++) {
+                OrderStructure orderStructure = arrayListOrders.get(i);
                 makeOrdersLine(orderStructure.getCourese(),
                         orderStructure.getNumberOrder(),
                         orderStructure.getTextOrder(), i);
@@ -159,8 +136,8 @@ public class OrdersFragment extends Fragment {
         private void makeOrdersLine(String getCourse, String getNumberOrder, String getTextOrder, int index) {
             context = getViewOrdersFregment.getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View newTagView = inflater.inflate(R.layout.order_list_item, null);
-            //      View newTagView = inflater.inflate(R.layout.order_list_item, parent,false);
+            //   View newTagView = inflater.inflate(R.layout.order_list_item, null);
+            View newTagView = inflater.inflate(R.layout.order_list_item, (ViewGroup) getView(), false);
 
             TextView textNumberRating = (TextView) newTagView.findViewById(R.id.course);
             textNumberRating.setText(getCourse);

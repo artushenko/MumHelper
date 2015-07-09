@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +35,10 @@ import java.util.ArrayList;
  */
 public class MarksFragment extends Fragment {
 
-
+    View getViewMarksFragment;
     private static ArrayList<MarkStructure> arrayListMarks = new ArrayList<>();
     private static String marksUrl = "http://student.miu.by/learning-card.html";
+    private String marksGetDataError = "";
 
     public MarksFragment() {
         // Required empty public constructor
@@ -47,8 +47,7 @@ public class MarksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_marks, container, false);
-        return view;
+        return getViewMarksFragment = inflater.inflate(R.layout.fragment_marks, container, false);
     }
 
     @Override
@@ -67,51 +66,34 @@ public class MarksFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            dialog = new ProgressDialog(getView().getContext());
+            dialog = new ProgressDialog(getViewMarksFragment.getContext());
             dialog.setMessage("Загрузка...");
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
             dialog.show();
         }
 
-        private ArrayList<MarkStructure> getArrayMarks() {
-            return arrayListMarks;
-        }
-
-        private void setArrayMarks(ArrayList<MarkStructure> arrayMarksf) {
-            arrayListMarks = arrayMarksf;
-        }
-
-        private String marksGetDataError = "";
-
         @Override
         protected Void doInBackground(Void... params) {
-            ArrayList<MarkStructure> arrayListMarksLocal = new ArrayList<>();
-
-            //Читаем studentID из preferences
-            SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+            //Read studentID from preferences
+            arrayListMarks.clear();
+            SharedPreferences sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
             String studentID = sPref.getString(MainActivity.SAVED_STUDENT_ID, "");
 
-            Document doc = null;
+            Document doc;//= null;
             try {
                 //   doc = Jsoup.connect("http://student.miu.by/learning-card/~/sem.all.html")
                 //    doc = Jsoup.connect("http://student.miu.by/learning-card.html")
                 doc = Jsoup.connect(marksUrl)
-                        //  .data("act", "regnum").data("id", "id").data("regnum", "20090312012423").post();
                         .data("act", "regnum").data("id", "id").data("regnum", studentID).post();
             } catch (IOException e) {
-                System.out.println("Ошибка подключени к сети " + getClass().getSimpleName());
-                //    Toast.makeText(getActivity(), "Ошибка подключени к сети", Toast.LENGTH_SHORT).show();
                 marksGetDataError = "network";
                 return null;
             }
 
             try {
-                //Elements countSemestrsHTML = doc.select("a#butsel.but");
                 Elements countSemestrsHTML = doc.select("a.but");
-                // String countSemestrsHTMLString=countSemestrsHTML.get(0).text();
                 countSemestrs = Integer.parseInt(countSemestrsHTML.get(0).text());
-                // System.out.print(countSemestrs);
             } catch (Exception e) {
                 marksGetDataError = "network";
                 return null;
@@ -120,7 +102,7 @@ public class MarksFragment extends Fragment {
             Element table = doc.select("table").get(1);
             Elements rows = table.select("tr");
 
-            String status = "";
+            String status;// = "";
 
             for (int i = 1; i < rows.size(); i++) {
                 Element row = rows.get(i);
@@ -131,9 +113,8 @@ public class MarksFragment extends Fragment {
                     status = body;
                 else
                     status = cols.get(2).text();
-                arrayListMarksLocal.add(new MarkStructure(getStatusDiscipline(status), cols.get(0).text(), cols.get(1).text(), status, cols.get(3).text()));
+                arrayListMarks.add(new MarkStructure(getStatusDiscipline(status), cols.get(0).text(), cols.get(1).text(), status, cols.get(3).text()));
             }
-            setArrayMarks(arrayListMarksLocal);
             return null;
         }
 
@@ -163,13 +144,10 @@ public class MarksFragment extends Fragment {
                 return;
             }
 
-
-            ArrayList<MarkStructure> arrayListMarkLocal = getArrayMarks();
-
             MarkStructure mark;
-            queryTableLayout = (TableLayout) getView().findViewById(R.id.markTable);
-            for (int i = 0; i < arrayListMarkLocal.size(); i++) {
-                mark = arrayListMarkLocal.get(i);
+            queryTableLayout = (TableLayout) getViewMarksFragment.findViewById(R.id.markTable);
+            for (int i = 0; i < arrayListMarks.size(); i++) {
+                mark = arrayListMarks.get(i);
                 makeMarksLine(mark.getNameOfDiscipline(),
                         mark.getFormOfControl(),
                         mark.getMark(),
@@ -177,16 +155,15 @@ public class MarksFragment extends Fragment {
                         mark.getStatud(), i);
             }
 
-            int countSemestrsLine = arrayListMarkLocal.size();
+            int countSemestrsLine = arrayListMarks.size();
+            //      Log.v("LOGSEMSTR", "Всего оценок " + countSemestrsLine);
             if (countSemestrs > 4) {
                 for (int i = 0; i < normalizeCountSemestrs(); i++) {
-                    makeSemestrLine(i, countSemestrsLine++);
+                    makeSemestrButtonLine(i, countSemestrsLine++);
                 }
             } else {
-                makeSemestrLine(0, countSemestrsLine);
+                makeSemestrButtonLine(0, countSemestrsLine);
             }
-
-
         }
 
         private int normalizeCountSemestrs() {
@@ -199,15 +176,13 @@ public class MarksFragment extends Fragment {
         private boolean interlaceLine = true;
 
         private void makeMarksLine(String nameOfDiscipline, String formOfControl, String mark, String date, boolean status, int index) {
-            context = getView().getContext();
+            context = getViewMarksFragment.getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View newTagView = inflater.inflate(R.layout.marks_list_item3, null);
-
+            View newTagView = inflater.inflate(R.layout.marks_list_item3, (ViewGroup) getView(), false);
+            //      View newTagView = inflater.inflate(R.layout.marks_list_item3, null);
 
             if (interlaceLine) {
                 RelativeLayout subjectMarkLayout = (RelativeLayout) newTagView.findViewById(R.id.subjectMarkLayout);
-                //   scgeduleLayout.setBackgroundColor(R.color.light_blue100);
-                //  scgeduleLayout.setBackgroundColor(R.color.background_interlace_line);
                 subjectMarkLayout.setBackgroundResource(R.color.background_interlace_line);
             }
             interlaceLine = !interlaceLine;
@@ -235,9 +210,10 @@ public class MarksFragment extends Fragment {
             queryTableLayout.addView(newTagView, index);
         }
 
-        private void makeSemestrLine(int countSemestrsN, int index) {
-            context = getView().getContext();
+        private void makeSemestrButtonLine(int countSemestrsN, int index) {
+            context = getViewMarksFragment.getContext();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+           //   View newTagView = inflater.inflate(R.layout.marks_list_term, (ViewGroup) getView(), false);
             View newTagView = inflater.inflate(R.layout.marks_list_term, null);
 
             Button buttonAll = (Button) newTagView.findViewById(R.id.buttonAllSemestrs);
@@ -311,22 +287,16 @@ public class MarksFragment extends Fragment {
                     }
                 });
             }
-
             queryTableLayout.addView(newTagView, index);
         }
 
-
         public void onClickButtonSemestr(View v) {
-            Log.v("LOGSEMSTR", "Выбран семестр № " + v.getTag());
             if (v.getTag().toString().equals("0"))
                 marksUrl = "http://student.miu.by/learning-card/~/sem.all.html";
             else
                 marksUrl = "http://student.miu.by/learning-card/~/sem." + v.getTag().toString() + ".html";
-            // http://student.miu.by/learning-card/~/sem.1.html
-            // "http://student.miu.by/learning-card/~/sem."+ v.getTag()+".html"
             FragmentTransaction fTrans = getFragmentManager().beginTransaction();
             MarksFragment marksFragment = new MarksFragment();
-            //mTitle = getString(R.string.title_marks);
             fTrans.replace(R.id.frgmCont, marksFragment);
             fTrans.commit();
         }
