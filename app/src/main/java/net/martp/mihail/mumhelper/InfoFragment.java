@@ -73,9 +73,12 @@ public class InfoFragment extends Fragment {
 
         ImageView bmImage = (ImageView) getViewInfoFragment.findViewById(R.id.studentPhoto);
 
-        String statusSavedPhoto = "";
-        String statusSavedPhotoValue = sPref.getString(MainActivity.SAVED_PHOTO, "");
-        if (statusSavedPhotoValue != null) statusSavedPhoto = statusSavedPhotoValue;
+      //  String statusSavedPhoto = "";
+    //    String statusSavedPhotoValue = sPref.getString(MainActivity.SAVED_PHOTO, "");
+    //    if (statusSavedPhotoValue != null) statusSavedPhoto = statusSavedPhotoValue;
+  //   statusSavedPhoto = statusSavedPhotoValue;
+        String statusSavedPhoto  = sPref.getString(MainActivity.SAVED_PHOTO, "");
+
 
         if (statusSavedPhoto.equals("yes") && (SetupFragment.bm != null)) {
             bmImage.setImageBitmap(SetupFragment.bm);

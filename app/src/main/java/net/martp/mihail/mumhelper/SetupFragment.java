@@ -1,5 +1,6 @@
 package net.martp.mihail.mumhelper;
 
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -25,14 +27,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
 
 
 /**
@@ -46,9 +51,9 @@ public class SetupFragment extends Fragment {
     private String image_URL = "";
     public String imageFileName = "";
     static Bitmap bm;
-    //  ImageView iv;
     View getVievSetupFragment;
-
+    String studentID;
+    CheckBox checkBoxCache;
 
     public SetupFragment() {
         // Required empty public constructor
@@ -58,13 +63,22 @@ public class SetupFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+//get status Cache function
+        checkBoxCache = (CheckBox) getVievSetupFragment.findViewById(R.id.checkBoxCasheData);
+        if (sPref.getString(MainActivity.CACHE_DATA, "").equals("yes")) {
+            checkBoxCache.setChecked(true);
+        } else {
+            checkBoxCache.setChecked(false);
+        }
+
 //get studentID from preferences
         editTextStudentID = (EditText) getVievSetupFragment.findViewById(R.id.inputStudentID);
-        sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         editTextStudentID.setText(sPref.getString(MainActivity.SAVED_STUDENT_ID, ""));
 
 // saveStudentID
         Button btnSaveID = (Button) getVievSetupFragment.findViewById(R.id.buttonSaveStudentID);
+
         // editText2_studentID = (EditText) getVievSetupFragment.findViewById(R.id.inputStudentID);
 
         View.OnClickListener oclBtnSaveID = new View.OnClickListener() {
@@ -94,12 +108,40 @@ public class SetupFragment extends Fragment {
             }
         };
         btnDeleteID.setOnClickListener(oclBtnDeleteID);
+
+        Button btnUpdateTeachers = (Button) getVievSetupFragment.findViewById(R.id.buttonUpdateTeachers);
+        View.OnClickListener oclBtnUpadateTeacher = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Обновление списка\nпреподавателей университета", Toast.LENGTH_SHORT).show();
+                UpadateTeachersListDataInfoAsyncTask upadateTeachersListDataInfoAsyncTask = new UpadateTeachersListDataInfoAsyncTask();
+                upadateTeachersListDataInfoAsyncTask.execute();
+            }
+        };
+        btnUpdateTeachers.setOnClickListener(oclBtnUpadateTeacher);
+
+        checkBoxCache = (CheckBox) getVievSetupFragment.findViewById(R.id.checkBoxCasheData);
+        final View.OnClickListener oclCheckBoxCache = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkBoxCache.isChecked()) {
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putString(MainActivity.CACHE_DATA, "yes");
+                    ed.apply();
+                } else {
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putString(MainActivity.CACHE_DATA, "no");
+                    ed.apply();
+                }
+            }
+        };
+        checkBoxCache.setOnClickListener(oclCheckBoxCache);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return getVievSetupFragment = inflater.inflate(R.layout.fragment_setup2, container, false);
+        return getVievSetupFragment = inflater.inflate(R.layout.fragment_setup3, container, false);
     }
 
     private class ParseDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
@@ -108,6 +150,9 @@ public class SetupFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+            EditText editStudentID = (EditText) getVievSetupFragment.findViewById(R.id.inputStudentID);
+            studentID = editStudentID.getText().toString();
 
             dialog = new ProgressDialog(getVievSetupFragment.getContext());
             dialog.setMessage("Загрузка...");
@@ -121,9 +166,6 @@ public class SetupFragment extends Fragment {
 
             Document doc;
             Connection.Response res;
-
-            EditText editStudentID = (EditText) getVievSetupFragment.findViewById(R.id.inputStudentID);
-            String studentID = editStudentID.getText().toString();
 
             try {
                 res = Jsoup.connect("http://student.miu.by/learning-card.html")
@@ -179,7 +221,8 @@ public class SetupFragment extends Fragment {
                 ed.putString(MainActivity.SAVED_FACULTY, rows.get(4).select("td").get(1).text());
                 ed.putString(MainActivity.SAVED_SPECIALTY, rows.get(5).select("td").get(1).text());
                 ed.putString(MainActivity.SAVED_AVARAGE_SCORE, rows.get(6).select("td").get(1).text());
-                ed.putString(MainActivity.SAVED_STUDENT_ID, editTextStudentID.getText().toString());
+                //   ed.putString(MainActivity.SAVED_STUDENT_ID, editTextStudentID.getText().toString());
+                ed.putString(MainActivity.SAVED_STUDENT_ID, studentID);
                 ed.apply();
 
                 if (!error1.equals("No photo in doc")) {
@@ -229,6 +272,113 @@ public class SetupFragment extends Fragment {
 
             //save photo to sdcard
             getStudentPhoto((ImageView) getVievSetupFragment.findViewById(R.id.imageView3));
+        }
+    }
+
+
+    private class UpadateTeachersListDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
+        ProgressDialog dialog;
+        String error1 = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            EditText editStudentID = (EditText) getVievSetupFragment.findViewById(R.id.inputStudentID);
+            studentID = editStudentID.getText().toString();
+
+            dialog = new ProgressDialog(getVievSetupFragment.getContext());
+            dialog.setMessage("Загрузка...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            dialog.dismiss();
+
+            if (error1.equals("IO Error")) {
+                Toast.makeText(getActivity(), "Ошибка подключения к сети!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (error1.equals("Save file error")) {
+                Toast.makeText(getActivity(), "Ошибка записи файла #21", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (error1.equals("Other error")) {
+                Toast.makeText(getActivity(), "Произошла какая-то ошибка #20", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Toast.makeText(getActivity(), "Список преподавателей университета успешно обновлен", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Document doc;
+
+            try {
+                doc = Jsoup.connect("http://martp.net/miuby.info/parse_miuby_schedule.php?allteachers=1").get();
+            } catch (IOException e) {
+                error1 = "IO Error";
+                return null;
+            }
+            Elements listTeacher = doc.select("body");
+
+            if (listTeacher == null) {
+                error1 = "Other error";
+                return null;
+            }
+
+            String teachersListTemp = listTeacher.text().substring(4, listTeacher.text().length());
+            String[] arrayTeacherList = teachersListTemp.split("\\. ");
+            String[] arrayTeachersListNormal = new String[arrayTeacherList.length];
+            for (int i = 0; i < arrayTeacherList.length; i++) {
+                arrayTeachersListNormal[i] = arrayTeacherList[i] + ".";
+            }
+
+    //        System.out.println(Arrays.toString(arrayTeachersListNormal));
+
+            //save listTeacher to file
+
+            File sdPath = Environment.getExternalStorageDirectory();
+            sdPath = new File(sdPath.getAbsolutePath() + "/student.miu.by");
+  /*          if (sdPath.mkdirs()) {
+                Toast.makeText(getActivity(), "Приложение создало каталог\n" + sdPath.toString(), Toast.LENGTH_SHORT).show();
+            }
+*/
+            String fileName = sdPath + "/teacherslist.txt";
+ //           System.out.println("LOG8 " + fileName);
+
+            BufferedWriter writer = null;
+            try {
+
+                writer = new BufferedWriter(new FileWriter(fileName));
+                for (String anArrayTeachersListNormal : arrayTeachersListNormal) {
+                    writer.write(anArrayTeachersListNormal);
+                    writer.newLine();
+                    writer.flush();
+                }
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                error1 = "Save file error";
+            } finally {
+                if (writer != null) {
+                    try {
+                        writer.close();
+                    } catch (IOException e) {
+                        error1 = "Save file error";
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            return null;
         }
     }
 

@@ -44,17 +44,14 @@ import java.net.URLConnection;
  * A simple {@link Fragment} subclass.
  */
 public class FirstStartFragment extends Fragment {
-
+    View firstStartFragmentView;
     private String image_URL = "";
- //   ImageView iv;
-//    private static Bitmap bm;
+    private SharedPreferences sPref;
+    private EditText editStudentID;
 
     public FirstStartFragment() {
         // Required empty public constructor
     }
-
-    SharedPreferences sPref;
-    EditText editStudentID;
 
     @Override
     public void onViewCreated(View view, final Bundle savedInstanceState) {
@@ -64,7 +61,7 @@ public class FirstStartFragment extends Fragment {
 
 //get studentID from preferences
         editStudentID = (EditText) firstStartFragmentView.findViewById(R.id.editStudentID);
-       // sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+        // sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
         sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         editStudentID.setText(sPref.getString(MainActivity.SAVED_STUDENT_ID, ""));
         editStudentID.setFocusable(true);
@@ -122,13 +119,12 @@ public class FirstStartFragment extends Fragment {
         btnSaveID.setOnClickListener(oclBtnSaveID);
     }
 
-    View firstStartFragmentView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return firstStartFragmentView=inflater.inflate(R.layout.fragment_first_screen, container, false);
+        return firstStartFragmentView = inflater.inflate(R.layout.fragment_first_screen, container, false);
     }
 
     private class ParseDataInfoAsyncTask extends AsyncTask<Void, Integer, Void> {
@@ -143,20 +139,21 @@ public class FirstStartFragment extends Fragment {
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
             dialog.show();
+            EditText editStudentID = (EditText) firstStartFragmentView.findViewById(R.id.editStudentID);
+            studentID = editStudentID.getText().toString();
         }
+
+        private String studentID;
 
         @Override
         protected Void doInBackground(Void... params) {
 
             Document doc;
-      //      Connection.Response res;
+            //      Connection.Response res;
 
-            EditText editStudentID = (EditText) firstStartFragmentView.findViewById(R.id.editStudentID);
-
-            String studentID = editStudentID.getText().toString();
 
             try {
- //               res = Jsoup.connect("http://student.miu.by/learning-card.html")
+                //               res = Jsoup.connect("http://student.miu.by/learning-card.html")
                 doc = Jsoup.connect("http://student.miu.by/learning-card.html")
                         .data("act", "regnum", "id", "id", "regnum", studentID)
                         .method(Connection.Method.POST)
@@ -209,8 +206,9 @@ public class FirstStartFragment extends Fragment {
                 ed.putString(MainActivity.SAVED_FACULTY, rows.get(4).select("td").get(1).text());
                 ed.putString(MainActivity.SAVED_SPECIALTY, rows.get(5).select("td").get(1).text());
                 ed.putString(MainActivity.SAVED_AVARAGE_SCORE, rows.get(6).select("td").get(1).text());
-                ed.putString(MainActivity.SAVED_STUDENT_ID, editStudentID.getText().toString());
-              //  ed.commit();
+                //     ed.putString(MainActivity.SAVED_STUDENT_ID, editStudentID.getText().toString());
+                ed.putString(MainActivity.SAVED_STUDENT_ID, studentID.toString());
+                //  ed.commit();
                 ed.apply();
 
                 if (!error1.equals("No photo in doc")) {
@@ -261,8 +259,8 @@ public class FirstStartFragment extends Fragment {
             //save photo to sdcard
             try {
                 //SetupFragment.getStudentPhoto(R.id.imageView4);
-           //    new SetupFragment().getStudentPhoto((ImageView) firstStartFragmentView.findViewById(R.id.imageView4));
-            getStudentPhoto((ImageView) firstStartFragmentView.findViewById(R.id.imageView4));
+                //    new SetupFragment().getStudentPhoto((ImageView) firstStartFragmentView.findViewById(R.id.imageView4));
+                getStudentPhoto((ImageView) firstStartFragmentView.findViewById(R.id.imageView4));
 
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Произошла какая-то ошибка #5", Toast.LENGTH_SHORT).show();
@@ -363,7 +361,8 @@ public class FirstStartFragment extends Fragment {
 
         File sdPath = Environment.getExternalStorageDirectory();
         sdPath = new File(sdPath.getAbsolutePath() + "/student.miu.by");
-        if (sdPath.mkdirs()) {Toast.makeText(getActivity(), "Приложение создало каталог\n"+sdPath.toString(), Toast.LENGTH_SHORT).show();
+        if (sdPath.mkdirs()) {
+            Toast.makeText(getActivity(), "Приложение создало каталог\n" + sdPath.toString(), Toast.LENGTH_SHORT).show();
         }
 
         //   Toast.makeText(getActivity(), "sdPath.mkdirs()", Toast.LENGTH_SHORT).show();

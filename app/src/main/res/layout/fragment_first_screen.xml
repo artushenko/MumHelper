@@ -3,14 +3,16 @@
     android:layout_height="match_parent" tools:context="net.martp.mihail.mumhelper.SetupFragment"
     android:background="#E1F5FE">
     <!-- TODO: Update blank fragment layout -->
+
     <ImageView
         android:layout_width="200dp"
         android:layout_height="195dp"
         android:id="@+id/imageView2"
-        android:src="@drawable/muu_logo_300x293"
+        android:src="@drawable/miu_logo_300x293"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:paddingTop="10dp" />
+        android:paddingTop="10dp"
+        android:contentDescription="@string/miu_by" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -79,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="На сайте student.mui.by ведутся работы. Возможны сбои в работе приложения."
+        android:text="@string/attention_work"
         android:id="@+id/textView40"
         android:gravity="center_horizontal"
         android:textColor="@android:color/holo_red_light"

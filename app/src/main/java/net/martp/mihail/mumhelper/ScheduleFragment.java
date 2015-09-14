@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +22,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -34,7 +38,9 @@ public class ScheduleFragment extends Fragment {
     static String dataSearch = "";
     ArrayList<String> arrayWeekSpinner = new ArrayList<>();
     private String marksGetDataError = "";
+
     private View getViewScheduleFragment;
+
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -56,14 +62,64 @@ public class ScheduleFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+        //Update teachers list
+        Boolean updateTeacherListError = false;
+        File sdPath = Environment.getExternalStorageDirectory();
+        sdPath = new File(sdPath.getAbsolutePath() + "/student.miu.by");
+ /*           if (sdPath.mkdirs()) {
+                Toast.makeText(getActivity(), "Приложение создало каталог\n" + sdPath.toString(), Toast.LENGTH_SHORT).show();
+            }
+*/
+        String fileName = sdPath + "/teacherslist.txt";
+
+        ArrayList<String> arrayListTeacher = new ArrayList<>();
+
+        String st;
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(fileName));
+        } catch (FileNotFoundException e) {
+            // e.printStackTrace();
+            updateTeacherListError = true;
+        }
+        try {
+            assert bufferedReader != null;
+            while ((st = bufferedReader.readLine()) != null) {
+                //arrayTeacherListReader[i++] = st;
+                arrayListTeacher.add(st);
+            }
+        } catch (IOException e) {
+            updateTeacherListError = true;
+            //e.printStackTrace();
+        }
+
+        String[] arrayTeacherListReader = new String[arrayListTeacher.size()];
+        //      System.out.println(arrayListTeacher.size());
+        for (int q = 0; q < arrayListTeacher.size(); q++) {
+            arrayTeacherListReader[q] = arrayListTeacher.get(q);
+        }
+
+        //   arrayTeacherListReader[0] = "Пупкин А.Щ.";
+        //  System.out.println("LOG8" + Arrays.toString(arrayTeacherListReader));
+
+        //SharedPreferences sPref = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+        SharedPreferences sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String savedNumberGroup = sPref.getString(MainActivity.SAVED_NUMBER_GROUP, "");
 
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 getViewScheduleFragment.findViewById(R.id.groupNumberSearch);
         textView.setText(savedNumberGroup);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getViewScheduleFragment.getContext(),
-                android.R.layout.simple_dropdown_item_1line, teachers_array);
+
+        ArrayAdapter<String> adapter;
+        if (!updateTeacherListError) {
+            //   System.out.println("LOG8 - arrayTeacherListReader");
+            adapter = new ArrayAdapter<>(getViewScheduleFragment.getContext(),
+                    android.R.layout.simple_dropdown_item_1line, arrayTeacherListReader);
+        } else {
+            adapter = new ArrayAdapter<>(getViewScheduleFragment.getContext(),
+                    android.R.layout.simple_dropdown_item_1line, teachers_array);
+
+        }
         textView.setAdapter(adapter);
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -114,7 +170,7 @@ public class ScheduleFragment extends Fragment {
             try {
                 numberWeekInt = Integer.parseInt(numberWeek.text());
             } catch (NumberFormatException e) {
-                numberWeekInt = 40;
+                numberWeekInt = 44;
             }
             for (int i = 1; i < numberWeekInt + 1; i++) {
                 arrayWeekSpinner.add(String.valueOf(i));
@@ -144,7 +200,7 @@ public class ScheduleFragment extends Fragment {
             spinnerWeek.setSelection(arrayWeekSpinner.size() - 1);
             weekSpinnerText = spinnerWeek.getSelectedItem().toString();
 
-            Log.v("LOG4", "number = " + weekSpinnerText);
+          //  Log.v("LOG4", "number = " + weekSpinnerText);
 
             spinnerWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> parent,

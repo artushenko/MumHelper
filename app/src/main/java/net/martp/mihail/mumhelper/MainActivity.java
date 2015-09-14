@@ -30,6 +30,7 @@ public class MainActivity extends ActionBarActivity
     final static public String SAVED_AVARAGE_SCORE = "avscoreStudent";
     final static public String SAVED_NUMBER_GROUP = "numberGroup";
     final static public String SAVED_PHOTO = "no";
+    final static public String CACHE_DATA = "no";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -87,8 +88,9 @@ public class MainActivity extends ActionBarActivity
         int savedStudentIDvalue;
 
         String idValue = sPref.getString(SAVED_STUDENT_ID, "");
-        if (idValue != null) savedStudentIDvalue = idValue.length();
-        else savedStudentIDvalue = 0;
+      //  if (idValue != null) savedStudentIDvalue = idValue.length();
+       savedStudentIDvalue = idValue.length();
+       // else savedStudentIDvalue = 0;
 
         switch (number) {
             case 1:

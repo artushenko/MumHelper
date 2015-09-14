@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="version_app">Версия 1.32</string>
-    <string name="date_reliz" translatable="false">02.07.2015</string>
-    <string name="app_name_full">Помощник студента МУУ</string>
+    <string name="version_app">Версия 1.33</string>
+    <string name="date_reliz" translatable="false">14.09.2015</string>
+    <string name="app_name_full">Помощник студента МИУ</string>
     <string name="app_name" translatable="false">Student.MIU.BY</string>
     <string name="title_section1" translatable="false">Section 1</string>
     <string name="title_section2" translatable="false">Section 2</string>
@@ -27,11 +27,27 @@
     <string name="title_info">Учебная карта</string>
     <string name="empty_title" translatable="false"> </string>
     <string name="idea_string">Идея и разработка:</string>
-    <string name="full_name_about_app">Мобильная учебная карточка студента Минского университета управления</string>
+    <string name="full_name_about_app">Мобильная учебная карточка студента Минского инновационного университета</string>
     <string name="developer_name1">Михаил Артюшенко</string>
-    <string name="thanks_to_all_string">Огромная благодарность все тем, кто высказывал свои замечания, пожелания и предложения.</string>
+    <string name="thanks_to_all_string">Огромная благодарность всем тем, кто высказывал свои замечания, пожелания и предложения.</string>
     <string name="string_enter_id_student">введите ID студента</string>
     <string name="string_enter_to_app">Войти в приложение</string>
+    <string name="attention_work">На сайте student.mui.by ведутся работы. Возможны сбои в работе приложения.</string>
+    <string name="miu_by">MIU.by</string>
+    <string name="link_martp_net">http://martp.net</string>
+    <string name="miu_by_logo_discrip">MIU.by logo</string>
+    <string name="my_email">brom128@gmail.com</string>
+    <string name="link_blog_artushenko_by">http://blog.artushenko.by</string>
+   <string name="update_teachers_list">Обновить список преподавателей</string>
+    <string name="delete_data">Удалить данные</string>
+    <string name="enter">Введите:</string>
+    <string name="str_id_student">ID студента</string>
+    <string name="str_vypoln">Выполнить</string>
+    <string name="str_cache_data">Кешировать данные</string>
+    <string name="str_alter_server">Использовать сервер martp.net</string>
+    <string name="str_save">Сохранить</string>
+    <string name="str_photo_cache">photo cache</string>
+    <string name="str_num0_14">12345678901234</string>
 
 
 </resources>
