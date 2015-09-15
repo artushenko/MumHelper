@@ -91,8 +91,10 @@ public class ScheduleFragment extends Fragment {
         } catch (IOException e) {
             updateTeacherListError = true;
             //e.printStackTrace();
+        } catch (NullPointerException e) {
+            updateTeacherListError = true;
+            //e.printStackTrace();
         }
-
         String[] arrayTeacherListReader = new String[arrayListTeacher.size()];
         //      System.out.println(arrayListTeacher.size());
         for (int q = 0; q < arrayListTeacher.size(); q++) {
@@ -200,7 +202,7 @@ public class ScheduleFragment extends Fragment {
             spinnerWeek.setSelection(arrayWeekSpinner.size() - 1);
             weekSpinnerText = spinnerWeek.getSelectedItem().toString();
 
-          //  Log.v("LOG4", "number = " + weekSpinnerText);
+            //  Log.v("LOG4", "number = " + weekSpinnerText);
 
             spinnerWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> parent,
